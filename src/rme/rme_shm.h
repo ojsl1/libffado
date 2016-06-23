@@ -28,6 +28,8 @@
 #include <pthread.h>
 #include "fireface_def.h"
 
+#define RME_SHM_NAMELEN 64
+
 /* Structure used within shared memory object */
 
 typedef struct rme_shm_t {
@@ -44,6 +46,7 @@ typedef struct rme_shm_t {
     signed int is_streaming;
 
     pthread_mutex_t lock;
+    char shm_name[RME_SHM_NAMELEN];
 } rme_shm_t;
 
 /* Return values from rme_shm_open().  RSO = Rme Shared Object. */
@@ -61,7 +64,7 @@ typedef struct rme_shm_t {
 
 void rme_shm_lock(rme_shm_t *shm_data);
 void rme_shm_unlock(rme_shm_t *shm_data);
-signed int rme_shm_open(rme_shm_t **shm_data);
+signed int rme_shm_open(std::string id, rme_shm_t **shm_data);
 signed int rme_shm_close(rme_shm_t *shm_data);
 
 #endif

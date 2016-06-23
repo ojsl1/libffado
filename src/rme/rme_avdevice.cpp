@@ -357,6 +357,8 @@ bool
 Device::discover()
 {
     signed int i;
+    std::string id;
+
     unsigned int vendorId = getConfigRom().getNodeVendorId();
     // See note in Device::probe() about why we use the unit version here.
     unsigned int unitVersion = getConfigRom().getUnitVersion();
@@ -388,8 +390,13 @@ Device::discover()
       return false;
     }
 
+    id = std::string("dev0");
+    if (!getOption("id", id)) {
+        debugWarning("Could not retrieve id parameter, defaulting to 'dev0'\n");
+    }
+
     // Set up the shared data object for configuration data
-    i = rme_shm_open(&dev_config);
+    i = rme_shm_open(id, &dev_config);
     if (i == RSO_OPEN_CREATED) {
         debugOutput( DEBUG_LEVEL_VERBOSE, "New configuration shared data object created\n");
     } else

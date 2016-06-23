@@ -40,13 +40,15 @@
  * initially) the device's configuration will be persistent.
  */
 
-#define RME_SHM_NAME  "/ffado:rme_shm"
+#define RME_SHM_NAME  "/ffado:rme_shm-"
 #define RME_SHM_SIZE  sizeof(rme_shm_t)
 
 #define RME_SHM_LOCKNAME "/ffado:rme_shm_lock"
 
 #include <unistd.h>
 #include <errno.h>
+#include <string>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -80,8 +82,9 @@ void rme_shm_unlock(rme_shm_t *shm_data) {
     pthread_mutex_unlock(&shm_data->lock);
 }
 
-signed int rme_shm_open(rme_shm_t **shm_data) {
+signed int rme_shm_open(std::string id, rme_shm_t **shm_data) {
 
+    std::string shm_name;
     signed int shmfd, lockfd;
     rme_shm_t *data;
     signed int created = 0;
@@ -93,10 +96,13 @@ signed int rme_shm_open(rme_shm_t **shm_data) {
 
     lockfd = rme_shm_lock_for_setup();
 
-    shmfd = shm_open(RME_SHM_NAME, O_RDWR, 0644);
+    shm_name = std::string(RME_SHM_NAME);
+    shm_name.append(id);
+
+    shmfd = shm_open(shm_name.c_str(), O_RDWR, 0644);
     if (shmfd < 0) {
         if (errno == ENOENT) {
-            shmfd = shm_open(RME_SHM_NAME, O_RDWR | O_CREAT | O_EXCL, 0644);
+            shmfd = shm_open(shm_name.c_str(), O_RDWR | O_CREAT | O_EXCL, 0644);
             if (shmfd < 0)
                 return RSO_ERR_SHM;
             else {
@@ -115,6 +121,7 @@ signed int rme_shm_open(rme_shm_t **shm_data) {
 
     if (created) {
         pthread_mutex_init(&data->lock, NULL);
+        snprintf(data->shm_name, sizeof(data->shm_name), "%s", shm_name.c_str());
     }
 
     rme_shm_lock(data);
@@ -129,6 +136,7 @@ signed int rme_shm_open(rme_shm_t **shm_data) {
 
 signed int rme_shm_close(rme_shm_t *shm_data) {
 
+    std::string shm_name = std::string(shm_data->shm_name);
     signed int unlink = 0;
     signed int lockfd;
 
@@ -148,7 +156,7 @@ signed int rme_shm_close(rme_shm_t *shm_data) {
     munmap(shm_data, RME_SHM_SIZE);
 
     if (unlink)
-        shm_unlink(RME_SHM_NAME);
+        shm_unlink(shm_name.c_str());
 
     rme_shm_unlock_for_setup(lockfd);
 
