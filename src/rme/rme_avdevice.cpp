@@ -398,10 +398,10 @@ Device::discover()
     // Set up the shared data object for configuration data
     i = rme_shm_open(id, &dev_config);
     if (i == RSO_OPEN_CREATED) {
-        debugOutput( DEBUG_LEVEL_VERBOSE, "New configuration shared data object created\n");
+        debugOutput( DEBUG_LEVEL_VERBOSE, "New configuration shared data object created, ID %s\n", id.c_str());
     } else
     if (i == RSO_OPEN_ATTACHED) {
-        debugOutput( DEBUG_LEVEL_VERBOSE, "Attached to existing configuration shared data object\n");
+        debugOutput( DEBUG_LEVEL_VERBOSE, "Attached to existing configuration shared data object for ID %s\n", id.c_str());
     }
     if (dev_config == NULL) {
         debugOutput( DEBUG_LEVEL_WARNING, "Could not create/access shared configuration memory object, using process-local storage\n");
