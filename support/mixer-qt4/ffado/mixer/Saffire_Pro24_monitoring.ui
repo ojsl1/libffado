@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
+    <width>969</width>
     <height>768</height>
    </rect>
   </property>
@@ -42,6 +42,16 @@
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="GlobalSetLabel">
+          <property name="text">
+           <string>Dim level</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QSlider" name="DimLevel">
@@ -66,16 +76,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="GlobalSetLabel">
-          <property name="text">
-           <string>Dim level</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="GlobalDim">
@@ -107,8 +107,6 @@
        <zorder>GlobalDim</zorder>
        <zorder>GlobalMute</zorder>
        <zorder>HWSwitch</zorder>
-       <zorder>horizontalLayoutWidget_5</zorder>
-       <zorder>horizontalSpacer_7</zorder>
        <zorder>GlobalSetLabel</zorder>
       </widget>
      </item>
@@ -826,7 +824,7 @@
                 <string>Line</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup</string>
+                <string notr="true">buttonGroup</string>
                </attribute>
               </widget>
              </item>
@@ -836,7 +834,7 @@
                 <string>Inst</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup</string>
+                <string notr="true">buttonGroup</string>
                </attribute>
               </widget>
              </item>
@@ -855,7 +853,7 @@
                 <string>Line</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_2</string>
+                <string notr="true">buttonGroup_2</string>
                </attribute>
               </widget>
              </item>
@@ -865,7 +863,7 @@
                 <string>Inst</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_2</string>
+                <string notr="true">buttonGroup_2</string>
                </attribute>
               </widget>
              </item>
@@ -884,7 +882,7 @@
                 <string>Lo</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_3</string>
+                <string notr="true">buttonGroup_3</string>
                </attribute>
               </widget>
              </item>
@@ -894,7 +892,7 @@
                 <string>Hi</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_3</string>
+                <string notr="true">buttonGroup_3</string>
                </attribute>
               </widget>
              </item>
@@ -913,7 +911,7 @@
                 <string>Lo</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_4</string>
+                <string notr="true">buttonGroup_4</string>
                </attribute>
               </widget>
              </item>
@@ -923,7 +921,7 @@
                 <string>Hi</string>
                </property>
                <attribute name="buttonGroup">
-                <string>buttonGroup_4</string>
+                <string notr="true">buttonGroup_4</string>
                </attribute>
               </widget>
              </item>
