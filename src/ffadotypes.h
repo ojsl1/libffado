@@ -50,7 +50,8 @@ struct ffado_handle {
     DeviceManager*   m_deviceManager;
 };
 
-
+#include <cmath>
+#include <algorithm>
 #include <vector>
 #include <string>
 
