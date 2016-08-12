@@ -558,7 +558,7 @@ def cpuinfo_kv():
     for line in f:
         line = line.strip()
         if line:
-            k,v = line.split(':')
+            k,v = line.split(':', 1)
             yield (k.strip(), v.strip())
     f.close()
 
