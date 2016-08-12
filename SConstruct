@@ -811,7 +811,10 @@ if env['DETECT_USERSPACE_ENV']:
     elif cpuinfo.is_x86:
         if m32:
             print "Doing a 32-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name)
-            machineflags = { 'CXXFLAGS' : ['-m32'] }
+            if cpuinfo.machine == 'x86_64':
+                machineflags = { 'CXXFLAGS' : ['-mx32'] }
+            else:
+                machineflags = { 'CXXFLAGS' : ['-m32'] }
         else:
             print "Doing a 64-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name)
             machineflags = { 'CXXFLAGS' : ['-m64'] }
