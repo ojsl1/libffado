@@ -1,11 +1,14 @@
 [Desktop Entry]
 Name=FFADO Mixer
 Name[ru]=Микшер FFADO
+Name[fr]=Mixeur FFADO
 Comment=Audio mixer for Firewire devices
 Comment[ru]=Микшер для звуковых устройств с интерфейсом Firewire
+Comment[fr]=Mixeur audio pour les interfaces firewire
 Exec=ffado-mixer
 GenericName=Firewire audio mixer
 GenericName[ru]=Звуковой микшер Firewire
-Icon=ffado
+GenericName[fr]=Mixeur audio Firewire
+Icon=hi64-apps-ffado
 Type=Application
 Categories=Mixer;Audio;AudioVideo;HardwareSettings;Qt;
