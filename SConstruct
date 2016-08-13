@@ -647,8 +647,11 @@ class CpuInfo (object):
                 self.cpu_count += 1
             elif k == 'cpu':
                 self.is_altivec_supported = 'altivec' in v
-                ppc_type, x = v.split(',')
-                self.ppc_type = ppc_type.strip()
+                if ',' in v:
+                    ppc_type, x = v.split(',')
+                else:
+                    ppc_type = v
+               self.ppc_type = ppc_type.strip()
         # older kernels might not have a 'processor' line
         if self.cpu_count == 0:
             self.cpu_count += 1
