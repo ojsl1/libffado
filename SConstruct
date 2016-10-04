@@ -651,7 +651,7 @@ class CpuInfo (object):
                     ppc_type, x = v.split(',')
                 else:
                     ppc_type = v
-               self.ppc_type = ppc_type.strip()
+                self.ppc_type = ppc_type.strip()
         # older kernels might not have a 'processor' line
         if self.cpu_count == 0:
             self.cpu_count += 1
