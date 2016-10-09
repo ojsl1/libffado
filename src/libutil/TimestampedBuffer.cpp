@@ -32,6 +32,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <math.h>
 
 #define DLL_PI        (3.141592653589793238)
 #define DLL_SQRT2     (1.414213562373095049)
@@ -179,8 +180,6 @@ bool TimestampedBuffer::setWrapValue(ffado_timestamp_t w) {
     m_wrap_at=w;
     return true;
 }
-#include <math.h>
-
 /**
  * \brief return the effective rate
  *
