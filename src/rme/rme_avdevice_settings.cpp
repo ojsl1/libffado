@@ -489,4 +489,123 @@ Device::setBandwidthLimit(signed int limit) {
   return 0;
 }
 
+signed int 
+Device::getTcoLtc(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return (ff_tco_state.hours<<24) | (ff_tco_state.minutes<<16) |
+           (ff_tco_state.seconds<<8) | (ff_tco_state.frames);
+}
+signed int
+Device::getTcoLtcValid(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.ltc_valid;
+}
+signed int
+Device::getTcoLock(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.locked;
+}
+signed int
+Device::getTcoLtcFrameRate(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.frame_rate;
+}
+signed int
+Device::getTcoLtcDropFrame(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.drop_frame;
+}
+signed int
+Device::getTcoVideoType(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.video_input;
+}
+float
+Device::getTcoFrequency(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.sample_rate;
+}
+signed int
+Device::getTcoWordClkState(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.word_clock_state;
+}
+signed int
+Device::getTcoSyncSrc(void) {
+    return tco_settings->input;
+}
+signed int
+Device::setTcoSyncSrc(signed int src) {
+    tco_settings->input = src;
+    return write_tco_settings(tco_settings);
+}
+signed int
+Device::getTcoFrameRate(void) {
+    return tco_settings->frame_rate;
+}
+signed int
+Device::setTcoFrameRate(signed int rate_id) {
+    tco_settings->frame_rate = rate_id;
+    return write_tco_settings(tco_settings);
+}
+signed int
+Device::getTcoSampleRate(void) {
+    return tco_settings->sample_rate;
+}
+signed int
+Device::setTcoSampleRate(signed int rate_param_id) {
+    tco_settings->sample_rate = rate_param_id;
+    return write_tco_settings(tco_settings);
+}
+signed int
+Device::getTcoPull(void) {
+    return tco_settings->pull;
+}
+signed int
+Device::setTcoPull(signed int pull) {
+    tco_settings->pull = pull;
+    return write_tco_settings(tco_settings);
+}
+signed int
+Device::getTcoTermination(void) {
+    return tco_settings->termination == FF_TCOPARAM_TERMINATION_ON;
+}
+signed int
+Device::setTcoTermination(signed int enable) {
+    tco_settings->termination = enable ? FF_TCOPARAM_TERMINATION_ON : 0;
+    return write_tco_settings(tco_settings);
+}
+
 }

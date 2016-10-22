@@ -149,6 +149,26 @@ public:
     signed int getBandwidthLimit(void);
     signed int setBandwidthLimit(signed int limit);
 
+    /* TCO control functions */
+    signed int getTcoLtc(void);
+    signed int getTcoLtcValid(void);
+    signed int getTcoLock(void);
+    signed int getTcoLtcFrameRate(void);
+    signed int getTcoLtcDropFrame(void);
+    signed int getTcoVideoType(void);
+    float getTcoFrequency(void);
+    signed int getTcoWordClkState(void);
+    signed int getTcoSyncSrc(void);
+    signed int setTcoSyncSrc(signed int src);
+    signed int getTcoFrameRate(void);
+    signed int setTcoFrameRate(signed int rate_id);
+    signed int getTcoPull(void);
+    signed int setTcoPull(signed int pull);
+    signed int getTcoSampleRate(void);
+    signed int setTcoSampleRate(signed int rate_param_id);
+    signed int getTcoTermination(void);
+    signed int setTcoTermination(signed int enable);
+
     /* General information functions */
     signed int getRmeModel(void) { return m_rme_model; }
     signed int getTcoPresent(void) { return dev_config->tco_present; }

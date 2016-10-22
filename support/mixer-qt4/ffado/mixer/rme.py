@@ -88,12 +88,32 @@ class Rme(QWidget):
             self.sync_ref_adat2: ['/Control/Sync_ref', 2],
             self.sync_ref_spdif: ['/Control/Sync_ref', 3],
             self.sync_ref_tco: ['/Control/Sync_ref', 4],
+            
+            # TCO controls
+            self.sync_source_ltc: ['/Control/Tco_sync_src', 0],
+            self.sync_source_video: ['/Control/Tco_sync_src', 1],
+            self.frame_rate_24fps: ['/Control/Tco_frame_rate', 0],
+            self.frame_rate_25fps: ['/Control/Tco_frame_rate', 1],
+            self.frame_rate_29_97fps: ['/Control/Tco_frame_rate', 2],
+            self.frame_rate_29_97dfps: ['/Control/Tco_frame_rate', 3],
+            self.frame_rate_30fps: ['/Control/Tco_frame_rate', 4],
+            self.frame_rate_30dfps: ['/Control/Tco_frame_rate', 5],
+            self.sample_rate_44k1: ['/Control/Tco_sample_rate', 0],
+            self.sample_rate_48k: ['/Control/Tco_sample_rate', 1],
+            self.sample_rate_0pc: ['/Control/Tco_sample_rate_ofs', 0],
+            self.sample_rate_p01pc: ['/Control/Tco_sample_rate_ofs', 1],
+            self.sample_rate_n01pc: ['/Control/Tco_sample_rate_ofs', 2],
+            self.sample_rate_p40pc: ['/Control/Tco_sample_rate_ofs', 3],
+            self.sample_rate_n40pc: ['/Control/Tco_sample_rate_ofs', 4],
         }
 
         self.Checkboxes={
             self.ch1_instr_fuzz: ['/Control/Chan1_instr_opts', 0x04],
             self.ch1_instr_limiter: ['/Control/Chan1_instr_opts', 0x08],
             self.ch1_instr_filter: ['/Control/Chan1_instr_opts', 0x02],
+
+            # TCO controls
+            self.video_input_termination_on: ['/Control/Tco_video_in_term', 0x01],
         }
 
         self.Gains={
@@ -233,6 +253,28 @@ class Rme(QWidget):
         self.sync_check_wclk_status.setText(sync_stat[(sync_status >> 6) & 0x03])
         self.sync_check_tco_status.setText(sync_stat[(sync_status >> 8) & 0x03])
         self.spdif_freq.setText("%d Hz" % (spdif_freq))
+        
+        if (self.tco_present):
+            ltc_valid_str = ['Not detected', 'Valid']
+            ltc_framerate_str = ['24 fps', '25 fps', '29.97 fps', '30 fps']
+            ltc_frametype_str = ['Normal', 'Dropframe']
+            video_type_str = ['No video', 'PAL', 'NTSC']
+            ltc = self.hw.getDiscrete('/Control/Tco_ltc_in')
+            ltc_valid = self.hw.getDiscrete('/Control/Tco_input_ltc_valid')
+            ltc_fps = self.hw.getDiscrete('/Control/Tco_input_ltc_fps')
+            ltc_dropframe = self.hw.getDiscrete('/Control/Tco_input_ltc_dropframe')
+            videotype = self.hw.getDiscrete('/Control/Tco_input_video_type')
+            input_lock = self.hw.getDiscrete('/Control/Tco_input_lock')
+            tco_freq = self.hw.getDiscrete('/Control/Tco_freq')
+            self.ltc_in_hours.setText("%02d" % (ltc >> 24))
+            self.ltc_in_minutes.setText("%02d" % ((ltc >> 16) & 0xff))
+            self.ltc_in_seconds.setText("%02d" % ((ltc >> 8) & 0xff))
+            self.ltc_in_frames.setText("%02d" % (ltc & 0xff))
+            self.state_ltc_valid_label.setText(ltc_valid_str[ltc_valid])
+            self.state_ltc_framerate.setText(ltc_framerate_str[ltc_fps])
+            self.state_ltc_frame_type.setText(ltc_frametype_str[ltc_dropframe])
+            self.state_video_type.setText(video_type_str[videotype])
+            self.tco_frequency_label.setText("%d Hz" % (tco_freq))
 
     # Hide and disable a control
     def disable_hide(self,widget):
@@ -420,6 +462,12 @@ class Rme(QWidget):
         log.debug("device has TCO: %d" % (self.tco_present))
         #self.sample_rate = self.hw.getDiscrete('/Mixer/Info/SampleRate')
         #log.debug("device sample rate: %d" % (self.sample_rate))
+
+        # Assume the TCO options tab is the second from the left (index 1)
+        if (not(self.tco_present)):
+            self.disable_hide(self.tco_options);
+            self.tabWidget.setTabEnabled(1, False)
+            self.tabWidget.removeTab(1)
 
         # The Fireface-400 only has 2 phantom-capable channels
         if (self.model == RME_MODEL_FF400):

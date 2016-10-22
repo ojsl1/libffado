@@ -674,7 +674,7 @@ typedef struct {
 #define FF_TCOPARAM_SRATE_44_1                1     // Rate is 44.1 kHz
 #define FF_TCOPARAM_SRATE_48                  2     // Rate is 48 kHz
 #define FF_TCOPARAM_SRATE_FROM_APP            3
-#define FF_TCPPARAM_PULL_NONE                 1
+#define FF_TCOPARAM_PULL_NONE                 1
 #define FF_TCOPARAM_PULL_UP_01                2     // +0.1%
 #define FF_TCOPARAM_PULL_DOWN_01              3     // -0.1%
 #define FF_TCOPARAM_PULL_UP_40                4     // +4.0%

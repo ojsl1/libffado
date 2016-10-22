@@ -61,6 +61,21 @@ namespace Rme {
 #define RME_CTRL_INFO_SYNC_STATUS      0x0312
 #define RME_CTRL_INFO_SPDIF_FREQ       0x0313
 
+#define RME_CTRL_TCO_FIRST             0x0400
+#define RME_CTRL_TCO_LTC_IN            0x0400
+#define RME_CTRL_TCO_INPUT_LTC_VALID   0x0401
+#define RME_CTRL_TCO_INPUT_LTC_FPS     0x0402
+#define RME_CTRL_TCO_INPUT_LTC_DROPFRAME 0x0403
+#define RME_CTRL_TCO_INPUT_VIDEO_TYPE  0x0404
+#define RME_CTRL_TCO_INPUT_LOCK        0x0405
+#define RME_CTRL_TCO_SYNC_SRC          0x0406
+#define RME_CTRL_TCO_VIDEO_IN_TERM     0x0407
+#define RME_CTRL_TCO_FREQ              0x0408
+#define RME_CTRL_TCO_FRAME_RATE        0x0409
+#define RME_CTRL_TCO_SAMPLE_RATE       0x040a
+#define RME_CTRL_TCO_SAMPLE_RATE_OFS   0x040b
+#define RME_CTRL_TCO_LAST              0x040b
+
 /* Control types for an RmeSettingsMatrixCtrl object */
 #define RME_MATRIXCTRL_NONE            0x0000
 #define RME_MATRIXCTRL_GAINS           0x0001

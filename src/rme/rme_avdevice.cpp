@@ -227,6 +227,43 @@ Device::buildMixer() {
         result &= m_ControlContainer->addElement(
             new RmeSettingsCtrl(*this, RME_CTRL_INSTRUMENT_OPTIONS, 1,
                 "Chan1_instr_opts", "Input instrument options channel 1", ""));
+
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_LTC_IN, 0,
+                "Tco_ltc_in", "TCO input LTC received", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_LTC_VALID, 0,
+                "Tco_input_ltc_valid", "TCO input LTC valid", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_LTC_FPS, 0,
+                "Tco_input_ltc_fps", "TCO input LTC frame rate ID", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_LTC_DROPFRAME, 0,
+                "Tco_input_ltc_dropframe", "TCO input LTC dropframe detected", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_VIDEO_TYPE, 0,
+                "Tco_input_video_type", "TCO input video type", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_LOCK, 0,
+                "Tco_input_lock", "TCO input is locked", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_SYNC_SRC, 0,
+                "Tco_sync_src", "TCO sync source", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_VIDEO_IN_TERM, 0,
+                "Tco_video_in_term", "TCO video input terminator is enabled", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_FREQ, 0,
+                "Tco_freq", "TCO measured frequency (Hz)", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_FRAME_RATE, 0,
+                "Tco_frame_rate", "TCO frame rate ID", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_SAMPLE_RATE, 0,
+                "Tco_sample_rate", "TCO sample rate ID", ""));
+        result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_SAMPLE_RATE_OFS, 0,
+                "Tco_sample_rate_ofs", "TCO sample rate pulldown offset ID", ""));
     }
 
     if (m_rme_model == RME_MODEL_FIREFACE400) {

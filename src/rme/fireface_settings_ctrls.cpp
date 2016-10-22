@@ -58,6 +58,9 @@ RmeSettingsCtrl::setValue(int v) {
 signed int i;
 signed int err = 0;
 
+    if (m_type>=RME_CTRL_TCO_FIRST && m_type<=RME_CTRL_TCO_LAST) {
+    }
+
     switch (m_type) {
         case RME_CTRL_NONE:
             debugOutput(DEBUG_LEVEL_ERROR, "control has no type set\n");
@@ -252,6 +255,60 @@ signed int err = 0;
             err = 1;
             break;
 
+        case RME_CTRL_TCO_LTC_IN:
+        case RME_CTRL_TCO_INPUT_LTC_VALID:
+        case RME_CTRL_TCO_INPUT_LTC_FPS:
+        case RME_CTRL_TCO_INPUT_LTC_DROPFRAME:
+        case RME_CTRL_TCO_INPUT_VIDEO_TYPE:
+        case RME_CTRL_TCO_INPUT_LOCK:
+        case RME_CTRL_TCO_FREQ:
+            debugOutput(DEBUG_LEVEL_ERROR, "Attempt to set readonly TCO control 0x%08x\n", m_type);
+            err = 1;
+            break;
+        case RME_CTRL_TCO_SYNC_SRC:
+            switch (v) {
+                case 0: i = FF_TCOPARAM_INPUT_LTC; break;
+                case 1: i = FF_TCOPARAM_INPUT_VIDEO; break;
+                case 2: i = FF_TCOPARAM_INPUT_VIDEO; break;
+                default: i = FF_TCOPARAM_INPUT_VIDEO;
+            }
+            return m_parent.setTcoSyncSrc(i);
+            break;
+        case RME_CTRL_TCO_FRAME_RATE:
+            switch (v) {
+                case 0: i = FF_TCOPARAM_FRAMERATE_24fps; break;
+                case 1: i = FF_TCOPARAM_FRAMERATE_25fps; break;
+                case 2: i = FF_TCOPARAM_FRAMERATE_29_97fps; break;
+                case 3: i = FF_TCOPARAM_FRAMERATE_29_97dfps; break;
+                case 4: i = FF_TCOPARAM_FRAMERATE_30fps; break;
+                case 5: i = FF_TCOPARAM_FRAMERATE_30dfps; break;
+                default: i = FF_TCOPARAM_FRAMERATE_25fps; break;
+            }
+            return m_parent.setTcoFrameRate(i);
+            break;
+        case RME_CTRL_TCO_SAMPLE_RATE:
+            switch (v) {
+                case 0: i = FF_TCOPARAM_SRATE_44_1; break;
+                case 1: i = FF_TCOPARAM_SRATE_48; break;
+                default: i = FF_TCOPARAM_SRATE_48; break;
+            }
+            return m_parent.setTcoSampleRate(i);
+            break;
+        case RME_CTRL_TCO_SAMPLE_RATE_OFS:
+            switch (v) {
+                case 0: i = FF_TCOPARAM_PULL_NONE; break;
+                case 1: i = FF_TCOPARAM_PULL_UP_01; break;
+                case 2: i = FF_TCOPARAM_PULL_DOWN_01; break;
+                case 3: i = FF_TCOPARAM_PULL_UP_40; break;
+                case 4: i = FF_TCOPARAM_PULL_DOWN_40; break;
+                default: i = FF_TCOPARAM_PULL_NONE;
+            }
+            return m_parent.setTcoPull(i);
+            break;
+        case RME_CTRL_TCO_VIDEO_IN_TERM:
+            return m_parent.setTcoTermination(v == 1);
+            break;
+
         default:
             debugOutput(DEBUG_LEVEL_ERROR, "Unknown control type 0x%08x\n", m_type);
             err = 1;
@@ -405,6 +462,76 @@ FF_state_t ff_state;
                 return ff_state.spdif_freq;
             else
                 debugOutput(DEBUG_LEVEL_ERROR, "failed to read device state\n");
+            break;
+
+        case RME_CTRL_TCO_LTC_IN:
+            return m_parent.getTcoLtc();
+        case RME_CTRL_TCO_INPUT_LTC_VALID:
+            return m_parent.getTcoLtcValid();
+            break;
+        case RME_CTRL_TCO_INPUT_LTC_FPS:
+            switch (m_parent.getTcoLtcFrameRate()) {
+                case FF_TCOSTATE_FRAMERATE_24fps: return 0;
+                case FF_TCOSTATE_FRAMERATE_25fps: return 1;
+                case FF_TCOSTATE_FRAMERATE_29_97fps: return 2;
+                case FF_TCOSTATE_FRAMERATE_30fps: return 3;
+                default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_INPUT_LTC_DROPFRAME:
+            return m_parent.getTcoLtcDropFrame();
+        case RME_CTRL_TCO_INPUT_VIDEO_TYPE:
+            switch (m_parent.getTcoVideoType()) {
+                case FF_TCOSTATE_VIDEO_NONE: return 0;
+                case FF_TCOSTATE_VIDEO_PAL: return 1;
+                case FF_TCOSTATE_VIDEO_NTSC: return 2;
+                default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_INPUT_LOCK:
+            return m_parent.getTcoLock();
+            break;
+        case RME_CTRL_TCO_FREQ:
+            return m_parent.getTcoFrequency();
+            break;
+        case RME_CTRL_TCO_SYNC_SRC:
+            switch (m_parent.getTcoSyncSrc()) {
+                case FF_TCOPARAM_INPUT_LTC: return 0;
+                case FF_TCOPARAM_INPUT_VIDEO: return 1;
+                case FF_TCOPARAM_INPUT_WCK: return 2;
+                default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_FRAME_RATE:
+            switch (m_parent.getTcoFrameRate()) {
+                case FF_TCOPARAM_FRAMERATE_24fps: return 0;
+                case FF_TCOPARAM_FRAMERATE_25fps: return 1;
+                case FF_TCOPARAM_FRAMERATE_29_97fps: return 2;
+                case FF_TCOPARAM_FRAMERATE_29_97dfps: return 3;
+                case FF_TCOPARAM_FRAMERATE_30fps: return 4;
+                case FF_TCOPARAM_FRAMERATE_30dfps: return 5;
+                default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_SAMPLE_RATE:
+            switch (m_parent.getTcoSampleRate()) {
+                case FF_TCOPARAM_SRATE_44_1: return 0;
+                case FF_TCOPARAM_SRATE_48: return 1;
+                default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_SAMPLE_RATE_OFS:
+            switch (m_parent.getTcoPull()) {
+                case FF_TCOPARAM_PULL_NONE: return 0;
+                case FF_TCOPARAM_PULL_UP_01: return 1;
+                case FF_TCOPARAM_PULL_DOWN_01: return 2;
+                case FF_TCOPARAM_PULL_UP_40: return 3;
+                case FF_TCOPARAM_PULL_DOWN_40: return 4;
+                default: return 0;
+            }
+            break;
+        case RME_CTRL_TCO_VIDEO_IN_TERM:
+            return m_parent.getTcoTermination();
             break;
 
         default:

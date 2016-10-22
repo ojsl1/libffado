@@ -207,7 +207,42 @@ Device::init_hardware(void)
     // which have a TCO.
     if (ret==0 && dev_config->tco_settings_valid==0) {
         if (dev_config->tco_present) {
+            FF_TCO_state_t tco_state;
             memset(tco_settings, 0, sizeof(*tco_settings));
+            if (read_tco_state(&tco_state) == 0) {
+                if (tco_state.ltc_valid) {
+                    tco_settings->input = FF_TCOPARAM_INPUT_LTC;
+                    switch (tco_state.frame_rate) {
+                        case FF_TCOSTATE_FRAMERATE_24fps:
+                            tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_24fps;
+                            break;
+                        case FF_TCOSTATE_FRAMERATE_25fps:
+                            tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_25fps;
+                            break;
+                        case FF_TCOSTATE_FRAMERATE_29_97fps:
+                            tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_29_97fps;
+                            break;
+                        case FF_TCOSTATE_FRAMERATE_30fps:
+                            tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_30fps;
+                        default:
+                            tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_25fps;
+                    }
+                    if (tco_state.drop_frame) {
+                        tco_settings->frame_rate += 1;
+                    }
+                } else {
+                    tco_settings->input = FF_TCOPARAM_INPUT_VIDEO;
+                    tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_25fps;
+                }
+                tco_settings->word_clock = FF_TCOPARAM_WORD_CLOCK_CONV_1_1;
+                tco_settings->sample_rate = (settings->sample_rate % 48000) ? 
+                    FF_TCOPARAM_SRATE_48 : FF_TCOPARAM_SRATE_44_1;
+                tco_settings->pull = FF_TCOPARAM_PULL_NONE;
+                tco_settings->termination = 0;
+                tco_settings->MTC = 0;
+            } else {
+                debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+            }
             if (write_tco_settings(tco_settings) != 0) {
                 debugOutput(DEBUG_LEVEL_ERROR, "failed to write TCO settings\n");
             }
@@ -582,7 +617,7 @@ Device::read_tco(quadlet_t *tco_data, signed int size)
         return -1;
 
     if (tco_data != NULL) {
-        for (i=0; i<(size<4)?size:4; i++)
+        for (i=0; i<((size<4)?size:4); i++)
             tco_data[i] = buf[i];
     }
 
@@ -747,7 +782,7 @@ Device::write_tco_settings(FF_TCO_settings_t *tco_settings)
     }
 
     switch (tco_settings->pull) {
-        case FF_TCPPARAM_PULL_NONE:
+        case FF_TCOPARAM_PULL_NONE:
             tc[2] |= FF_TCO2_PULL_0; break;
         case FF_TCOPARAM_PULL_UP_01:
             tc[2] |= FF_TCO2_PULL_UP_01; break;
