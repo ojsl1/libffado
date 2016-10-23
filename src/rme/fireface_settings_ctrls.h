@@ -75,7 +75,8 @@ namespace Rme {
 #define RME_CTRL_TCO_FRAME_RATE        0x040a
 #define RME_CTRL_TCO_SAMPLE_RATE       0x040b
 #define RME_CTRL_TCO_SAMPLE_RATE_OFS   0x040c
-#define RME_CTRL_TCO_LAST              0x040c
+#define RME_CTRL_TCO_WORD_CLK_CONV     0x040d
+#define RME_CTRL_TCO_LAST              0x040d
 
 /* Control types for an RmeSettingsMatrixCtrl object */
 #define RME_MATRIXCTRL_NONE            0x0000

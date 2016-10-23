@@ -1404,15 +1404,29 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="tco_frequency">
+          <widget class="QGroupBox" name="WordClockConv">
            <property name="title">
-            <string>Frequency</string>
+            <string>Word Clock Conversion</string>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_15">
+           <layout class="QVBoxLayout" name="verticalLayout_20">
             <item>
-             <widget class="QLabel" name="tco_frequency_label">
+             <widget class="QRadioButton" name="wordclk_conv_1_1">
               <property name="text">
-               <string>48000 Hz</string>
+               <string>1:1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="wordclk_conv_44k1_48k">
+              <property name="text">
+               <string>44.1 kHz -&gt; 48 kHz</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="wordclk_conv_48k_44k1">
+              <property name="text">
+               <string>48 kHz -&gt; 44.1 kHz</string>
               </property>
              </widget>
             </item>
@@ -1558,6 +1572,22 @@
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="tco_frequency">
+           <property name="title">
+            <string>Frequency</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_15">
+            <item>
+             <widget class="QLabel" name="tco_frequency_label">
+              <property name="text">
+               <string>48000 Hz</string>
+              </property>
              </widget>
             </item>
            </layout>

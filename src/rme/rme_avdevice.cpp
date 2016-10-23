@@ -256,6 +256,9 @@ Device::buildMixer() {
             new RmeSettingsCtrl(*this, RME_CTRL_TCO_VIDEO_IN_TERM, 0,
                 "Tco_video_in_term", "TCO video input terminator is enabled", ""));
         result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_WORD_CLK_CONV, 0,
+                "Tco_word_clk_conv", "TCO word clock conversion", ""));
+        result &= m_ControlContainer->addElement(
             new RmeSettingsCtrl(*this, RME_CTRL_TCO_FREQ, 0,
                 "Tco_freq", "TCO measured frequency (Hz)", ""));
         result &= m_ControlContainer->addElement(

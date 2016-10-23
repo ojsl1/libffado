@@ -106,6 +106,9 @@ class Rme(QWidget):
             self.sample_rate_n01pc: ['/Control/Tco_sample_rate_ofs', 2],
             self.sample_rate_p40pc: ['/Control/Tco_sample_rate_ofs', 3],
             self.sample_rate_n40pc: ['/Control/Tco_sample_rate_ofs', 4],
+            self.wordclk_conv_1_1: ['/Control/Tco_word_clk_conv', 0],
+            self.wordclk_conv_44k1_48k: ['/Control/Tco_word_clk_conv', 1],
+            self.wordclk_conv_48k_44k1: ['/Control/Tco_word_clk_conv', 2],
         }
 
         self.Checkboxes={

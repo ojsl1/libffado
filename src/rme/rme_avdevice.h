@@ -169,6 +169,8 @@ public:
     signed int setTcoSampleRate(signed int rate_param_id);
     signed int getTcoTermination(void);
     signed int setTcoTermination(signed int enable);
+    signed int getTcoWordClkConv(void);
+    signed int setTcoWordClkConv(signed int conv);
 
     /* General information functions */
     signed int getRmeModel(void) { return m_rme_model; }

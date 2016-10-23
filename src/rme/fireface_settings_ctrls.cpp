@@ -309,6 +309,15 @@ signed int err = 0;
         case RME_CTRL_TCO_VIDEO_IN_TERM:
             return m_parent.setTcoTermination(v == 1);
             break;
+        case RME_CTRL_TCO_WORD_CLK_CONV:
+            switch (v) {
+                case 0: i = FF_TCOPARAM_WORD_CLOCK_CONV_1_1; break;
+                case 1: i = FF_TCOPARAM_WORD_CLOCK_CONV_44_48; break;
+                case 2: i = FF_TCOPARAM_WORD_CLOCK_CONV_48_44; break;
+                default: i =  FF_TCOPARAM_WORD_CLOCK_CONV_1_1;
+            }
+            return m_parent.setTcoWordClkConv(i);
+            break;
 
         default:
             debugOutput(DEBUG_LEVEL_ERROR, "Unknown control type 0x%08x\n", m_type);
@@ -541,6 +550,14 @@ FF_state_t ff_state;
             break;
         case RME_CTRL_TCO_VIDEO_IN_TERM:
             return m_parent.getTcoTermination();
+            break;
+        case RME_CTRL_TCO_WORD_CLK_CONV:
+            switch (m_parent.getTcoWordClkConv()) {
+                case FF_TCOPARAM_WORD_CLOCK_CONV_1_1: return 0;
+                case FF_TCOPARAM_WORD_CLOCK_CONV_44_48: return 1;
+                case FF_TCOPARAM_WORD_CLOCK_CONV_48_44: return 2;
+                default: return 0;
+            }
             break;
 
         default:

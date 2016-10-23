@@ -616,5 +616,14 @@ Device::setTcoTermination(signed int enable) {
     tco_settings->termination = enable ? FF_TCOPARAM_TERMINATION_ON : 0;
     return write_tco_settings(tco_settings);
 }
+signed int
+Device::getTcoWordClkConv(void) {
+    return tco_settings->word_clock;
+}
+signed int
+Device::setTcoWordClkConv(signed int conv) {
+    tco_settings->word_clock = conv;
+    return write_tco_settings(tco_settings);
+}
 
 }
