@@ -261,6 +261,7 @@ class Rme(QWidget):
             ltc_frametype_str = ['Normal (full frame)', 'Dropframe']
             video_type_str = ['No video', 'PAL', 'NTSC']
             word_clock_str = ['None', 'Single Speed', 'Double Speed', 'Quad Speed']
+            status_str = ['Not locked', "Locked"]
             ltc = self.hw.getDiscrete('/Control/Tco_ltc_in')
             ltc_valid = self.hw.getDiscrete('/Control/Tco_input_ltc_valid')
             ltc_fps = self.hw.getDiscrete('/Control/Tco_input_ltc_fps')
@@ -286,6 +287,7 @@ class Rme(QWidget):
                 self.state_ltc_frame_type.setText("-")
             self.state_video_type.setText(video_type_str[videotype])
             self.state_word_clk.setText(word_clock_str[wordclk])
+            self.sync_source_status.setText(status_str[input_lock])
             self.tco_frequency_label.setText("%d Hz" % (tco_freq))
 
     # Hide and disable a control
