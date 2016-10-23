@@ -1274,22 +1274,6 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <spacer name="verticalSpacer_18">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Ignored</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>11</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="1" column="1">
              <widget class="QLabel" name="state_ltc_framerate">
               <property name="text">
@@ -1299,22 +1283,6 @@
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
               </property>
              </widget>
-            </item>
-            <item row="2" column="0">
-             <spacer name="verticalSpacer_19">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Ignored</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>11</height>
-               </size>
-              </property>
-             </spacer>
             </item>
             <item row="2" column="1">
              <widget class="QLabel" name="state_ltc_frame_type">
@@ -1351,6 +1319,20 @@
              <widget class="QLabel" name="state_word_clk">
               <property name="text">
                <string>none</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>    Frame Rate</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>    Frame Type</string>
               </property>
              </widget>
             </item>
