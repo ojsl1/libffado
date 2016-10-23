@@ -92,6 +92,7 @@ class Rme(QWidget):
             # TCO controls
             self.sync_source_ltc: ['/Control/Tco_sync_src', 0],
             self.sync_source_video: ['/Control/Tco_sync_src', 1],
+            self.sync_source_wordclk: ['/Control/Tco_sync_src', 2],
             self.frame_rate_24fps: ['/Control/Tco_frame_rate', 0],
             self.frame_rate_25fps: ['/Control/Tco_frame_rate', 1],
             self.frame_rate_29_97fps: ['/Control/Tco_frame_rate', 2],

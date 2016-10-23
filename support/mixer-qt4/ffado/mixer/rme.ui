@@ -1377,6 +1377,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QRadioButton" name="sync_source_wordclk">
+              <property name="text">
+               <string>Word Clock</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
