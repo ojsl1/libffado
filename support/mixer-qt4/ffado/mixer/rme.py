@@ -257,13 +257,15 @@ class Rme(QWidget):
         if (self.tco_present):
             ltc_valid_str = ['Not detected', 'Valid']
             ltc_framerate_str = ['24 fps', '25 fps', '29.97 fps', '30 fps']
-            ltc_frametype_str = ['Normal', 'Dropframe']
+            ltc_frametype_str = ['Normal (full frame)', 'Dropframe']
             video_type_str = ['No video', 'PAL', 'NTSC']
+            word_clock_str = ['None', 'Single Speed', 'Double Speed', 'Quad Speed']
             ltc = self.hw.getDiscrete('/Control/Tco_ltc_in')
             ltc_valid = self.hw.getDiscrete('/Control/Tco_input_ltc_valid')
             ltc_fps = self.hw.getDiscrete('/Control/Tco_input_ltc_fps')
             ltc_dropframe = self.hw.getDiscrete('/Control/Tco_input_ltc_dropframe')
             videotype = self.hw.getDiscrete('/Control/Tco_input_video_type')
+            wordclk = self.hw.getDiscrete('/Control/Tco_input_word_clk')
             input_lock = self.hw.getDiscrete('/Control/Tco_input_lock')
             tco_freq = self.hw.getDiscrete('/Control/Tco_freq')
             self.ltc_in_hours.setText("%02d" % (ltc >> 24))
@@ -274,6 +276,7 @@ class Rme(QWidget):
             self.state_ltc_framerate.setText(ltc_framerate_str[ltc_fps])
             self.state_ltc_frame_type.setText(ltc_frametype_str[ltc_dropframe])
             self.state_video_type.setText(video_type_str[videotype])
+            self.state_word_clk.setText(word_clock_str[wordclk])
             self.tco_frequency_label.setText("%d Hz" % (tco_freq))
 
     # Hide and disable a control

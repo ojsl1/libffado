@@ -544,6 +544,15 @@ Device::getTcoVideoType(void) {
     }
     return ff_tco_state.video_input;
 }
+signed int
+Device::getTcoWordClk(void) {
+    FF_TCO_state_t ff_tco_state;
+    if (read_tco_state(&ff_tco_state) != 0) {
+        debugOutput(DEBUG_LEVEL_ERROR, "failed to read TCO state\n");
+        return 0;
+    }
+    return ff_tco_state.word_clock_state;
+}
 float
 Device::getTcoFrequency(void) {
     FF_TCO_state_t ff_tco_state;

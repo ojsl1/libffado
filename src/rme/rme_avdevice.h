@@ -156,6 +156,7 @@ public:
     signed int getTcoLtcFrameRate(void);
     signed int getTcoLtcDropFrame(void);
     signed int getTcoVideoType(void);
+    signed int getTcoWordClk(void);
     float getTcoFrequency(void);
     signed int getTcoWordClkState(void);
     signed int getTcoSyncSrc(void);

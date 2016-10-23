@@ -260,6 +260,7 @@ signed int err = 0;
         case RME_CTRL_TCO_INPUT_LTC_FPS:
         case RME_CTRL_TCO_INPUT_LTC_DROPFRAME:
         case RME_CTRL_TCO_INPUT_VIDEO_TYPE:
+        case RME_CTRL_TCO_INPUT_WORD_CLK:
         case RME_CTRL_TCO_INPUT_LOCK:
         case RME_CTRL_TCO_FREQ:
             debugOutput(DEBUG_LEVEL_ERROR, "Attempt to set readonly TCO control 0x%08x\n", m_type);
@@ -486,6 +487,14 @@ FF_state_t ff_state;
                 case FF_TCOSTATE_VIDEO_PAL: return 1;
                 case FF_TCOSTATE_VIDEO_NTSC: return 2;
                 default: return 1;
+            }
+            break;
+        case RME_CTRL_TCO_INPUT_WORD_CLK:
+            switch (m_parent.getTcoWordClk()) {
+                case FF_TCOSTATE_WORDCLOCK_1x: return 0;
+                case FF_TCOSTATE_WORDCLOCK_2x: return 1;
+                case FF_TCOSTATE_WORDCLOCK_4x: return 2;
+                default: return 0;
             }
             break;
         case RME_CTRL_TCO_INPUT_LOCK:

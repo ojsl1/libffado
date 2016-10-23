@@ -244,6 +244,9 @@ Device::buildMixer() {
             new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_VIDEO_TYPE, 0,
                 "Tco_input_video_type", "TCO input video type", ""));
         result &= m_ControlContainer->addElement(
+            new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_WORD_CLK, 0,
+                "Tco_input_word_clk", "TCO input word clock type", ""));
+        result &= m_ControlContainer->addElement(
             new RmeSettingsCtrl(*this, RME_CTRL_TCO_INPUT_LOCK, 0,
                 "Tco_input_lock", "TCO input is locked", ""));
         result &= m_ControlContainer->addElement(
