@@ -593,7 +593,7 @@ typedef struct {
     uint32_t MTC;
 } FF_TCO_settings_t;
 
-// Defines used to configure selected quadlets of the TCO write space.  Some
+// Defines used to configure selected quadlets of the TCO read space.  Some
 // of these are also used when configuring the TCO.  The byte indices
 // referenced in the define names are 0-based.
 
