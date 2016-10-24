@@ -93,7 +93,7 @@
 #define RME_FF_MIXER_RAM             0x80080000
 
 #define RME_FF_TCO_READ_REG          0x801f0000    // FF800 only
-#define RME_FF_TCO_WRITE_REG         0x810f0020    // FF800 only
+#define RME_FF_TCO_WRITE_REG         0x801f0020    // FF800 only
 
 #define RME_FF400_GAIN_REG           0x801c0180
 
