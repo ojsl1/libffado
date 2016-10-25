@@ -500,9 +500,10 @@ FF_state_t ff_state;
             break;
         case RME_CTRL_TCO_INPUT_WORD_CLK:
             switch (m_parent.getTcoWordClk()) {
-                case FF_TCOSTATE_WORDCLOCK_1x: return 0;
-                case FF_TCOSTATE_WORDCLOCK_2x: return 1;
-                case FF_TCOSTATE_WORDCLOCK_4x: return 2;
+                case FF_TCOSTATE_WORDCLOCK_NONE: return 0;
+                case FF_TCOSTATE_WORDCLOCK_1x: return 1;
+                case FF_TCOSTATE_WORDCLOCK_2x: return 2;
+                case FF_TCOSTATE_WORDCLOCK_4x: return 3;
                 default: return 0;
             }
             break;
