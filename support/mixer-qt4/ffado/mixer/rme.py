@@ -504,6 +504,8 @@ class Rme(QWidget):
             self.sync_ref_adat2.setEnabled(False)
             self.sync_check_adat2_label.setEnabled(False)
             self.sync_check_adat2_status.setEnabled(False)
+            self.spdif_output_optical.setText("ADAT optical")
+            self.spdif_input_optical.setText("ADAT optical")
 
         if (not(self.tco_present)):
             self.sync_check_tco_label.setEnabled(False)
