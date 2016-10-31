@@ -235,7 +235,7 @@ Device::init_hardware(void)
                     tco_settings->frame_rate = FF_TCOPARAM_FRAMERATE_25fps;
                 }
                 tco_settings->word_clock = FF_TCOPARAM_WORD_CLOCK_CONV_1_1;
-                tco_settings->sample_rate = (settings->sample_rate % 48000) ? 
+                tco_settings->sample_rate = ((settings->sample_rate % 48000)==0) ? 
                     FF_TCOPARAM_SRATE_48 : FF_TCOPARAM_SRATE_44_1;
                 tco_settings->pull = FF_TCOPARAM_PULL_NONE;
                 tco_settings->termination = 0;
