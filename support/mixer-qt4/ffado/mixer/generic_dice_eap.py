@@ -20,6 +20,7 @@
 #
 
 from PyQt4 import QtGui, QtCore, Qt
+from PyQt4.QtGui import QWidget, QGridLayout, QTabWidget, QScrollArea
 import dbus
 
 from ffado.widgets.matrixmixer import MatrixMixer
@@ -27,19 +28,19 @@ from ffado.widgets.crossbarrouter import *
 
 from ffado.config import *
 
-class Generic_Dice_EAP(QtGui.QWidget):
+class Generic_Dice_EAP(QWidget):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
-        self.layout = QtGui.QGridLayout(self)
+        QWidget.__init__(self, parent)
+        self.layout = QGridLayout(self)
         self.setLayout(self.layout)
-        self.tabs = QtGui.QTabWidget(self)
-        self.tabs.setTabPosition(QtGui.QTabWidget.West)
+        self.tabs = QTabWidget(self)
+        self.tabs.setTabPosition(QTabWidget.West)
         self.layout.addWidget(self.tabs)
 
     def buildMixer(self):
         #print self.hw
         #print self.hw.getText("/Generic/Nickname")
-        self.mixer = MatrixMixer(self.hw.servername, self.hw.basepath+"/EAP/MatrixMixer", self, "Columns_are_outputs", -1, None, None, False, QtGui.QTabWidget.North, QtGui.QTabWidget.Rounded)
+        self.mixer = MatrixMixer(self.hw.servername, self.hw.basepath+"/EAP/MatrixMixer", self, "Columns_are_outputs", -1, None, None, False, QTabWidget.North, QTabWidget.Rounded)
         self.tabs.addTab(self.mixer, "Mixer")
 
         self.router_scrollarea = self.buildRouter(self.hw.servername, self.hw.basepath+"/EAP/Router")
@@ -48,7 +49,7 @@ class Generic_Dice_EAP(QtGui.QWidget):
     def buildRouter(self, servername, path):
         self.router = CrossbarRouter(servername, path, self)
         self.connect(self.router, QtCore.SIGNAL("MixerRoutingChanged"), self.mixer.updateRouting)
-        scrollarea = QtGui.QScrollArea(self.tabs)
+        scrollarea = QScrollArea(self.tabs)
         scrollarea.setWidgetResizable(True)
         scrollarea.setWidget(self.router)
         return scrollarea
