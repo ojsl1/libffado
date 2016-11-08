@@ -26,7 +26,7 @@ from PyQt4.QtGui import QWidget, QTabWidget, QGroupBox, QLabel, QSizePolicy, QTo
 from math import log10
 from ffado.config import *
 
-class Presonus_Firebox(QtGui.QWidget):
+class Presonus_Firebox(QWidget):
     #name/feature_id/+12dB_id
     inputs = [["Analog in 1/2",  5, 10],
               ["Analog in 3/4",  6, 11],
@@ -55,7 +55,7 @@ class Presonus_Firebox(QtGui.QWidget):
                     "Stream in 5/6", "Stream in 7/8", "Mixer out 1/2"]]]
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
     def getDisplayTitle(self):
         return 'Firebox'
