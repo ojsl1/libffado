@@ -1,4 +1,6 @@
 #
+# Copyright (C) 2014-2015 by Andras Muranyi
+# Copyright (c) 2013 by Takashi Sakamoto (Yamaha GO Control)
 # Copyright (C) 2005-2008 by Pieter Palmers
 #
 # This file is part of FFADO
@@ -22,6 +24,7 @@
 
 from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QWidget
+from math import log10
 from ffado.config import *
 
 import logging
@@ -30,83 +33,150 @@ log = logging.getLogger('phase88')
 class Phase88Control(QWidget):
     def __init__(self,parent = None):
         QWidget.__init__(self,parent)
+        
+    def initValues(self):
+
         uicLoad("ffado/mixer/phase88", self)
 
         self.VolumeControls={
-            'master':    ['/Mixer/Feature_Volume_1', self.sldInputMaster], 
-            'line12' :   ['/Mixer/Feature_Volume_2', self.sldInput12],
-            'line34' :   ['/Mixer/Feature_Volume_3', self.sldInput34],
-            'line56' :   ['/Mixer/Feature_Volume_4', self.sldInput56],
-            'line78' :   ['/Mixer/Feature_Volume_5', self.sldInput78],
-            'spdif' :    ['/Mixer/Feature_Volume_6', self.sldInputSPDIF],
-            'waveplay' : ['/Mixer/Feature_Volume_7', self.sldInputWavePlay],
+            self.sldInputMasterL:   ['/Mixer/Feature_Volume_1', 1, self.sldInputMasterR, 2, self.linkButtonMaster, self.decibelMasterL, 0], 
+            self.sldInputMasterR:   ['/Mixer/Feature_Volume_1', 2, self.sldInputMasterL, 1, self.linkButtonMaster, self.decibelMasterR, 0], 
+            self.sldInput1:         ['/Mixer/Feature_Volume_2', 1, self.sldInput2, 2, self.linkButton12, self.decibel1, 0],
+            self.sldInput2:         ['/Mixer/Feature_Volume_2', 2, self.sldInput1, 1, self.linkButton12, self.decibel2, 0],
+            self.sldInput3:         ['/Mixer/Feature_Volume_3', 1, self.sldInput4, 2, self.linkButton34, self.decibel3, 0],
+            self.sldInput4:         ['/Mixer/Feature_Volume_3', 2, self.sldInput3, 1, self.linkButton34, self.decibel4, 0],
+            self.sldInput5:         ['/Mixer/Feature_Volume_4', 1, self.sldInput6, 2, self.linkButton56, self.decibel5, 0],
+            self.sldInput6:         ['/Mixer/Feature_Volume_4', 2, self.sldInput5, 1, self.linkButton56, self.decibel6, 0],
+            self.sldInput7:         ['/Mixer/Feature_Volume_5', 1, self.sldInput8, 2, self.linkButton78, self.decibel7, 0],
+            self.sldInput8:         ['/Mixer/Feature_Volume_5', 2, self.sldInput7, 1, self.linkButton78, self.decibel8, 0],
+            self.sldInputSPDIFL:    ['/Mixer/Feature_Volume_6', 1, self.sldInputSPDIFR, 2, self.linkButtonSPDIF, self.decibelSPDIFL, 0],
+            self.sldInputSPDIFR:    ['/Mixer/Feature_Volume_6', 2, self.sldInputSPDIFL, 1, self.linkButtonSPDIF, self.decibelSPDIFR, 0],
+            self.sldInputWavePlayL: ['/Mixer/Feature_Volume_7', 1, self.sldInputWavePlayR, 2, self.linkButtonWavePlay, self.decibelWavePlayL, 0],
+            self.sldInputWavePlayR: ['/Mixer/Feature_Volume_7', 2, self.sldInputWavePlayL, 1, self.linkButtonWavePlay, self.decibelWavePlayR, 0]
             }
 
         self.SelectorControls={
-            'outassign':    ['/Mixer/Selector_6', self.comboOutAssign], 
-            'inassign':     ['/Mixer/Selector_7', self.comboInAssign], 
-            'externalsync': ['/Mixer/Selector_8', self.comboExtSync], 
-            'syncsource':   ['/Mixer/Selector_9', self.comboSyncSource], 
-            'frontback':    ['/Mixer/Selector_10', self.comboFrontBack], 
+            self.comboOutAssign:    '/Mixer/Selector_6', 
+            self.comboInAssign:     '/Mixer/Selector_7', 
+            self.comboExtSync:      '/Mixer/Selector_8', 
+            self.comboSyncSource:   '/Mixer/Selector_9', 
+            self.comboFrontBack:    '/Mixer/Selector_10'
         }
 
-    def switchFrontState(self,a0):
-        self.setSelector('frontback', a0)
+        self.MuteControls={
+            self.muteButtonMasterL:   [self.sldInputMasterL, self.muteButtonMasterR],
+            self.muteButtonMasterR:   [self.sldInputMasterR, self.muteButtonMasterL],
+            self.muteButton1:         [self.sldInput1, self.muteButton2],
+            self.muteButton2:         [self.sldInput2, self.muteButton1],
+            self.muteButton3:         [self.sldInput3, self.muteButton4],
+            self.muteButton4:         [self.sldInput4, self.muteButton3],
+            self.muteButton5:         [self.sldInput5, self.muteButton6],
+            self.muteButton6:         [self.sldInput6, self.muteButton5],
+            self.muteButton7:         [self.sldInput7, self.muteButton8],
+            self.muteButton8:         [self.sldInput8, self.muteButton7],
+            self.muteButtonSPDIFL:    [self.sldInputSPDIFL, self.muteButtonSPDIFR],
+            self.muteButtonSPDIFR:    [self.sldInputSPDIFR, self.muteButtonSPDIFL],
+            self.muteButtonWavePlayL: [self.sldInputWavePlayL, self.muteButtonWavePlayR],
+            self.muteButtonWavePlayR: [self.sldInputWavePlayR, self.muteButtonWavePlayL]
+        }
+        
+	# gain control
+	for ctl, params in self.VolumeControls.iteritems():
+		path	= params[0]
+		idx	= params[1]
+                dbmeter = params[5]
+		
+		#db = self.hw.getContignuous(path, idx)
+		#vol = self.db2vol(db)
+                vol = self.hw.getContignuous(path, idx)
+                print("%s ch %d volume is %d" % (path, idx, vol))
+                ctl.setValue(vol)
+                dbmeter.setText(self.vol2dbstr(vol))
+                self.VolumeControls[ctl][6] = vol
+		
+		pair	= params[2]
+		pidx	= params[3]
+		link	= params[4]
+		
+#		pdb = self.hw.getContignuous(path, pidx)
+#		pvol = self.db2vol(db)
+		pvol = self.hw.getContignuous(path, pidx)
 
-    def switchOutAssign(self,a0):
-        self.setSelector('outassign', a0)
+		if pvol == vol:
+			link.setChecked(True)
+		
+		QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
 
-    def switchWaveInAssign(self,a0):
-        self.setSelector('inassign', a0)
+	# selector controls
+	for ctl, param in self.SelectorControls.iteritems():
+		state = self.hw.getDiscrete(param)
+		ctl.setCurrentIndex(state)
+		
+		QObject.connect(ctl, SIGNAL('activated(int)'), self.updateSelector)
 
-    def switchSyncSource(self,a0):
-        self.setSelector('syncsource', a0)
+	# mute controls
+	for ctl, param in self.MuteControls.iteritems():
+		QObject.connect(ctl, SIGNAL('toggled(bool)'), self.muteVolume)
 
-    def switchExtSyncSource(self,a0):
-        self.setSelector('externalsync', a0)
 
-    def setVolume12(self,a0):
-        self.setVolume('line12', a0)
+    # helper functions 
+    def muteVolume(self, state):
+        sender	  = self.sender()
+        volctl    = self.MuteControls[sender][0]
+        path	  = self.VolumeControls[volctl][0]
+        idx	  = self.VolumeControls[volctl][1]
+        pair	  = self.VolumeControls[volctl][2]
+        pidx	  = self.VolumeControls[volctl][3]
+        link	  = self.VolumeControls[volctl][4]
+        savedvol  = self.VolumeControls[volctl][6]
+        psavedvol = self.VolumeControls[pair][6]
 
-    def setVolume34(self,a0):
-        self.setVolume('line34', a0)
+        if state == True :
+            self.hw.setContignuous(path, -25600, idx) # The PHASE88 supports volume between 0 and -25600
+            if link.isChecked():
+                pair.setDisabled(state)
+                self.MuteControls[sender][1].setChecked(state)
+#                self.hw.setContignuous(path, 0, pidx)
+        else:
+            self.hw.setContignuous(path, savedvol, idx)
+            if link.isChecked():
+                pair.setDisabled(state)
+                self.MuteControls[sender][1].setChecked(state)
+#                self.hw.setContignuous(path, psavedvol, pidx)
 
-    def setVolume56(self,a0):
-        self.setVolume('line56', a0)
+    def updateVolume(self, vol):
+        sender	= self.sender()
+        path	= self.VolumeControls[sender][0]
+        idx	= self.VolumeControls[sender][1]
+        pair	= self.VolumeControls[sender][2]
+        pidx	= self.VolumeControls[sender][3]
+        link	= self.VolumeControls[sender][4]
+        dbmeter = self.VolumeControls[sender][5]
 
-    def setVolume78(self,a0):
-        self.setVolume('line78', a0)
+        #db = self.vol2dbstr(vol)
+        #self.hw.setContignuous(path, db, idx)
+        self.hw.setContignuous(path, vol, idx)
+        dbmeter.setText(self.vol2dbstr(vol))
+        self.VolumeControls[sender][6] = vol
 
-    def setVolumeSPDIF(self,a0):
-        self.setVolume('spdif', a0)
+        if link.isChecked():
+            pair.setValue(vol)
 
-    def setVolumeWavePlay(self,a0):
-        self.setVolume('waveplay', a0)
+    def updateSelector(self, state):
+        sender	= self.sender()
+        path	= self.SelectorControls[sender]
+        self.hw.setDiscrete(path, state)
+#       if path == '/Mixer/Selector_7'
+#            ctrl  = self.VolumeControls['line78']
+#            vol = self.hw.getContignuous(ctrl[0])          # Recall volume for selected channel *******************************************************
+#            name  = 'line78'
+#            log.debug("%s volume is %d" % (name , vol))
+#            ctrl[1].setValue(-vol)
 
-    def setVolumeMaster(self,a0):
-        self.setVolume('master', a0)
-
-    def setVolume(self,a0,a1):
-        name=a0
-        vol = -a1
-        log.debug("setting %s volume to %d" % (name, vol))
-        self.hw.setContignuous(self.VolumeControls[name][0], vol)
-
-    def setSelector(self,a0,a1):
-        name=a0
-        state = a1
-        log.debug("setting %s state to %d" % (name, state))
-        self.hw.setDiscrete(self.SelectorControls[name][0], state)
-
-    def initValues(self):
-        for name, ctrl in self.VolumeControls.iteritems():
-            vol = self.hw.getContignuous(ctrl[0])
-            log.debug("%s volume is %d" % (name , vol))
-            ctrl[1].setValue(-vol)
-
-        for name, ctrl in self.SelectorControls.iteritems():
-            state = self.hw.getDiscrete(ctrl[0])
-            log.debug("%s state is %d" % (name , state))
-            ctrl[1].setCurrentIndex(state)
+    def vol2dbstr(self, vol):
+	vol = vol + 25600
+        if vol == 0 :
+            return "- "+u"\u221E"+" dB"
+        return str("{0:.2f}".format(log10( float(abs(vol) + 0.001) / 25600 ) * 20))+"dB"
 
 # vim: et
