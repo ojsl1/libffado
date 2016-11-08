@@ -23,7 +23,7 @@
 from PyQt4 import QtGui
 
 from PyQt4.QtCore import SIGNAL, SLOT, QObject, Qt, QTimer
-from PyQt4.QtGui import QWidget, QApplication
+from PyQt4.QtGui import QWidget, QApplication, QVBoxLayout
 from ffado.config import *
 
 from ffado.widgets.matrixmixer import MatrixMixer
@@ -438,17 +438,17 @@ class Rme(QWidget):
         # print self.hw.servername
         # print self.hw.basepath
         self.inputmatrix = MatrixMixer(self.hw.servername, self.hw.basepath+"/Mixer/InputFaders", self, "Columns_are_inputs", 0x8000, self.hw.basepath+"/Mixer/InputMutes", self.hw.basepath+"/Mixer/InputInverts", True)
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         layout.addWidget(self.inputmatrix)
         self.mixer.setLayout(layout)
 
         self.playbackmatrix = MatrixMixer(self.hw.servername, self.hw.basepath+"/Mixer/PlaybackFaders", self, "Columns_are_inputs", 0x8000, self.hw.basepath+"/Mixer/PlaybackMutes", self.hw.basepath+"/Mixer/PlaybackInverts", True)
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         layout.addWidget(self.playbackmatrix)
         self.playbackmixer.setLayout(layout)
 
         self.outputmatrix = MatrixMixer(self.hw.servername, self.hw.basepath+"/Mixer/OutputFaders", self, "Columns_are_inputs", 0x8000, self.hw.basepath+"/Mixer/OutputMutes", None, True)
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
 
         # This is a bit of a hack, but it works to ensure this single-row
         # matrix mixer doesn't fill the entire screen but also doesn't end
