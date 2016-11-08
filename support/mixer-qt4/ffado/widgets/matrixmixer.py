@@ -21,6 +21,11 @@
 #
 
 from PyQt4 import QtGui, QtCore, Qt
+from PyQt4.QtGui import QColor, QAbstractSlider, QDoubleSpinBox, QWidgetAction
+from PyQt4.QtGui import QAction, QPainter, QWidget, QGridLayout, QLabel
+from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette,
+from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QTabWidget, QToolBar
+from PyQt4.QtGui import QComboBox, QScrollArea, QPushButton, QSizePolicy
 import dbus, math, decimal
 
 import logging
@@ -79,7 +84,7 @@ class ColorForNumber:
             f = (n-low) / (high-low)
         lc = self.colors[low]
         hc = self.colors[high]
-        return QtGui.QColor(
+        return QColor(
                 (1-f)*lc.red()   + f*hc.red(),
                 (1-f)*lc.green() + f*hc.green(),
                 (1-f)*lc.blue()  + f*hc.blue() )
@@ -87,21 +92,21 @@ class ColorForNumber:
 class BckgrdColorForNumber(ColorForNumber):
     def __init__(self):
         ColorForNumber.__init__(self)
-        self.addColor(             0.0, QtGui.QColor(  0,   0,   0))
-        self.addColor(             1.0, QtGui.QColor(  0,   0, 128))
-        self.addColor(   math.pow(2,6), QtGui.QColor(  0, 255,   0))
-        self.addColor(  math.pow(2,14), QtGui.QColor(255, 255,   0))
-        self.addColor(math.pow(2,16)-1, QtGui.QColor(255,   0,   0))
+        self.addColor(             0.0, QColor(  0,   0,   0))
+        self.addColor(             1.0, QColor(  0,   0, 128))
+        self.addColor(   math.pow(2,6), QColor(  0, 255,   0))
+        self.addColor(  math.pow(2,14), QColor(255, 255,   0))
+        self.addColor(math.pow(2,16)-1, QColor(255,   0,   0))
 
     def getFrgdColor(self, color):
         if color.valueF() < 0.6:
-            return QtGui.QColor(255, 255, 255)
+            return QColor(255, 255, 255)
         else:
-            return QtGui.QColor(0, 0, 0)
+            return QColor(0, 0, 0)
     
-class MixerNode(QtGui.QAbstractSlider):
+class MixerNode(QAbstractSlider):
     def __init__(self, input, output, value, max, muted, inverted, parent, matrix_obj):
-        QtGui.QAbstractSlider.__init__(self, parent)
+        QAbstractSlider.__init__(self, parent)
         #log.debug("MixerNode.__init__( %i, %i, %i, %i, %s )" % (input, output, value, max, str(parent)) )
 
         # Store a direct link back to the underlying matrix object so the mute
@@ -128,19 +133,19 @@ class MixerNode(QtGui.QAbstractSlider):
         self.mapper = QtCore.QSignalMapper(self)
         self.connect(self.mapper, QtCore.SIGNAL("mapped(const QString&)"), self.directValues)
 
-        self.spinbox = QtGui.QDoubleSpinBox(self)
+        self.spinbox = QDoubleSpinBox(self)
         self.spinbox.setRange(-40, 12)
         self.spinbox.setSuffix(" dB")
         if value != 0:
             self.spinbox.setValue(toDBvalue(value))            
 
         self.connect(self.spinbox, QtCore.SIGNAL("valueChanged(const QString&)"), self.directValues)
-        action = QtGui.QWidgetAction(self)
+        action = QWidgetAction(self)
         action.setDefaultWidget(self.spinbox)
         self.addAction(action)
 
         for text in ["3 dB", "0 dB", "-3 dB", "-20 dB", "-inf dB"]:
-            action = QtGui.QAction(text, self)
+            action = QAction(text, self)
             self.connect(action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
             self.mapper.setMapping(action, text)
             self.addAction(action)
@@ -148,10 +153,10 @@ class MixerNode(QtGui.QAbstractSlider):
         # Only show the mute menu item if a value has been supplied
         self.mute_action = None
         if (muted != None):
-            action = QtGui.QAction(text, self)
+            action = QAction(text, self)
             action.setSeparator(True)
             self.addAction(action)
-            self.mute_action = QtGui.QAction("Mute", self)
+            self.mute_action = QAction("Mute", self)
             self.mute_action.setCheckable(True)
             self.mute_action.setChecked(muted)
             self.connect(self.mute_action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
@@ -162,10 +167,10 @@ class MixerNode(QtGui.QAbstractSlider):
         self.inv_action = None
         if (inverted != None):
             if (muted == None):
-                action = QtGui.QAction(text, self)
+                action = QAction(text, self)
                 action.setSeparator(True)
                 self.addAction(action)
-            self.inv_action = QtGui.QAction("Invert", self)
+            self.inv_action = QAction("Invert", self)
             self.inv_action.setCheckable(True)
             self.inv_action.setChecked(inverted)
             self.connect(self.inv_action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
@@ -225,11 +230,11 @@ class MixerNode(QtGui.QAbstractSlider):
             ev.ignore()
 
     def paintEvent(self, ev):
-        p = QtGui.QPainter(self)
+        p = QPainter(self)
         rect = self.rect()
         v = self.value()
         if (self.mute_action!=None and self.mute_action.isChecked()):
-            color = QtGui.QColor(64, 64, 64)
+            color = QColor(64, 64, 64)
         else:
             color = self.bgcolors.getColor(v)
         p.fillRect(rect, color)
@@ -269,13 +274,13 @@ class MixerNode(QtGui.QAbstractSlider):
             self.setMinimumSize(fontmetrics.boundingRect("-0.0 dB").size()*1.1)
         self.update()
 
-class MixerChannel(QtGui.QWidget):
+class MixerChannel(QWidget):
     def __init__(self, number, parent=None, name="", smallFont=False):
-        QtGui.QWidget.__init__(self, parent)
-        layout = QtGui.QGridLayout(self)
+        QWidget.__init__(self, parent)
+        layout = QGridLayout(self)
         self.number = number
         self.name = name
-        self.lbl = QtGui.QLabel(self)
+        self.lbl = QLabel(self)
         self.lbl.setAlignment(Qt.Qt.AlignCenter)
         if (smallFont):
             font = self.lbl.font()
@@ -286,7 +291,7 @@ class MixerChannel(QtGui.QWidget):
 
         self.setContextMenuPolicy(Qt.Qt.ActionsContextMenu)
 
-        action = QtGui.QAction("Make this channel small", self)
+        action = QAction("Make this channel small", self)
         action.setCheckable(True)
         self.connect(action, QtCore.SIGNAL("triggered(bool)"), self.hideChannel)
         self.addAction(action)
@@ -300,9 +305,9 @@ class MixerChannel(QtGui.QWidget):
         self.update()
 
 # Matrix view widget
-class MatrixControlView(QtGui.QWidget):
+class MatrixControlView(QWidget):
     def __init__(self, servername, basepath, parent=None, sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, shortname=False, shortcolname="Ch", shortrowname="Ch", transpose=False):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
         self.bus = dbus.SessionBus()
         self.dev = self.bus.get_object(servername, basepath)
@@ -334,8 +339,8 @@ class MatrixControlView(QtGui.QWidget):
             self.inverts_dev = self.bus.get_object(servername, invertspath)
             self.inverts_interface = dbus.Interface(self.inverts_dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
 
-        layout = QtGui.QGridLayout(self)
-        layout.setSizeConstraint(QtGui.QLayout.SetNoConstraint);
+        layout = QGridLayout(self)
+        layout.setSizeConstraint(QLayout.SetNoConstraint);
         self.setLayout(layout)
 
         self.rowHeaders = []
@@ -639,11 +644,11 @@ class MatrixControlView(QtGui.QWidget):
         self.refreshValues()
         return True
 
-class VolumeSlider(QtGui.QSlider):
+class VolumeSlider(QSlider):
     def __init__(self, In, Out, value, parent):
-        QtGui.QSlider.__init__(self, QtCore.Qt.Vertical, parent)
+        QSlider.__init__(self, QtCore.Qt.Vertical, parent)
 
-        self.setTickPosition(QtGui.QSlider.TicksBothSides)
+        self.setTickPosition(QSlider.TicksBothSides)
         v_min = 10.0*toDBvalue(0)
         v_max = 10.0*toDBvalue(65536)
         self.setTickInterval((v_max-v_min)/10)
@@ -672,9 +677,9 @@ class VolumeSlider(QtGui.QSlider):
         self.update()
 
 
-class VolumeSliderValueInfo(QtGui.QLineEdit):
+class VolumeSliderValueInfo(QLineEdit):
     def __init__(self, In, Out, value, parent):
-        QtGui.QLineEdit.__init__(self, parent)
+        QLineEdit.__init__(self, parent)
 
         self.setReadOnly(True)
         self.setAlignment(Qt.Qt.AlignCenter)
@@ -694,8 +699,8 @@ class VolumeSliderValueInfo(QtGui.QLineEdit):
     def sliderSetValue(self, value):
         color = self.bgcolors.getColor(value)
         palette = self.palette()
-        palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Base, color)
-        palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Text, self.bgcolors.getFrgdColor(color))
+        palette.setColor(QPalette.Active, QPalette.Base, color)
+        palette.setColor(QPalette.Active, QPalette.Text, self.bgcolors.getFrgdColor(color))
         self.setPalette(palette)
 
         v = round(toDBvalue(value),1)
@@ -707,13 +712,13 @@ class VolumeSliderValueInfo(QtGui.QLineEdit):
 
         self.setText(text)
         
-class BalanceSlider(QtGui.QSlider):
+class BalanceSlider(QSlider):
     def __init__(self, In, Out, value, parent):
-        QtGui.QSlider.__init__(self, QtCore.Qt.Horizontal, parent)
+        QSlider.__init__(self, QtCore.Qt.Horizontal, parent)
 
         v_min = -50
         v_max = 50
-        self.setTickPosition(QtGui.QSlider.TicksBothSides)
+        self.setTickPosition(QSlider.TicksBothSides)
         self.setTickInterval((v_max-v_min)/2)
         self.setMinimum(v_min)
         self.setMaximum(v_max)
@@ -737,9 +742,9 @@ class BalanceSlider(QtGui.QSlider):
         self.emit(QtCore.SIGNAL("valueChanged"), (self.In, self.Out, value))
 
 # Slider view widget
-class SliderControlView(QtGui.QWidget):
+class SliderControlView(QWidget):
     def __init__(self, parent, servername, basepath, rule="Columns_are_inputs", shortname=False, shortinname="Ch", shortoutname="Ch", stereochannels = []):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
         self.bus = dbus.SessionBus()
         self.dev = self.bus.get_object(servername, basepath)
@@ -759,8 +764,8 @@ class SliderControlView(QtGui.QWidget):
 
         k = 0
         for i in range(self.nbOut):
-            widget = QtGui.QWidget(parent)
-            v_layout = QtGui.QVBoxLayout(widget)
+            widget = QWidget(parent)
+            v_layout = QVBoxLayout(widget)
             v_layout.setAlignment(Qt.Qt.AlignCenter)
             widget.setLayout(v_layout)
             self.out.append(widget)
@@ -778,14 +783,14 @@ class SliderControlView(QtGui.QWidget):
 
             # Mixer/Out info label
             if (self.nbOut > 1):
-                lbl = QtGui.QLabel(widget)
+                lbl = QLabel(widget)
                 lbl.setText(self.getOutName(i, self.shortname))
                 lbl.setAlignment(Qt.Qt.AlignCenter)
                 v_layout.addWidget(lbl)
                 self.out[i].lbl.append(lbl)
 
-            h_layout_wid = QtGui.QWidget(widget)
-            h_layout = QtGui.QHBoxLayout(h_layout_wid)
+            h_layout_wid = QWidget(widget)
+            h_layout = QHBoxLayout(h_layout_wid)
             h_layout.setAlignment(Qt.Qt.AlignCenter)
             h_layout_wid.setLayout(h_layout)
             v_layout.addWidget(h_layout_wid)
@@ -794,22 +799,22 @@ class SliderControlView(QtGui.QWidget):
             self.out[i].balance = []
 
             for j in range(self.nbIn):
-                h_v_layout_wid = QtGui.QWidget(h_layout_wid)
-                h_v_layout = QtGui.QVBoxLayout(h_v_layout_wid)
+                h_v_layout_wid = QWidget(h_layout_wid)
+                h_v_layout = QVBoxLayout(h_v_layout_wid)
                 h_v_layout.setAlignment(Qt.Qt.AlignCenter)
                 h_v_layout_wid.setLayout(h_v_layout)
                 h_layout.addWidget(h_v_layout_wid)
 
                 # Mixer/In info label
                 if (self.nbIn > 1):
-                    lbl = QtGui.QLabel(h_v_layout_wid)
+                    lbl = QLabel(h_v_layout_wid)
                     lbl.setText(self.getInName(j, self.shortname))
                     lbl.setAlignment(Qt.Qt.AlignCenter)
                     h_v_layout.addWidget(lbl)
                     self.out[i].lbl.append(lbl)
 
-                h_v_h_layout_wid = QtGui.QWidget(h_v_layout_wid)
-                h_v_h_layout = QtGui.QHBoxLayout(h_v_h_layout_wid)
+                h_v_h_layout_wid = QWidget(h_v_layout_wid)
+                h_v_h_layout = QHBoxLayout(h_v_h_layout_wid)
                 h_v_h_layout.setAlignment(Qt.Qt.AlignCenter)
                 h_v_h_layout_wid.setLayout(h_v_h_layout)
                 h_v_layout.addWidget(h_v_h_layout_wid)
@@ -1103,9 +1108,9 @@ class SliderControlView(QtGui.QWidget):
 
 from functools import partial
 
-class MatrixMixer(QtGui.QWidget):
-    def __init__(self, servername, basepath, parent=None, rule="Columns_are_inputs", sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, taborientation=QtGui.QTabWidget.West, tabshape=QtGui.QTabWidget.Triangular):
-        QtGui.QWidget.__init__(self, parent)
+class MatrixMixer(QWidget):
+    def __init__(self, servername, basepath, parent=None, rule="Columns_are_inputs", sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, taborientation=QTabWidget.West, tabshape=QTabWidget.Triangular):
+        QWidget.__init__(self, parent)
         self.servername = servername
         self.basepath = basepath
         self.sliderMaxValue = sliderMaxValue
@@ -1113,20 +1118,20 @@ class MatrixMixer(QtGui.QWidget):
         self.invertspath = invertspath
         self.smallFont = smallFont
 
-        self.layout = QtGui.QVBoxLayout(self)
+        self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
 
         # Mixer view Tool bar
-        mxv_set = QtGui.QToolBar("View settings", self)
+        mxv_set = QToolBar("View settings", self)
 
         # Here is a hack; the first action button appears to behaves strangely,
         # possibly a PyQt bug (or an unsufficient fair implementation of it)
         # Feel free to remove the next three lines at a time in the future
-        hack = QtGui.QAction(" ", mxv_set)
+        hack = QAction(" ", mxv_set)
         hack.setDisabled(True)
         mxv_set.addAction(hack)
 
-        transpose_matrix = QtGui.QAction("Transpose", mxv_set)
+        transpose_matrix = QAction("Transpose", mxv_set)
         self.transpose = False
         transpose_matrix.setShortcut('Ctrl+T')
         transpose_matrix.setToolTip("Invert rows and columns in Matrix view")
@@ -1134,29 +1139,29 @@ class MatrixMixer(QtGui.QWidget):
         transpose_matrix.triggered.connect(self.transposeMatrixView)
         mxv_set.addSeparator()
 
-        self.hide_matrix = QtGui.QAction("Hide matrix", mxv_set)
+        self.hide_matrix = QAction("Hide matrix", mxv_set)
         self.hide_matrix_bool = False
         mxv_set.addAction(self.hide_matrix)
         self.hide_matrix.triggered.connect(self.hideMatrixView)
         mxv_set.addSeparator()
 
-        self.hide_per_output = QtGui.QAction("Hide per Output", mxv_set)
+        self.hide_per_output = QAction("Hide per Output", mxv_set)
         self.hide_per_output_bool = False
         mxv_set.addAction(self.hide_per_output)
         self.hide_per_output.triggered.connect(self.hidePerOutputView)
         mxv_set.addSeparator()
 
-        self.use_short_names = QtGui.QAction("Short names", mxv_set)
+        self.use_short_names = QAction("Short names", mxv_set)
         self.short_names_bool = False
         mxv_set.addAction(self.use_short_names)
         self.use_short_names.setToolTip("Use short or full names for input and output channels")
         self.use_short_names.triggered.connect(self.shortChannelNames)
         mxv_set.addSeparator()
 
-        font_switch_lbl = QtGui.QLabel(mxv_set)
+        font_switch_lbl = QLabel(mxv_set)
         font_switch_lbl.setText("Font size ")
         mxv_set.addWidget(font_switch_lbl)
-        font_switch = QtGui.QComboBox(mxv_set)
+        font_switch = QComboBox(mxv_set)
         font_switch.setToolTip("Labels font size")
         font = font_switch.font()
         for i in range(10):
@@ -1171,7 +1176,7 @@ class MatrixMixer(QtGui.QWidget):
 
         # First tab is for matrix view
         # Next are for "per Out" view
-        self.tabs = QtGui.QTabWidget(self)
+        self.tabs = QTabWidget(self)
         self.tabs.setTabPosition(taborientation)
         self.tabs.setTabShape(tabshape)
         self.layout.addWidget(self.tabs)
@@ -1186,7 +1191,7 @@ class MatrixMixer(QtGui.QWidget):
             self.matrix = MatrixControlView(servername, basepath, self, sliderMaxValue, mutespath, invertspath, smallFont, self.short_names_bool, "Out", "In", self.transpose)
         self.connect(self.matrix, QtCore.SIGNAL("valueChanged"), self.matrixControlChanged)
 
-        self.scrollarea_matrix = QtGui.QScrollArea(self.tabs)
+        self.scrollarea_matrix = QScrollArea(self.tabs)
         self.scrollarea_matrix.setWidgetResizable(True)
         self.scrollarea_matrix.setWidget(self.matrix)
         self.tabs.addTab(self.scrollarea_matrix, " Matrix ")
@@ -1203,7 +1208,7 @@ class MatrixMixer(QtGui.QWidget):
             else:
                 nb_out_mono = self.matrix.cols
 
-        stereo_switch_lbl = QtGui.QLabel(mxv_set)
+        stereo_switch_lbl = QLabel(mxv_set)
         stereo_switch_lbl.setText("Stereo: ")
         mxv_set.addWidget(stereo_switch_lbl)
 
@@ -1211,12 +1216,12 @@ class MatrixMixer(QtGui.QWidget):
 
         self.stereo_switch = []
         for i in range(nb_out_mono/2):
-            stereo_switch = QtGui.QPushButton("%d+%d" % (2*i+1, 2*i+2), mxv_set)
+            stereo_switch = QPushButton("%d+%d" % (2*i+1, 2*i+2), mxv_set)
             stereo_switch.setToolTip("Set these output channels as stereo")
             stereo_switch.setCheckable(True)
             stereo_switch.clicked.connect(partial(self.switchStereoChannel, i))
             stereo_switch.setMinimumSize(stereo_switch_lbl.fontMetrics().boundingRect("%d+%d" % (nb_out_mono, nb_out_mono)).size()*1.05)
-            stereo_switch.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum))
+            stereo_switch.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
             stereo_switch.is_stereo = False
             mxv_set.addWidget(stereo_switch)
             self.stereo_switch.append(stereo_switch)
@@ -1226,7 +1231,7 @@ class MatrixMixer(QtGui.QWidget):
         self.perOut = SliderControlView(self, servername, basepath, rule, self.short_names_bool, "In", "Out", self.stereo_channels)
         self.connect(self.perOut, QtCore.SIGNAL("valueChanged"), self.sliderControlChanged)
         for i in range(self.perOut.nbOut):
-            self.perOut.out[i].scrollarea = QtGui.QScrollArea(self.tabs)
+            self.perOut.out[i].scrollarea = QScrollArea(self.tabs)
             self.perOut.out[i].scrollarea.setWidgetResizable(True)
             self.perOut.out[i].scrollarea.setWidget(self.perOut.out[i])
             self.tabs.addTab(self.perOut.out[i].scrollarea, " %s " % self.perOut.out[i].outname)
@@ -1241,7 +1246,7 @@ class MatrixMixer(QtGui.QWidget):
             self.matrix = MatrixControlView(self.servername, self.basepath, self, self.sliderMaxValue, self.mutespath, self.invertspath, self.smallFont, self.short_names_bool, "Out", "In", self.transpose)
         self.connect(self.matrix, QtCore.SIGNAL("valueChanged"), self.matrixControlChanged)
 
-        self.scrollarea_matrix = QtGui.QScrollArea(self.tabs)
+        self.scrollarea_matrix = QScrollArea(self.tabs)
         self.scrollarea_matrix.setWidgetResizable(True)
         self.scrollarea_matrix.setWidget(self.matrix)
         self.tabs.insertTab(0, self.scrollarea_matrix, "Matrix")
@@ -1382,7 +1387,7 @@ class MatrixMixer(QtGui.QWidget):
         self.connect(self.perOut, QtCore.SIGNAL("valueChanged"), self.sliderControlChanged)
         current = 0
         for i in range(self.perOut.nbOut):
-            self.perOut.out[i].scrollarea = QtGui.QScrollArea(self.tabs)
+            self.perOut.out[i].scrollarea = QScrollArea(self.tabs)
             self.perOut.out[i].scrollarea.setWidgetResizable(True)
             self.perOut.out[i].scrollarea.setWidget(self.perOut.out[i])
             self.tabs.addTab(self.perOut.out[i].scrollarea, " %s " % self.perOut.out[i].outname)
