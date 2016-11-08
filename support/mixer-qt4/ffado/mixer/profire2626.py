@@ -19,6 +19,7 @@
 #
 
 from PyQt4 import QtGui, QtCore, Qt
+from PyQt4.QtGui import QWidget, QScrollArea
 import dbus
 
 from ffado.widgets.matrixmixer import MatrixMixer
@@ -67,11 +68,11 @@ class Profire2626(Generic_Dice_EAP):
         #print self.hw.getText("/Generic/Nickname")
         Generic_Dice_EAP.buildMixer(self)
 
-        widget = QtGui.QWidget()
+        widget = QWidget()
         uicLoad("ffado/mixer/profire2626_settings.ui", widget)
 
         # Add Settings to ffado-mixer panels
-        scrollarea = QtGui.QScrollArea(self.tabs)
+        scrollarea = QScrollArea(self.tabs)
         scrollarea.setWidgetResizable(False)
         scrollarea.setWidget(widget)
         self.tabs.addTab(scrollarea, "Settings")
