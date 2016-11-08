@@ -26,14 +26,14 @@ from PyQt4.QtGui import QWidget, QLabel, QSizePolicy, QToolButton, QSlider, QDia
 from math import log10
 from ffado.config import *
 
-class Presonus_FP10(QtGui.QWidget):
+class Presonus_FP10(QWidget):
     outputs = [["Analog Out 1/2", 1],
                ["Analog Out 3/4", 2],
                ["Analog Out 5/6", 3],
                ["Analog Out 7/8", 4]]
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
     def getDisplayTitle(self):
         return 'FP10'
