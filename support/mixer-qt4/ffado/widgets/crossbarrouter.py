@@ -20,16 +20,18 @@
 #
 
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QFrame, QPainter, QGridLayout, QLabel, QComboBox
+from PyQt4.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 import dbus, math
 
 import logging
 log = logging.getLogger("crossbarrouter")
 
-class VuMeter(QtGui.QFrame):
+class VuMeter(QFrame):
     def __init__(self, interface, output, input=None, parent=None):
-        QtGui.QFrame.__init__(self, parent)
+        QFrame.__init__(self, parent)
         self.setLineWidth(1)
-        self.setFrameStyle(QtGui.QFrame.Panel|QtGui.QFrame.Sunken)
+        self.setFrameStyle(QFrame.Panel|QFrame.Sunken)
         self.setMinimumSize(20, 20)
 
         self.level = 0
@@ -43,14 +45,14 @@ class VuMeter(QtGui.QFrame):
         self.update()
 
     def paintEvent(self, event):
-        p = QtGui.QPainter(self)
+        p = QPainter(self)
         value = self.level/4096
         r = self.rect()
         r.setHeight(r.height() * math.sqrt(value))
         r.moveBottom(self.rect().height())
         p.fillRect(r, self.palette().highlight())
 
-class OutputSwitcher(QtGui.QFrame):
+class OutputSwitcher(QFrame):
     """
 The name is a bit misleading. This widget selectes sources for a specified
 destination.
@@ -59,18 +61,18 @@ In mixer-usage this widget is at the top of the input-channel. Because the input
 of the mixer is an available output from the routers point.
 """
     def __init__(self, interface, outname, parent):
-        QtGui.QFrame.__init__(self, parent)
+        QFrame.__init__(self, parent)
         self.interface = interface
         self.outname = outname
         self.lastin = ""
 
         self.setLineWidth(1)
-        self.setFrameStyle(QtGui.QFrame.Sunken|QtGui.QFrame.Panel)
+        self.setFrameStyle(QFrame.Sunken|QFrame.Panel)
 
-        self.layout = QtGui.QGridLayout(self)
+        self.layout = QGridLayout(self)
         self.setLayout(self.layout)
 
-        self.lbl = QtGui.QLabel(self.outname, self)
+        self.lbl = QLabel(self.outname, self)
         self.lbl.setToolTip("The name of the destination that is to be controlled here.")
         self.layout.addWidget(self.lbl, 0, 0)
 
@@ -79,7 +81,7 @@ of the mixer is an available output from the routers point.
 
         sources = self.interface.getSourceNames()
 
-        self.combo = QtGui.QComboBox(self)
+        self.combo = QComboBox(self)
         self.combo.setToolTip("<qt>Select the source for this destination.<br>Each destination can only receive sound from one source at a time. But one source can send sound to multiple destinations.</qt>")
         self.layout.addWidget(self.combo, 1, 0, 1, 2)
         self.combo.addItem("Disconnected")
@@ -115,9 +117,9 @@ of the mixer is an available output from the routers point.
             self.lastin = ""
 
 
-class CrossbarRouter(QtGui.QWidget):
+class CrossbarRouter(QWidget):
     def __init__(self, servername, basepath, parent=None):
-        QtGui.QWidget.__init__(self, parent);
+        QWidget.__init__(self, parent);
         self.bus = dbus.SessionBus()
         self.dev = self.bus.get_object(servername, basepath)
         self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.CrossbarRouter")
@@ -131,18 +133,18 @@ class CrossbarRouter(QtGui.QWidget):
             if not tmp in self.outgroups:
                 self.outgroups.append(tmp)
 
-        self.biglayout = QtGui.QVBoxLayout(self)
+        self.biglayout = QVBoxLayout(self)
         self.setLayout(self.biglayout)
 
-        self.toplayout = QtGui.QHBoxLayout()
+        self.toplayout = QHBoxLayout()
         self.biglayout.addLayout(self.toplayout)
 
-        self.vubtn = QtGui.QPushButton("Switch peak meters", self)
+        self.vubtn = QPushButton("Switch peak meters", self)
         self.vubtn.setCheckable(True)
         self.connect(self.vubtn, QtCore.SIGNAL("toggled(bool)"), self.runVu)
         self.toplayout.addWidget(self.vubtn)
 
-        self.layout = QtGui.QGridLayout()
+        self.layout = QGridLayout()
         self.biglayout.addLayout(self.layout)
 
         self.switchers = {}
