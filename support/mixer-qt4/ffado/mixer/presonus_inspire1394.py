@@ -21,12 +21,12 @@
 
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QObject, Qt, SIGNAL
-from PyQt4.QtGui import QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt4.QtGui import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt4.QtGui import QGroupBox, QLabel, QSizePolicy, QSlider, QDial, QComboBox, QToolButton
 from math import log10
 from ffado.config import *
 
-class Presonus_Inspire1394(QtGui.QWidget):
+class Presonus_Inspire1394(QWidget):
     # feature_id/name
     inputs = [[1, "Analog in 1/2"],
               [2, "Analog in 3/4"]]
@@ -44,7 +44,7 @@ class Presonus_Inspire1394(QtGui.QWidget):
     out_src = [1, ["Mixer out 1/2", "Stream in 1/2"]]
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
     def getDisplayTitle(self):
         return 'Inspire1394'

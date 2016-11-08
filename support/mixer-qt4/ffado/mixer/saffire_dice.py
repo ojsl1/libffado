@@ -19,6 +19,7 @@
 #
 
 from PyQt4 import QtGui, QtCore, Qt
+from PyQt4.QtGui import QWidget, QScrollArea
 import dbus
 
 from ffado.widgets.matrixmixer import MatrixMixer
@@ -67,7 +68,7 @@ class Saffire_Dice(Generic_Dice_EAP):
         #print self.hw.getText("/Generic/Nickname")
         Generic_Dice_EAP.buildMixer(self)
 
-        widget = QtGui.QWidget()
+        widget = QWidget()
 
         ModelName = self.configrom.getModelName()
         if  ModelName == "SAFFIRE_PRO_14":
@@ -80,7 +81,7 @@ class Saffire_Dice(Generic_Dice_EAP):
             uicLoad("ffado/mixer/Saffire_Pro40_monitoring.ui", widget)
 
         # Add Monitoring to ffado-mixer panels
-        scrollarea = QtGui.QScrollArea(self.tabs)
+        scrollarea = QScrollArea(self.tabs)
         scrollarea.setWidgetResizable(False)
         scrollarea.setWidget(widget)
         self.tabs.addTab(scrollarea, "Monitoring")
