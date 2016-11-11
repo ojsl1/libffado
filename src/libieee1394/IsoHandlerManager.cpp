@@ -345,11 +345,11 @@ IsoHandlerManager::IsoTask::Execute()
         int64_t measured_diff_ticks = diffTicks(ctr_at_poll_return_ticks, last_packet_seen_ticks);
 
         debugOutputExtreme(DEBUG_LEVEL_VERBOSE,
-                           "(%p, %s) check handler %d: diff = %"PRId64", max = %"PRId64", now: %08X, last: %08X\n",
+                           "(%p, %s) check handler %d: diff = %" PRId64 ", max = %" PRId64 ", now: %08X, last: %08X\n",
                            this, (m_handlerType == IsoHandler::eHT_Transmit? "Transmit": "Receive"), 
                            i, measured_diff_ticks, max_diff_ticks, ctr_at_poll_return, last_packet_seen);
         if(measured_diff_ticks > max_diff_ticks) {
-            debugWarning("(%p, %s) Handler died: now: %08X, last: %08X, diff: %"PRId64" (max: %"PRId64")\n",
+            debugWarning("(%p, %s) Handler died: now: %08X, last: %08X, diff: %" PRId64 " (max: %" PRId64 ")\n",
                          this, (m_handlerType == IsoHandler::eHT_Transmit? "Transmit": "Receive"),
                          ctr_at_poll_return, last_packet_seen, measured_diff_ticks, max_diff_ticks);
             m_IsoHandler_map_shadow[i]->notifyOfDeath();
@@ -438,14 +438,14 @@ IsoHandlerManager::IsoTask::waitForActivity()
         } else if (errno == EINVAL) {
             debugError("(%p) sem_timedwait error (result=%d errno=EINVAL)\n", 
                         this, result);
-            debugError("(%p) timeout_nsec=%lld ts.sec=%"PRId64" ts.nsec=%"PRId64"\n", 
+            debugError("(%p) timeout_nsec=%lld ts.sec=%" PRId64 " ts.nsec=%" PRId64 "\n", 
                        this, m_activity_wait_timeout_nsec, 
 		       (int64_t)ts.tv_sec, (int64_t)ts.tv_nsec);
             return eAR_Error;
         } else {
             debugError("(%p) sem_timedwait error (result=%d errno=%d)\n", 
                         this, result, errno);
-            debugError("(%p) timeout_nsec=%lld ts.sec=%"PRId64" ts.nsec=%"PRId64"\n", 
+            debugError("(%p) timeout_nsec=%lld ts.sec=%" PRId64 " ts.nsec=%" PRId64 "\n", 
                        this, m_activity_wait_timeout_nsec,
 		       (int64_t)ts.tv_sec, (int64_t)ts.tv_nsec);
             return eAR_Error;
@@ -1592,13 +1592,13 @@ enum raw1394_iso_disposition IsoHandlerManager::IsoHandler::putPacket(
 
     if((pkt_ctr & ~0x0FFFL) != pkt_ctr_ref) {
         debugWarning("reconstructed CTR counter discrepancy\n");
-        debugWarning(" ingredients: %X, %X, %X, %X, %X, %d, %ld, %ld, %"PRId64"\n",
+        debugWarning(" ingredients: %X, %X, %X, %X, %X, %d, %ld, %ld, %" PRId64 "\n",
                      cycle, pkt_ctr_ref, pkt_ctr, 
 		     now, m_last_now, now_secs_ref, 
 		     (long int)CYCLE_TIMER_GET_SECS(now),
 		     (long int)CYCLE_TIMER_GET_SECS(m_last_now),
 		     tmp);
-        debugWarning(" diffcy = %"PRId64" \n", diff_cycles);
+        debugWarning(" diffcy = %" PRId64 " \n", diff_cycles);
     }
     #endif
     m_last_packet_handled_at = pkt_ctr;
@@ -1677,13 +1677,13 @@ IsoHandlerManager::IsoHandler::getPacket(unsigned char *data, unsigned int *leng
 
         if(((pkt_ctr & ~0x0FFFL) != pkt_ctr_ref) && (m_packets > m_buf_packets)) {
             debugWarning("reconstructed CTR counter discrepancy\n");
-            debugWarning(" ingredients: %X, %X, %X, %X, %X, %d, %ld, %ld, %"PRId64"\n",
+            debugWarning(" ingredients: %X, %X, %X, %X, %X, %d, %ld, %ld, %" PRId64 "\n",
                         cycle, pkt_ctr_ref, pkt_ctr,
 			 now, m_last_now, now_secs_ref, 
 			 (long int)CYCLE_TIMER_GET_SECS(now),
 			 (long int)CYCLE_TIMER_GET_SECS(m_last_now), 
 			 tmp);
-            debugWarning(" diffcy = %"PRId64" \n", diff_cycles);
+            debugWarning(" diffcy = %" PRId64 " \n", diff_cycles);
         }
         #endif
     }

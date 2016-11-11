@@ -509,7 +509,7 @@ main( int argc, char **argv )
         }
         uint64_t result_rcv = sytRecvToFullTicks(syt_timestamp, rcv_cycle, ctr_now);
         uint64_t result_xmt = sytXmitToFullTicks(syt_timestamp, rcv_cycle, ctr_now);
-        printf("RCV: 0x%010"PRIX64" %010"PRIu64"  XMT: 0x%010"PRIX64" %010"PRIu64" CTR: %010"PRIu64"\n",
+        printf("RCV: 0x%010" PRIX64 " %010" PRIu64 "  XMT: 0x%010" PRIX64 " %010" PRIu64 " CTR: %010" PRIu64 "\n",
                result_rcv, result_rcv, result_xmt, result_xmt, CYCLE_TIMER_TO_TICKS(ctr_now));
 
     } else {

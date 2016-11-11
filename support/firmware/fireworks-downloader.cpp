@@ -214,7 +214,7 @@ main( int argc, char** argv )
     }
 
     if (node_id < 0) {
-        printMessage("Could not find device with GUID 0x%016"PRIX64"\n", guid);
+        printMessage("Could not find device with GUID 0x%016" PRIX64 "\n", guid);
         return -1;
     }
 

@@ -189,12 +189,12 @@ int main(int argc, char **argv)
         toc = rt_gettime_usecs();
         int64_t usecs_late = toc - sleep_time;
         if(usecs_late > 1000) {
-            debugWarning("late wakeup: %"PRId64" usecs\n", usecs_late);
+            debugWarning("late wakeup: %" PRId64 " usecs\n", usecs_late);
         }
 
         // try and detect lockup ()
         if(usecs_late > 100000) {
-            debugWarning("very late wakeup: %"PRId64" usecs\n", usecs_late);
+            debugWarning("very late wakeup: %" PRId64 " usecs\n", usecs_late);
             // force exit, since this is a loop out of control
             run=0;
         }

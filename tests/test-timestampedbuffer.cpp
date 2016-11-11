@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
                 ts_head=(uint64_t)ts_head_tmp;
 
                 if (timestamp != ts_head) {
-                    debugError(" cycle %4u error: %011"PRIu64" != %011"PRIu64"\n",
+                    debugError(" cycle %4u error: %011" PRIu64 " != %011" PRIu64 "\n",
                                cycle, timestamp, ts_head);
                     pass=false;
                 }
@@ -418,7 +418,7 @@ int main(int argc, char *argv[])
             }
 
             debugOutput(DEBUG_LEVEL_NORMAL,
-                        "Simulating cycle %d @ time=%011"PRIu64", diff=%"PRId64"\n",
+                        "Simulating cycle %d @ time=%011" PRIu64 ", diff=%" PRId64 "\n",
                         cycle, time, diff);
 
             if(diff > 0) {
@@ -435,10 +435,10 @@ int main(int argc, char *argv[])
                 ts_head=(uint64_t)ts_head_tmp;
                 ts_tail=(uint64_t)ts_tail_tmp;
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        " TS after write: HEAD: %011"PRIu64", FC=%04u\n",
+                        " TS after write: HEAD: %011" PRIu64 ", FC=%04u\n",
                         ts_head,fc_head);
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        "                 TAIL: %011"PRIu64", FC=%04u\n",
+                        "                 TAIL: %011" PRIu64 ", FC=%04u\n",
                         ts_tail,fc_tail);
 
                 // read one packet
@@ -450,10 +450,10 @@ int main(int argc, char *argv[])
                 ts_head=(uint64_t)ts_head_tmp;
                 ts_tail=(uint64_t)ts_tail_tmp;
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        " TS after write: HEAD: %011"PRIu64", FC=%04u\n",
+                        " TS after write: HEAD: %011" PRIu64 ", FC=%04u\n",
                         ts_head,fc_head);
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        "                 TAIL: %011"PRIu64", FC=%04u\n",
+                        "                 TAIL: %011" PRIu64 ", FC=%04u\n",
                         ts_tail,fc_tail);
 
                 // check
@@ -525,7 +525,7 @@ int main(int argc, char *argv[])
             }
 
             debugOutput(DEBUG_LEVEL_NORMAL,
-                        "Simulating cycle %d @ time=%011"PRIu64", diff=%"PRId64"\n",
+                        "Simulating cycle %d @ time=%011" PRIu64 ", diff=%" PRId64 "\n",
                         cycle, time, diff);
 
             if(diff>0) {
@@ -542,10 +542,10 @@ int main(int argc, char *argv[])
                 ts_head=(uint64_t)ts_head_tmp;
                 ts_tail=(uint64_t)ts_tail_tmp;
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        " TS after write: HEAD: %011"PRIu64", FC=%04u\n",
+                        " TS after write: HEAD: %011" PRIu64 ", FC=%04u\n",
                         ts_head,fc_head);
                 debugOutput(DEBUG_LEVEL_NORMAL,
-                        "                 TAIL: %011"PRIu64", FC=%04u\n",
+                        "                 TAIL: %011" PRIu64 ", FC=%04u\n",
                         ts_tail,fc_tail);
 
                 if (fc_head > (signed int)blocksize) {
@@ -560,10 +560,10 @@ int main(int argc, char *argv[])
                     ts_head=(uint64_t)ts_head_tmp;
                     ts_tail=(uint64_t)ts_tail_tmp;
                     debugOutput(DEBUG_LEVEL_NORMAL,
-                            " TS after read: HEAD: %011"PRIu64", FC=%04u\n",
+                            " TS after read: HEAD: %011" PRIu64 ", FC=%04u\n",
                             ts_head,fc_head);
                     debugOutput(DEBUG_LEVEL_NORMAL,
-                            "                TAIL: %011"PRIu64", FC=%04u\n",
+                            "                TAIL: %011" PRIu64 ", FC=%04u\n",
                             ts_tail,fc_tail);
                 }
 

@@ -211,7 +211,7 @@ void TimestampedBuffer::setRate(float rate) {
 
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
                        "for (%p) "
-                       "NTS="TIMESTAMP_FORMAT_SPEC", DLL2=%f, RATE=%f\n",
+                       "NTS=" TIMESTAMP_FORMAT_SPEC ", DLL2=%f, RATE=%f\n",
                        this, m_buffer_next_tail_timestamp, m_dll_e2, getRate());
 }
 
@@ -246,7 +246,7 @@ float TimestampedBuffer::calculateRate() {
     if (rate<0.0) debugError("rate < 0! (%f)\n",rate);
     if (fabsf(m_nominal_rate - rate)>(m_nominal_rate*0.1)) {
         debugWarning("(%p) rate (%10.5f) more that 10%% off nominal "
-                     "(rate=%10.5f, diff="TIMESTAMP_FORMAT_SPEC", update_period=%d)\n",
+                     "(rate=%10.5f, diff=" TIMESTAMP_FORMAT_SPEC ", update_period=%d)\n",
                      this, rate,m_nominal_rate,diff, m_update_period);
 
         return m_nominal_rate;
@@ -372,7 +372,7 @@ bool TimestampedBuffer::prepare() {
     debugOutput(DEBUG_LEVEL_VERBOSE," nominal rate=%f\n",
                                     m_nominal_rate);
 
-    debugOutput(DEBUG_LEVEL_VERBOSE," wrapping at "TIMESTAMP_FORMAT_SPEC"\n",m_wrap_at);
+    debugOutput(DEBUG_LEVEL_VERBOSE," wrapping at " TIMESTAMP_FORMAT_SPEC "\n",m_wrap_at);
 
     assert(m_buffer_size);
     assert(m_events_per_frame);
@@ -618,7 +618,7 @@ bool TimestampedBuffer::readFrames(unsigned int nframes, char *data) {
  */
 bool TimestampedBuffer::blockProcessWriteFrames(unsigned int nbframes, ffado_timestamp_t ts) {
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "(%p) Writing %u frames for ts "TIMESTAMP_FORMAT_SPEC"\n",
+                       "(%p) Writing %u frames for ts " TIMESTAMP_FORMAT_SPEC "\n",
                        this, nbframes, ts);
     int xrun;
     unsigned int offset = 0;
@@ -844,10 +844,10 @@ void TimestampedBuffer::setBufferTailTimestamp(ffado_timestamp_t new_timestamp) 
 
 #ifdef DEBUG
     if (new_timestamp >= m_wrap_at) {
-        debugWarning("timestamp not wrapped: "TIMESTAMP_FORMAT_SPEC"\n",new_timestamp);
+        debugWarning("timestamp not wrapped: " TIMESTAMP_FORMAT_SPEC "\n",new_timestamp);
     }
     if ((ts >= m_wrap_at) || (ts < 0 )) {
-        debugWarning("ts not wrapped correctly: "TIMESTAMP_FORMAT_SPEC"\n",ts);
+        debugWarning("ts not wrapped correctly: " TIMESTAMP_FORMAT_SPEC "\n",ts);
     }
 #endif
 
@@ -861,8 +861,8 @@ void TimestampedBuffer::setBufferTailTimestamp(ffado_timestamp_t new_timestamp) 
     EXIT_CRITICAL_SECTION;
 
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "for (%p) to "TIMESTAMP_FORMAT_SPEC" => "TIMESTAMP_FORMAT_SPEC", "
-                       "NTS="TIMESTAMP_FORMAT_SPEC", DLL2=%f, RATE=%f\n",
+                       "for (%p) to " TIMESTAMP_FORMAT_SPEC " => " TIMESTAMP_FORMAT_SPEC ", "
+                       "NTS=" TIMESTAMP_FORMAT_SPEC ", DLL2=%f, RATE=%f\n",
                        this, new_timestamp, ts, m_buffer_next_tail_timestamp, m_dll_e2, getRate());
 }
 
@@ -882,7 +882,7 @@ void TimestampedBuffer::setBufferHeadTimestamp(ffado_timestamp_t new_timestamp) 
 
 #ifdef DEBUG
     if (new_timestamp >= m_wrap_at) {
-        debugWarning("timestamp not wrapped: "TIMESTAMP_FORMAT_SPEC"\n", new_timestamp);
+        debugWarning("timestamp not wrapped: " TIMESTAMP_FORMAT_SPEC "\n", new_timestamp);
     }
 #endif
 
@@ -907,8 +907,8 @@ void TimestampedBuffer::setBufferHeadTimestamp(ffado_timestamp_t new_timestamp) 
     EXIT_CRITICAL_SECTION;
 
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "for (%p) to "TIMESTAMP_FORMAT_SPEC" => "TIMESTAMP_FORMAT_SPEC", "
-                       "NTS="TIMESTAMP_FORMAT_SPEC", DLL2=%f, RATE=%f\n",
+                       "for (%p) to " TIMESTAMP_FORMAT_SPEC " => " TIMESTAMP_FORMAT_SPEC ", "
+                       "NTS=" TIMESTAMP_FORMAT_SPEC ", DLL2=%f, RATE=%f\n",
                        this, new_timestamp, ts, m_buffer_next_tail_timestamp, m_dll_e2, getRate());
 }
 
@@ -1051,33 +1051,33 @@ void TimestampedBuffer::incrementFrameCounter(unsigned int nbframes, ffado_times
                        " nbframes: %d, m_update_period: %d \n",
                        nbframes, m_update_period);
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       " tail TS: "TIMESTAMP_FORMAT_SPEC", next tail TS: "TIMESTAMP_FORMAT_SPEC"\n", 
+                       " tail TS: " TIMESTAMP_FORMAT_SPEC ", next tail TS: " TIMESTAMP_FORMAT_SPEC "\n", 
                        m_buffer_tail_timestamp, m_buffer_next_tail_timestamp);
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       " new TS: "TIMESTAMP_FORMAT_SPEC", diff: "TIMESTAMP_FORMAT_SPEC"\n", 
+                       " new TS: " TIMESTAMP_FORMAT_SPEC ", diff: " TIMESTAMP_FORMAT_SPEC "\n", 
                        new_timestamp, diff);
 
     if (diff > max_abs_diff) {
         //debugShowBackLogLines(100);
-        debugWarning("(%p) difference rather large (+): diff="TIMESTAMP_FORMAT_SPEC", max="TIMESTAMP_FORMAT_SPEC", "TIMESTAMP_FORMAT_SPEC", "TIMESTAMP_FORMAT_SPEC"\n",
+        debugWarning("(%p) difference rather large (+): diff=" TIMESTAMP_FORMAT_SPEC ", max=" TIMESTAMP_FORMAT_SPEC ", " TIMESTAMP_FORMAT_SPEC ", " TIMESTAMP_FORMAT_SPEC "\n",
             this, diff, max_abs_diff, new_timestamp, m_buffer_next_tail_timestamp);
     } else if (diff < -max_abs_diff) {
         //debugShowBackLogLines(100);
-        debugWarning("(%p) difference rather large (-): diff="TIMESTAMP_FORMAT_SPEC", max="TIMESTAMP_FORMAT_SPEC", "TIMESTAMP_FORMAT_SPEC", "TIMESTAMP_FORMAT_SPEC"\n",
+        debugWarning("(%p) difference rather large (-): diff=" TIMESTAMP_FORMAT_SPEC ", max=" TIMESTAMP_FORMAT_SPEC ", " TIMESTAMP_FORMAT_SPEC ", " TIMESTAMP_FORMAT_SPEC "\n",
             this, diff, -max_abs_diff, new_timestamp, m_buffer_next_tail_timestamp);
     }
 
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "(%p): diff="TIMESTAMP_FORMAT_SPEC" ",
+                       "(%p): diff=" TIMESTAMP_FORMAT_SPEC " ",
                        this, diff);
 #endif
 
     double err = diff;
     debugOutputShortExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                            "diff2="TIMESTAMP_FORMAT_SPEC" err=%f\n",
+                            "diff2=" TIMESTAMP_FORMAT_SPEC " err=%f\n",
                             diff, err);
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "B: FC=%10u, TS="TIMESTAMP_FORMAT_SPEC", NTS="TIMESTAMP_FORMAT_SPEC"\n",
+                       "B: FC=%10u, TS=" TIMESTAMP_FORMAT_SPEC ", NTS=" TIMESTAMP_FORMAT_SPEC "\n",
                        m_framecounter, m_buffer_tail_timestamp, m_buffer_next_tail_timestamp);
 
     ENTER_CRITICAL_SECTION;
@@ -1088,13 +1088,13 @@ void TimestampedBuffer::incrementFrameCounter(unsigned int nbframes, ffado_times
 
     if (m_buffer_next_tail_timestamp >= m_wrap_at) {
         debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                           "Unwrapping next tail timestamp: "TIMESTAMP_FORMAT_SPEC"",
+                           "Unwrapping next tail timestamp: " TIMESTAMP_FORMAT_SPEC "",
                            m_buffer_next_tail_timestamp);
 
         m_buffer_next_tail_timestamp -= m_wrap_at;
 
         debugOutputShortExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                                " => "TIMESTAMP_FORMAT_SPEC"\n",
+                                " => " TIMESTAMP_FORMAT_SPEC "\n",
                                 m_buffer_next_tail_timestamp);
 
     }
@@ -1102,24 +1102,24 @@ void TimestampedBuffer::incrementFrameCounter(unsigned int nbframes, ffado_times
     EXIT_CRITICAL_SECTION;
 
     debugOutputExtreme(DEBUG_LEVEL_VERY_VERBOSE,
-                       "A: TS="TIMESTAMP_FORMAT_SPEC", NTS="TIMESTAMP_FORMAT_SPEC", DLLe2=%f, RATE=%f\n",
+                       "A: TS=" TIMESTAMP_FORMAT_SPEC ", NTS=" TIMESTAMP_FORMAT_SPEC ", DLLe2=%f, RATE=%f\n",
                        m_buffer_tail_timestamp, m_buffer_next_tail_timestamp, m_dll_e2, m_current_rate);
 
 
     if(m_buffer_tail_timestamp>=m_wrap_at) {
-        debugError("Wrapping failed for m_buffer_tail_timestamp! "TIMESTAMP_FORMAT_SPEC"\n",m_buffer_tail_timestamp);
-        debugOutput(DEBUG_LEVEL_VERY_VERBOSE, " IN="TIMESTAMP_FORMAT_SPEC", TS="TIMESTAMP_FORMAT_SPEC", NTS="TIMESTAMP_FORMAT_SPEC"\n",
+        debugError("Wrapping failed for m_buffer_tail_timestamp! " TIMESTAMP_FORMAT_SPEC "\n",m_buffer_tail_timestamp);
+        debugOutput(DEBUG_LEVEL_VERY_VERBOSE, " IN=" TIMESTAMP_FORMAT_SPEC ", TS=" TIMESTAMP_FORMAT_SPEC ", NTS=" TIMESTAMP_FORMAT_SPEC "\n",
                     new_timestamp, m_buffer_tail_timestamp, m_buffer_next_tail_timestamp);
 
     }
     if(m_buffer_next_tail_timestamp>=m_wrap_at) {
-        debugError("Wrapping failed for m_buffer_next_tail_timestamp! "TIMESTAMP_FORMAT_SPEC"\n",m_buffer_next_tail_timestamp);
-        debugOutput(DEBUG_LEVEL_VERY_VERBOSE, " IN="TIMESTAMP_FORMAT_SPEC", TS="TIMESTAMP_FORMAT_SPEC", NTS="TIMESTAMP_FORMAT_SPEC"\n",
+        debugError("Wrapping failed for m_buffer_next_tail_timestamp! " TIMESTAMP_FORMAT_SPEC "\n",m_buffer_next_tail_timestamp);
+        debugOutput(DEBUG_LEVEL_VERY_VERBOSE, " IN=" TIMESTAMP_FORMAT_SPEC ", TS=" TIMESTAMP_FORMAT_SPEC ", NTS=" TIMESTAMP_FORMAT_SPEC "\n",
                     new_timestamp, m_buffer_tail_timestamp, m_buffer_next_tail_timestamp);
     }
     
     if(m_buffer_tail_timestamp==m_buffer_next_tail_timestamp) {
-        debugError("Current and next timestamps are equal: "TIMESTAMP_FORMAT_SPEC" "TIMESTAMP_FORMAT_SPEC"\n",
+        debugError("Current and next timestamps are equal: " TIMESTAMP_FORMAT_SPEC " " TIMESTAMP_FORMAT_SPEC "\n",
                    m_buffer_tail_timestamp,m_buffer_next_tail_timestamp);
     }
 
@@ -1145,10 +1145,10 @@ void TimestampedBuffer::dumpInfo() {
 
     debugOutputShort( DEBUG_LEVEL_NORMAL, "  TimestampedBuffer (%p): %04d frames, %04d events\n",
                                           this, m_framecounter, getBufferFill());
-    debugOutputShort( DEBUG_LEVEL_NORMAL, "   Timestamps           : head: "TIMESTAMP_FORMAT_SPEC", Tail: "TIMESTAMP_FORMAT_SPEC", Next tail: "TIMESTAMP_FORMAT_SPEC"\n",
+    debugOutputShort( DEBUG_LEVEL_NORMAL, "   Timestamps           : head: " TIMESTAMP_FORMAT_SPEC ", Tail: " TIMESTAMP_FORMAT_SPEC ", Next tail: " TIMESTAMP_FORMAT_SPEC "\n",
                                           ts_head, m_buffer_tail_timestamp, m_buffer_next_tail_timestamp);
 #ifdef DEBUG
-    debugOutputShort( DEBUG_LEVEL_NORMAL, "    Head - Tail         : "TIMESTAMP_FORMAT_SPEC" (%f frames)\n", diff, diff/m_dll_e2*m_update_period);
+    debugOutputShort( DEBUG_LEVEL_NORMAL, "    Head - Tail         : " TIMESTAMP_FORMAT_SPEC " (%f frames)\n", diff, diff/m_dll_e2*m_update_period);
 #endif
     debugOutputShort( DEBUG_LEVEL_NORMAL, "   DLL Rate             : %f (%f)\n", m_dll_e2, m_dll_e2/m_update_period);
     debugOutputShort( DEBUG_LEVEL_NORMAL, "   DLL Bandwidth        : %10e 1/ticks (%f Hz)\n", getBandwidth(), getBandwidth() * TICKS_PER_SECOND);

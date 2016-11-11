@@ -835,7 +835,7 @@ Device::loadFromCache()
     std::string sDevicePath = getCachePath() + getConfigRom().getGuidString();
 
     char* configId;
-    asprintf(&configId, "%016"PRIx64"", getConfigurationId() );
+    asprintf(&configId, "%016" PRIx64 "", getConfigurationId() );
     if ( !configId ) {
         debugError( "could not create id string\n" );
         return false;
@@ -911,7 +911,7 @@ Device::saveCache()
 
     // come up with an unique file name for the current settings
     char* configId;
-    asprintf(&configId, "%016"PRIx64"", BeBoB::Device::getConfigurationId() );
+    asprintf(&configId, "%016" PRIx64 "", BeBoB::Device::getConfigurationId() );
     if ( !configId ) {
         debugError( "Could not create id string\n" );
         return false;

@@ -1118,7 +1118,7 @@ EAP::offsetGen(enum eRegBase base, unsigned offset, size_t length) {
 
     // out-of-range check
     if(length > maxlen) {
-        debugError("requested length too large: %zd > %"PRIu64"\n", length, maxlen);
+        debugError("requested length too large: %zd > %" PRIu64 "\n", length, maxlen);
         return DICE_INVALID_OFFSET;
     }
     return DICE_EAP_BASE + addr + offset;

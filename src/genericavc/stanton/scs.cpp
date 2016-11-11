@@ -71,7 +71,7 @@ ScsDevice::initMessageHandler() {
     memset(cmdBuffer, 0, sizeof(cmdBuffer));
     // read the current value present in the register, i.e. read-ping
     if(!readRegBlock(addr, (quadlet_t *)cmdBuffer, 1) ) {
-        debugError("Could not read from addr 0x%012"PRIX64"\n",  addr);
+        debugError("Could not read from addr 0x%012" PRIX64 "\n",  addr);
     } else {
         int version = cmdBuffer[0] & 0xFFFF;
         debugOutput(DEBUG_LEVEL_VERBOSE, "Read Ping response: %08X, Version: %d\n", cmdBuffer[0], version);
@@ -86,7 +86,7 @@ ScsDevice::initMessageHandler() {
 
     // execute the command
     if(!writeRegBlock(addr, (quadlet_t *)cmdBuffer, 1)) {
-        debugError("Could not write to addr 0x%012"PRIX64"\n",  addr);
+        debugError("Could not write to addr 0x%012" PRIX64 "\n",  addr);
     } else {
         debugOutput(DEBUG_LEVEL_VERBOSE, "Write Ping succeeded\n");
     }
@@ -128,7 +128,7 @@ ScsDevice::initMessageHandler() {
 
     // execute the command
     if(!writeRegBlock(addr, (quadlet_t *)cmdBuffer, 2)) {
-        debugError("Could not write to addr 0x%012"PRIX64"\n", addr);
+        debugError("Could not write to addr 0x%012" PRIX64 "\n", addr);
         return false;
     }
 
@@ -142,7 +142,7 @@ ScsDevice::initMessageHandler() {
 
     // execute the command
     if(!writeRegBlock(addr, (quadlet_t *)cmdBuffer, 2)) {
-        debugError("Could not write to addr 0x%012"PRIX64"\n", addr);
+        debugError("Could not write to addr 0x%012" PRIX64 "\n", addr);
         return false;
     }
 
@@ -172,7 +172,7 @@ ScsDevice::writeHSS1394Message(enum eMessageType message_type, byte_t* buffer, s
 
     // execute the command
     if(!writeRegBlock(addr, (quadlet_t *)cmdBuffer, len_quadlets)) {
-        debugError("Could not write to addr 0x%012"PRIX64"\n", addr);
+        debugError("Could not write to addr 0x%012" PRIX64 "\n", addr);
         return false;
     }
     return true;
@@ -180,7 +180,7 @@ ScsDevice::writeHSS1394Message(enum eMessageType message_type, byte_t* buffer, s
 
 bool
 ScsDevice::readRegBlock(fb_nodeaddr_t addr, fb_quadlet_t *data, size_t length_quads, size_t blocksize_quads) {
-    debugOutput(DEBUG_LEVEL_VERBOSE,"Reading register 0x%016"PRIX64", length %zd quadlets, to %p\n",
+    debugOutput(DEBUG_LEVEL_VERBOSE,"Reading register 0x%016" PRIX64 ", length %zd quadlets, to %p\n",
         addr, length_quads, data);
 
     fb_nodeid_t nodeId = getNodeId() | 0xFFC0;
@@ -199,9 +199,9 @@ ScsDevice::readRegBlock(fb_nodeaddr_t addr, fb_quadlet_t *data, size_t length_qu
         }
         #endif
 
-        debugOutput(DEBUG_LEVEL_VERBOSE, "reading addr: 0x%016"PRIX64", %d quads to %p\n", curr_addr, quads_todo, curr_data);
+        debugOutput(DEBUG_LEVEL_VERBOSE, "reading addr: 0x%016" PRIX64 ", %d quads to %p\n", curr_addr, quads_todo, curr_data);
         if(!get1394Service().read( nodeId, curr_addr, quads_todo, curr_data ) ) {
-            debugError("Could not read %d quadlets from node 0x%04X addr 0x%012"PRIX64"\n", quads_todo, nodeId, curr_addr);
+            debugError("Could not read %d quadlets from node 0x%04X addr 0x%012" PRIX64 "\n", quads_todo, nodeId, curr_addr);
             return false;
         }
 
@@ -214,7 +214,7 @@ ScsDevice::readRegBlock(fb_nodeaddr_t addr, fb_quadlet_t *data, size_t length_qu
 bool
 ScsDevice::writeRegBlock(fb_nodeaddr_t addr, fb_quadlet_t *data, size_t length_quads, size_t blocksize_quads) {
     debugOutput(DEBUG_LEVEL_VERY_VERBOSE,
-                "Writing register 0x%016"PRIX64", length: %zd quadlets, from %p\n",
+                "Writing register 0x%016" PRIX64 ", length: %zd quadlets, from %p\n",
                 addr, length_quads, data);
 
     fb_quadlet_t data_out[length_quads];
@@ -237,9 +237,9 @@ ScsDevice::writeRegBlock(fb_nodeaddr_t addr, fb_quadlet_t *data, size_t length_q
         }
         #endif
 
-        debugOutput(DEBUG_LEVEL_VERBOSE, "writing addr: 0x%016"PRIX64", %d quads from %p\n", curr_addr, quads_todo, curr_data);
+        debugOutput(DEBUG_LEVEL_VERBOSE, "writing addr: 0x%016" PRIX64 ", %d quads from %p\n", curr_addr, quads_todo, curr_data);
         if(!get1394Service().write( nodeId, addr, quads_todo, curr_data ) ) {
-            debugError("Could not write %d quadlets to node 0x%04X addr 0x%012"PRIX64"\n", quads_todo, nodeId, curr_addr);
+            debugError("Could not write %d quadlets to node 0x%04X addr 0x%012" PRIX64 "\n", quads_todo, nodeId, curr_addr);
             return false;
         }
         quads_done += quads_todo;

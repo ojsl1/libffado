@@ -69,7 +69,7 @@ SleepUsecAbsolute(uint64_t wake_at_usec)
     ts.tv_sec = wake_at_usec / (1000000LL);
     ts.tv_nsec = (wake_at_usec % (1000000LL)) * 1000LL;
     debugOutput(DEBUG_LEVEL_VERBOSE,
-                "clock_nanosleep until %"PRId64" sec, %"PRId64" nanosec\n",
+                "clock_nanosleep until %" PRId64 " sec, %" PRId64 " nanosec\n",
                 (int64_t)ts.tv_sec, (int64_t)ts.tv_nsec);
     int err = clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &ts, NULL);
     debugOutput(DEBUG_LEVEL_VERBOSE,
@@ -106,7 +106,7 @@ void* thread_function(void* arg)
         wake_at += SLEEP_PERIOD_USECS;
         
         debugOutput(DEBUG_LEVEL_VERBOSE,
-                    "cuckoo from %p at %012"PRI_FFADO_MICROSECS_T"\n",
+                    "cuckoo from %p at %012" PRI_FFADO_MICROSECS_T "\n",
                     obj, getCurrentTimeAsUsecs());
         
         pthread_testcancel();

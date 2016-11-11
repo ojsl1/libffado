@@ -193,7 +193,7 @@ AmdtpOxfordReceiveStreamProcessor::processPacketHeader(unsigned char *data, unsi
             m_dll_e2 += m_dll_c * err;
 
             debugOutput(DEBUG_LEVEL_VERY_VERBOSE,
-                        "Generated TSP: %16"PRIu64" %"PRId64" %d %d\n", 
+                        "Generated TSP: %16" PRIu64 " %" PRId64 " %d %d\n", 
                         m_next_packet_timestamp,
                         m_next_packet_timestamp-m_last_timestamp,
                         (int)frames_in_tempbuffer,

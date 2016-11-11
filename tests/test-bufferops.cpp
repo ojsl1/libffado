@@ -87,7 +87,7 @@ testByteSwap(int nb_quadlets, int nb_tests) {
         start = Util::SystemTimeSource::getCurrentTimeAsUsecs();
         byteSwapToBus(buffer_1, nb_quadlets);
         elapsed = Util::SystemTimeSource::getCurrentTimeAsUsecs() - start;
-        printMessage( " took %"PRI_FFADO_MICROSECS_T"usec...\n", elapsed);
+        printMessage( " took %" PRI_FFADO_MICROSECS_T "usec...\n", elapsed);
         
     }
 
@@ -155,7 +155,7 @@ testInt24Label(int nb_quadlets, int nb_tests) {
         start = Util::SystemTimeSource::getCurrentTimeAsUsecs();
         convertFromInt24AndLabelAsMBLA(buffer_1, nb_quadlets);
         elapsed = Util::SystemTimeSource::getCurrentTimeAsUsecs() - start;
-        printMessage( " took %"PRI_FFADO_MICROSECS_T"usec...\n", elapsed);
+        printMessage( " took %" PRI_FFADO_MICROSECS_T "usec...\n", elapsed);
     }
 
     // check
@@ -237,7 +237,7 @@ testFloatLabel(int nb_quadlets, int nb_tests) {
         start = Util::SystemTimeSource::getCurrentTimeAsUsecs();
         convertFromFloatAndLabelAsMBLA(buffer_1, nb_quadlets);
         elapsed = Util::SystemTimeSource::getCurrentTimeAsUsecs() - start;
-        printMessage( " took %"PRI_FFADO_MICROSECS_T"usec...\n", elapsed);
+        printMessage( " took %" PRI_FFADO_MICROSECS_T "usec...\n", elapsed);
     }
 
     // check

@@ -50,7 +50,7 @@ int main() {
                           (unsigned int)CYCLE_TIMER_GET_CYCLES(now_ctr),
                           (unsigned int)CYCLE_TIMER_GET_OFFSET(now_ctr));
 
-    debugOutput(DEBUG_LEVEL_VERBOSE,"NOW              : %011"PRIu64" (%03us %04uc %04ut)\n",
+    debugOutput(DEBUG_LEVEL_VERBOSE,"NOW              : %011" PRIu64 " (%03us %04uc %04ut)\n",
                           now,
                           (unsigned int)TICKS_TO_SECS(now),
                           (unsigned int)TICKS_TO_CYCLES(now),
@@ -64,7 +64,7 @@ int main() {
                           cycle);
     uint64_t calc_ts = sytRecvToFullTicks(syt, cycle, now_ctr);
 
-    debugOutput(DEBUG_LEVEL_VERBOSE,"CALC_TS          : %011"PRIu64" (%03us %04uc %04ut)\n",
+    debugOutput(DEBUG_LEVEL_VERBOSE,"CALC_TS          : %011" PRIu64 " (%03us %04uc %04ut)\n",
                           calc_ts,
                           (unsigned int)TICKS_TO_SECS(calc_ts),
                           (unsigned int)TICKS_TO_CYCLES(calc_ts),
