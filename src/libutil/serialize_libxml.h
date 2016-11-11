@@ -80,7 +80,7 @@ namespace Util {
 
         DECLARE_DEBUG_MODULE;
 
-        xmlpp::Node* getNodePath( xmlpp::Node* pRootNode,
+        xmlpp::Element* getNodePath( xmlpp::Element* pRootNode,
                                   std::vector<std::string>& tokens );
     };
 

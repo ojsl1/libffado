@@ -75,11 +75,19 @@ Util::XMLSerialize::~XMLSerialize()
 void
 Util::XMLSerialize::writeVersion()
 {
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Element* pElem =  m_doc.get_root_node()->add_child_element( "CacheVersion" );
+#else
     xmlpp::Node* pNode = m_doc.get_root_node();
     xmlpp::Element* pElem = pNode->add_child( "CacheVersion" );
+#endif
     char* valstr;
     asprintf( &valstr, "%s", CACHE_VERSION );
+#if LIBXMLXX_MAJOR_VERSION == 3
+    pElem->set_first_child_text( valstr );
+#else
     pElem->set_child_text( valstr );
+#endif
     free( valstr );
 }
 
@@ -99,14 +107,22 @@ Util::XMLSerialize::write( std::string strMemberName,
         return false;
     }
 
-    xmlpp::Node* pNode = m_doc.get_root_node();
+    xmlpp::Element* pNode = m_doc.get_root_node();
     pNode = getNodePath( pNode, tokens );
 
     // element to be added
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Element* pElem = pNode->add_child_element( tokens[tokens.size() - 1] );
+#else
     xmlpp::Element* pElem = pNode->add_child( tokens[tokens.size() - 1] );
+#endif
     char* valstr;
     asprintf( &valstr, "%lld", value );
+#if LIBXMLXX_MAJOR_VERSION == 3
+    pElem->set_first_child_text( valstr );
+#else
     pElem->set_child_text( valstr );
+#endif
     free( valstr );
 
     return true;
@@ -127,18 +143,23 @@ Util::XMLSerialize::write( std::string strMemberName,
         return false;
     }
 
-    xmlpp::Node* pNode = m_doc.get_root_node();
+    xmlpp::Element* pNode = m_doc.get_root_node();
     pNode = getNodePath( pNode, tokens );
 
     // element to be added
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Element* pElem = pNode->add_child_element( tokens[tokens.size() - 1] );
+    pElem->set_first_child_text( str );
+#else
     xmlpp::Element* pElem = pNode->add_child( tokens[tokens.size() - 1] );
     pElem->set_child_text( str );
+#endif
 
     return true;
 }
 
-xmlpp::Node*
-Util::XMLSerialize::getNodePath( xmlpp::Node* pRootNode,
+xmlpp::Element*
+Util::XMLSerialize::getNodePath( xmlpp::Element* pRootNode,
                                  std::vector<string>& tokens )
 {
     // returns the correct node on which the new element has to be added.
@@ -149,7 +170,7 @@ Util::XMLSerialize::getNodePath( xmlpp::Node* pRootNode,
     }
 
     unsigned int iTokenIdx = 0;
-    xmlpp::Node* pCurNode = pRootNode;
+    xmlpp::Element* pCurNode = pRootNode;
     for (bool bFound = false;
          ( iTokenIdx < tokens.size() - 1 );
          bFound = false, iTokenIdx++ )
@@ -160,7 +181,7 @@ Util::XMLSerialize::getNodePath( xmlpp::Node* pRootNode,
               ++it )
         {
             if ( ( *it )->get_name() == tokens[iTokenIdx] ) {
-                pCurNode = *it;
+                pCurNode = (xmlpp::Element*) *it;
                 bFound = true;
                 break;
             }
@@ -171,7 +192,11 @@ Util::XMLSerialize::getNodePath( xmlpp::Node* pRootNode,
     }
 
     for ( unsigned int i = iTokenIdx; i < tokens.size() - 1; i++, iTokenIdx++ ) {
+#if LIBXMLXX_MAJOR_VERSION == 3
+        pCurNode = pCurNode->add_child_element( tokens[iTokenIdx] );
+#else
         pCurNode = pCurNode->add_child( tokens[iTokenIdx] );
+#endif
     }
     return pCurNode;
 
@@ -254,17 +279,29 @@ Util::XMLDeserialize::read( std::string strMemberName,
 
     debugOutput( DEBUG_LEVEL_VERY_VERBOSE, "pNode = %s\n", pNode->get_name().c_str() );
 
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Node::NodeSet nodeSet = pNode->find( strMemberName );
+    for ( xmlpp::Node::NodeSet::iterator it = nodeSet.begin();
+          it != nodeSet.end();
+          ++it )
+#else
     xmlpp::NodeSet nodeSet = pNode->find( strMemberName );
     for ( xmlpp::NodeSet::iterator it = nodeSet.begin();
           it != nodeSet.end();
           ++it )
+#endif
     {
         const xmlpp::Element* pElement =
             dynamic_cast< const xmlpp::Element* >( *it );
         if ( pElement && pElement->has_child_text() ) {
             char* tail;
+#if LIBXMLXX_MAJOR_VERSION == 3
+            value = strtoll( pElement->get_first_child_text()->get_content().c_str(),
+                             &tail, 0 );
+#else
             value = strtoll( pElement->get_child_text()->get_content().c_str(),
                              &tail, 0 );
+#endif
             debugOutput( DEBUG_LEVEL_VERY_VERBOSE, "found %s = %lld\n",
                          strMemberName.c_str(), value );
             return true;
@@ -290,15 +327,26 @@ Util::XMLDeserialize::read( std::string strMemberName,
     }
     xmlpp::Node* pNode = pDoc->get_root_node();
 
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Node::NodeSet nodeSet = pNode->find( strMemberName );
+    for ( xmlpp::Node::NodeSet::iterator it = nodeSet.begin();
+          it != nodeSet.end();
+          ++it )
+#else
     xmlpp::NodeSet nodeSet = pNode->find( strMemberName );
     for ( xmlpp::NodeSet::iterator it = nodeSet.begin();
           it != nodeSet.end();
           ++it )
+#endif
     {
         const xmlpp::Element* pElement = dynamic_cast< const xmlpp::Element* >( *it );
         if ( pElement ) {
             if ( pElement->has_child_text() ) {
+#if LIBXMLXX_MAJOR_VERSION == 3
+                str = pElement->get_first_child_text()->get_content();
+#else
                 str = pElement->get_child_text()->get_content();
+#endif
             } else {
                 str = "";
             }
@@ -322,7 +370,11 @@ Util::XMLDeserialize::isExisting( std::string strMemberName )
         return false;
     }
     xmlpp::Node* pNode = pDoc->get_root_node();
+#if LIBXMLXX_MAJOR_VERSION == 3
+    xmlpp::Node::NodeSet nodeSet = pNode->find( strMemberName );
+#else
     xmlpp::NodeSet nodeSet = pNode->find( strMemberName );
+#endif
     return nodeSet.size() > 0;
 }
 

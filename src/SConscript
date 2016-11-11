@@ -288,6 +288,9 @@ if not env.GetOption( "clean" ):
 	libenv.MergeFlags( env['LIBIEC61883_FLAGS'] )
 	libenv.MergeFlags( env['LIBCONFIG_FLAGS'] )
 	if not env['SERIALIZE_USE_EXPAT']:
+            if 'LIBXML30_FLAGS' in env :
+		libenv.MergeFlags( env['LIBXML30_FLAGS'] )
+            if not('LIBXML30_FLAGS' in env) :
 		libenv.MergeFlags( env['LIBXML26_FLAGS'] )
 	else:
 		libenv.PrependUnique( LIBS=["expat"] )

@@ -276,7 +276,10 @@ if not env.GetOption('clean'):
         pkgs['libavc1394'] = '0.5.3'
 
     if not env['SERIALIZE_USE_EXPAT']:
-        pkgs['libxml++-2.6'] = '2.13.0'
+        if conf.CheckPKG('libxml++-3.0'):
+            pkgs['libxml++-3.0'] = '3.0.0'
+        if not('libxml++-3.0' in pkgs):
+            pkgs['libxml++-2.6'] = '2.13.0'
 
     # Provide a way for users to compile newer libffado which will work 
     # against older jack installations which will not accept the new API
@@ -357,6 +360,8 @@ results above get rechecked.
     # and ffado itself, although a significant number of warnings are
     # produced.  Add the necessary option to CXXFLAGS if required.
     if conf.CheckPKG('libxml++-2.6 >= 2.39.1'):
+        env.Append(CXXFLAGS = '-std=gnu++11')
+    if conf.CheckPKG('libxml++-3.0 >= 3.0.0'):
         env.Append(CXXFLAGS = '-std=gnu++11')
 
     # Check for C99 lrint() and lrintf() functions used to convert from
