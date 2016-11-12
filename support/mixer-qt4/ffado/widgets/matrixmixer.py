@@ -23,7 +23,7 @@
 from PyQt4 import QtGui, QtCore, Qt
 from PyQt4.QtGui import QColor, QAbstractSlider, QDoubleSpinBox, QWidgetAction
 from PyQt4.QtGui import QAction, QPainter, QWidget, QGridLayout, QLabel
-from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette,
+from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette
 from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QTabWidget, QToolBar
 from PyQt4.QtGui import QComboBox, QScrollArea, QPushButton, QSizePolicy
 import dbus, math, decimal
