@@ -21,6 +21,7 @@
 #
 
 from PyQt4 import QtGui, QtCore, Qt
+from PyQt4.QtCore import pyqtSignal
 from PyQt4.QtGui import QColor, QAbstractSlider, QDoubleSpinBox, QWidgetAction
 from PyQt4.QtGui import QAction, QPainter, QWidget, QGridLayout, QLabel
 from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette
@@ -123,7 +124,7 @@ class MixerNode(QAbstractSlider):
             max = pow(2, 16)-1
         self.setRange(0, max)
         self.setValue(value)
-        self.connect(self, QtCore.SIGNAL("valueChanged(int)"), self.internalValueChanged)
+        self.valueChanged.connect(self.internalValueChanged)
 
         self.setSmall(False)
 
@@ -131,7 +132,7 @@ class MixerNode(QAbstractSlider):
 
         self.setContextMenuPolicy(Qt.Qt.ActionsContextMenu)
         self.mapper = QtCore.QSignalMapper(self)
-        self.connect(self.mapper, QtCore.SIGNAL("mapped(const QString&)"), self.directValues)
+        self.mapper.mapped.connect(self.directValues)
 
         self.spinbox = QDoubleSpinBox(self)
         self.spinbox.setRange(-40, 12)
@@ -139,14 +140,14 @@ class MixerNode(QAbstractSlider):
         if value != 0:
             self.spinbox.setValue(toDBvalue(value))            
 
-        self.connect(self.spinbox, QtCore.SIGNAL("valueChanged(const QString&)"), self.directValues)
+        self.spinbox.valueChanged.connect(self.directValues)
         action = QWidgetAction(self)
         action.setDefaultWidget(self.spinbox)
         self.addAction(action)
 
         for text in ["3 dB", "0 dB", "-3 dB", "-20 dB", "-inf dB"]:
             action = QAction(text, self)
-            self.connect(action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
+            action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(action, text)
             self.addAction(action)
 
@@ -159,7 +160,7 @@ class MixerNode(QAbstractSlider):
             self.mute_action = QAction("Mute", self)
             self.mute_action.setCheckable(True)
             self.mute_action.setChecked(muted)
-            self.connect(self.mute_action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
+            self.mute_action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(self.mute_action, "Mute")
             self.addAction(self.mute_action)
 
@@ -173,7 +174,7 @@ class MixerNode(QAbstractSlider):
             self.inv_action = QAction("Invert", self)
             self.inv_action.setCheckable(True)
             self.inv_action.setChecked(inverted)
-            self.connect(self.inv_action, QtCore.SIGNAL("triggered()"), self.mapper, QtCore.SLOT("map()"))
+            self.inv_action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(self.inv_action, "Invert")
             self.addAction(self.inv_action)
 
@@ -262,7 +263,7 @@ class MixerNode(QAbstractSlider):
             dB = toDBvalue(value)
             if self.spinbox.value() is not dB:
                 self.spinbox.setValue(dB)
-        self.emit(QtCore.SIGNAL("valueChanged"), (self.input, self.output, value) )
+        self.valueChanged.emit(self.input, self.output, value)
         self.update()
 
     def setSmall(self, small):
@@ -275,6 +276,7 @@ class MixerNode(QAbstractSlider):
         self.update()
 
 class MixerChannel(QWidget):
+    hide = pyqtSignal(int, bool, name='hide')
     def __init__(self, number, parent=None, name="", smallFont=False):
         QWidget.__init__(self, parent)
         layout = QGridLayout(self)
@@ -293,7 +295,7 @@ class MixerChannel(QWidget):
 
         action = QAction("Make this channel small", self)
         action.setCheckable(True)
-        self.connect(action, QtCore.SIGNAL("triggered(bool)"), self.hideChannel)
+        action.triggered.connect(self.hideChannel)
         self.addAction(action)
 
     def hideChannel(self, hide):
@@ -301,11 +303,12 @@ class MixerChannel(QWidget):
             self.lbl.setText("%i" % (self.number+1));
         else:
             self.lbl.setText(self.name)
-        self.emit(QtCore.SIGNAL("hide"), self.number, hide)
+        self.hide.emit(self.number, hide)
         self.update()
 
 # Matrix view widget
 class MatrixControlView(QWidget):
+    valueChanged = pyqtSignal([dict])
     def __init__(self, servername, basepath, parent=None, sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, shortname=False, shortcolname="Ch", shortrowname="Ch", transpose=False):
         QWidget.__init__(self, parent)
 
@@ -353,7 +356,7 @@ class MatrixControlView(QWidget):
         if (self.cols > 1):
             for i in range(self.cols):
                 ch = MixerChannel(i, self, self.getColName(i, self.shortname), smallFont)
-                self.connect(ch, QtCore.SIGNAL("hide"), self.hideColumn)
+                ch.hide.connect(self.hideColumn)
                 layout.addWidget(ch, 0, i+1)
                 self.columnHeaders.append( ch )
             layout.setRowStretch(0, 0)
@@ -361,7 +364,7 @@ class MatrixControlView(QWidget):
         if (self.rows > 1):
             for i in range(self.rows):
                 ch = MixerChannel(i, self, self.getRowName(i, self.shortname), smallFont)
-                self.connect(ch, QtCore.SIGNAL("hide"), self.hideRow)
+                ch.hide.connect(self.hideRow)
                 layout.addWidget(ch, i+1, 0)
                 self.rowHeaders.append( ch )
 
@@ -397,10 +400,10 @@ class MatrixControlView(QWidget):
         self.hiddenCols = []
 
     def nodeConnect(self, node):
-        self.connect(node, QtCore.SIGNAL("valueChanged"), self.valueChanged)
+        node.valueChanged.connect(self.valueChangedFn)
 
     def nodeDisconnect(self, node):
-        self.disconnect(node, QtCore.SIGNAL("valueChanged"), self.valueChanged)
+        node.valueChanged.disconnect(self.valueChangedFn)
 
     def checkVisibilities(self):
         for x in range(len(self.items)):
@@ -447,10 +450,10 @@ class MatrixControlView(QWidget):
             name = self.shortrowname + number
         return name
 
-    def valueChanged(self, n):
-        #log.debug("MatrixNode.valueChanged( %s )" % str(n))
+    def valueChangedFn(self, n):
+        #log.debug("MatrixNode.valueChangedFn( %s )" % str(n))
         self.interface.setValue(n[1], n[0], n[2])
-        self.emit(QtCore.SIGNAL("valueChanged"), n)
+        self.valueChanged.emit(n)
         
     # Update when routing is modified
     def updateRouting(self):
@@ -658,7 +661,7 @@ class VolumeSlider(QSlider):
         self.sliderSetValue(value)
         self.In = In
         self.Out = Out
-        self.connect(self, QtCore.SIGNAL("valueChanged(int)"), self.sliderValueChanged)
+        self.valueChanged.connect(self.sliderValueChanged)
 
     def sliderSetValue(self, value):
         #log.debug("Volume slider value changed( %i )" % value)
@@ -673,7 +676,7 @@ class VolumeSlider(QSlider):
     # Emit signal for further use, especially for matrix view
     def sliderValueChanged(self, value):
         value = fromDBvalue(0.1*value)
-        self.emit(QtCore.SIGNAL("valueChanged"), (self.In, self.Out, value))
+        self.valueChanged.emit(self.In, self.Out, value)
         self.update()
 
 
@@ -726,7 +729,7 @@ class BalanceSlider(QSlider):
         self.In = In
         self.Out = Out
         self.sliderSetValue(value)
-        self.connect(self, QtCore.SIGNAL("valueChanged(int)"), self.sliderValueChanged)
+        self.valueChanged.connect(self.sliderValueChanged)
 
     def sliderSetValue(self, value):
         #log.debug("Balance fader value set( %d, %d, %f )" % (self.In, self.Out, value))
@@ -739,10 +742,11 @@ class BalanceSlider(QSlider):
     def sliderValueChanged(self, value):
         value = float(round(self.value()/50.0, 2))
         #log.debug("Balance fader value changed( %d, %d, %f )" % (self.In, self.Out, value))
-        self.emit(QtCore.SIGNAL("valueChanged"), (self.In, self.Out, value))
+        self.valueChanged.emit(self.In, self.Out, value)
 
 # Slider view widget
 class SliderControlView(QWidget):
+    valueChanged = pyqtSignal(list)
     def __init__(self, parent, servername, basepath, rule="Columns_are_inputs", shortname=False, shortinname="Ch", shortoutname="Ch", stereochannels = []):
         QWidget.__init__(self, parent)
 
@@ -840,16 +844,16 @@ class SliderControlView(QWidget):
                 k += 1
 
     def volumeConnect(self, volume):
-        self.connect(volume, QtCore.SIGNAL("valueChanged"), self.valueChangedVolume)
+        self.valueChanged.connect(self.valueChangedVolume)
 
     def volumeDisconnect(self, volume):
-        self.disconnect(volume, QtCore.SIGNAL("valueChanged"), self.valueChangedVolume)
+        self.valueChanged.disconnect(self.valueChangedVolume)
 
     def balanceConnect(self, balance):
-        self.connect(balance, QtCore.SIGNAL("valueChanged"), self.valueChangedBalance)
+        balance.valueChanged.connect(self.valueChangedBalance)
 
     def balanceDisconnect(self, balance):
-        self.disconnect(balance, QtCore.SIGNAL("valueChanged"), self.valueChangedBalance)
+        balance.valueChanged.disconnect(self.valueChangedBalance)
 
     def getNbIn(self):
         if (self.rule == "Columns_are_inputs"):
@@ -933,11 +937,11 @@ class SliderControlView(QWidget):
             vr = int(getVolumeRight(v, b))
             self.setValue(n[0], n2, vr)
             n_t = (n[0], n1, vl, n[0], n2, vr)
-            self.emit(QtCore.SIGNAL("valueChanged"), n_t)
+            self.valueChanged.emit(n_t)
         else:
             self.setValue(n[0], n1, v)
             n_t = (n[0], n1, v)
-            self.emit(QtCore.SIGNAL("valueChanged"), n_t)
+            self.valueChanged.emit(n_t)
         self.out[n[1]].svl[n[0]].sliderSetValue(v)
 
     def valueChangedBalance(self, n):
@@ -951,7 +955,7 @@ class SliderControlView(QWidget):
         vr = int(getVolumeRight(v, b))
         self.setValue(n[0], n2, vr)
         n_t = (n[0], n1, vl, n[0], n2, vr)
-        self.emit(QtCore.SIGNAL("valueChanged"), n_t)
+        self.valueChanged.emit(n_t)
 
     def getOutName(self, i, shortname):
         self.shortname = shortname
@@ -1169,7 +1173,7 @@ class MatrixMixer(QWidget):
         font_switch.setCurrentIndex(font_switch.findText(" %d " % font.pointSize()))
         mxv_set.addWidget(font_switch)
         mxv_set.addSeparator()
-        self.connect(font_switch, QtCore.SIGNAL("activated(QString)"), self.changeFontSize)
+        font_switch.activated.connect(self.changeFontSize)
 
         self.layout.addWidget(mxv_set)
         self.mxv_set = mxv_set
@@ -1189,7 +1193,7 @@ class MatrixMixer(QWidget):
             self.matrix = MatrixControlView(servername, basepath, self, sliderMaxValue, mutespath, invertspath, smallFont, self.short_names_bool, "In", "Out", self.transpose)
         else:
             self.matrix = MatrixControlView(servername, basepath, self, sliderMaxValue, mutespath, invertspath, smallFont, self.short_names_bool, "Out", "In", self.transpose)
-        self.connect(self.matrix, QtCore.SIGNAL("valueChanged"), self.matrixControlChanged)
+        self.matrix.valueChanged.connect(self.matrixControlChanged)
 
         self.scrollarea_matrix = QScrollArea(self.tabs)
         self.scrollarea_matrix.setWidgetResizable(True)
@@ -1229,7 +1233,7 @@ class MatrixMixer(QWidget):
 
         # Per out view tabs
         self.perOut = SliderControlView(self, servername, basepath, rule, self.short_names_bool, "In", "Out", self.stereo_channels)
-        self.connect(self.perOut, QtCore.SIGNAL("valueChanged"), self.sliderControlChanged)
+        self.perOut.valueChanged.connect(self.sliderControlChanged)
         for i in range(self.perOut.nbOut):
             self.perOut.out[i].scrollarea = QScrollArea(self.tabs)
             self.perOut.out[i].scrollarea.setWidgetResizable(True)
@@ -1244,7 +1248,7 @@ class MatrixMixer(QWidget):
             self.matrix = MatrixControlView(self.servername, self.basepath, self, self.sliderMaxValue, self.mutespath, self.invertspath, self.smallFont, self.short_names_bool, "In", "Out", self.transpose)
         else:
             self.matrix = MatrixControlView(self.servername, self.basepath, self, self.sliderMaxValue, self.mutespath, self.invertspath, self.smallFont, self.short_names_bool, "Out", "In", self.transpose)
-        self.connect(self.matrix, QtCore.SIGNAL("valueChanged"), self.matrixControlChanged)
+        self.matrix.valueChanged.connect(self.matrixControlChanged)
 
         self.scrollarea_matrix = QScrollArea(self.tabs)
         self.scrollarea_matrix.setWidgetResizable(True)
@@ -1384,7 +1388,7 @@ class MatrixMixer(QWidget):
             self.tabs.removeTab(index_0)
         self.perOut.destroy()
         self.perOut = SliderControlView(self, self.servername, self.basepath, self.rule, self.short_names_bool, "In", "Out", self.stereo_channels)
-        self.connect(self.perOut, QtCore.SIGNAL("valueChanged"), self.sliderControlChanged)
+        self.perOut.valueChanged.connect(self.sliderControlChanged)
         current = 0
         for i in range(self.perOut.nbOut):
             self.perOut.out[i].scrollarea = QScrollArea(self.tabs)

@@ -22,7 +22,7 @@
 
 from PyQt4 import QtGui
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject, Qt, QTimer
+from PyQt4.QtCore import QObject, Qt, QTimer
 from PyQt4.QtGui import QWidget, QApplication, QVBoxLayout
 from ffado.config import *
 
@@ -308,41 +308,41 @@ class Rme(QWidget):
         for ctrl, info in self.CommandButtons.iteritems():
             if (not(ctrl.isEnabled())):
                 continue
-            QObject.connect(ctrl, SIGNAL('clicked(bool)'), self.sendCommand)
+            ctrl.clicked.connect(self.sendCommand)
 
         for ctrl, info in self.Combos.iteritems():
             if (not(ctrl.isEnabled())):
                 continue;
-            QObject.connect(ctrl, SIGNAL('currentIndexChanged(int)'), self.updateCombo)
+            ctrl.currentIndexChanged.connect(self.updateCombo)
 
-        QObject.connect(self.bandwidth_limit, SIGNAL('currentIndexChanged(int)'), self.updateBandwidthLimit)
+        self.bandwidth_limit.currentIndexChanged.connect(self.updateBandwidthLimit)
 
         # Get current hardware values and connect GUI element signals to 
         # their respective slots
         for ctrl, info in self.PhantomSwitches.iteritems():
             if (not(ctrl.isEnabled())):
                 continue
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updatePhantomSwitch)
+            ctrl.toggled.connect(self.updatePhantomSwitch)
 
         for ctrl, info in self.Switches.iteritems():
             if (not(ctrl.isEnabled())):
                 continue
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updateSwitch)
+            ctrl.toggled.connect(self.updateSwitch)
 
         for ctrl, info in self.Radiobuttons.iteritems():
             if (not(ctrl.isEnabled())):
                 continue;
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updateRadiobutton)
+            ctrl.toggled.connect(self.updateRadiobutton)
 
         for ctrl, info in self.Checkboxes.iteritems():
             if (not(ctrl.isEnabled())):
                 continue;
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updateCheckboxes)
+            ctrl.toggled.connect(self.updateCheckboxes)
 
         for ctrl, info in self.Gains.iteritems():
             if (not(ctrl.isEnabled())):
                 continue
-            QObject.connect(ctrl, SIGNAL('valueChanged(int)'), self.updateGain)
+            ctrl.valueChanged.connect(self.updateGain)
 
     # Obtain control values from the Fireface and make the GUI reflect these
     def getValuesFromFF(self):
@@ -532,13 +532,13 @@ class Rme(QWidget):
         # it.  If getValuesFromFF() disabled it because the front input was
         # not selected, setupSignals() would not have configured a handler.
         if (not(self.ch1_instr_limiter.isEnabled())):
-            QObject.connect(self.ch1_instr_limiter, SIGNAL('toggled(bool)'), self.updateCheckboxes)
+            self.ch1_instr_limiter.toggled.connect(self.updateCheckboxes)
 
         self.updateStreamingState()
         #log.debug("device streaming flag: %d" % (self.is_streaming))
 
         self.update_timer = QTimer(self)
-        QObject.connect(self.update_timer, SIGNAL('timeout()'), self.status_update)
+        self.update_timer.timeout.connect(self.status_update)
         self.update_timer.start(1000)
 
     def saveSettings(self, indent):

@@ -22,7 +22,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QWidget
 from math import log10
 from ffado.config import *
@@ -105,18 +104,18 @@ class Phase88Control(QWidget):
 		if pvol == vol:
 			link.setChecked(True)
 		
-		QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
+                ctl.valueChanged.connect(self.updateVolume)
 
 	# selector controls
 	for ctl, param in self.SelectorControls.iteritems():
 		state = self.hw.getDiscrete(param)
 		ctl.setCurrentIndex(state)
 		
-		QObject.connect(ctl, SIGNAL('activated(int)'), self.updateSelector)
+                ctl.activated.connect(self.updateSelector)
 
 	# mute controls
 	for ctl, param in self.MuteControls.iteritems():
-		QObject.connect(ctl, SIGNAL('toggled(bool)'), self.muteVolume)
+                ctl.toggled.connect(self.muteVolume)
 
 
     # helper functions 

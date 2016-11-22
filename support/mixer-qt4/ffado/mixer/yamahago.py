@@ -21,7 +21,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, QObject
 from PyQt4.QtGui import QWidget
 from math import log10
 from ffado.config import *
@@ -150,18 +149,17 @@ class YamahaGo(QWidget):
             if pvol == vol:
                 link.setChecked(True)
 
-            QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
+            ctl.valueChanged.connect(self.updateVolume)
 
         # source selector for jack output
         for ctl, param in list(self.JackSourceSelectors.items()):
             state = self.hw.getDiscrete(param)
             ctl.setCurrentIndex(state)
 
-            QObject.connect(ctl, SIGNAL('activated(int)'), self.updateSelector)
+            ctl.activated.connect(self.updateSelector)
 
         if not self.is46:
-            QObject.connect(self.cmb_ana_in_12_level, SIGNAL('activated(int)'),
-                            self.updateMicLevel)
+            self.cmb_ana_in_12_level.activated.connect(self.updateMicLevel)
 
     # helper functions
     def vol2db(self, vol):

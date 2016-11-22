@@ -21,7 +21,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QDialog
 from ffado.config import *
 
@@ -63,9 +62,9 @@ class ffadoRegDialog(QDialog):
         self.txtMessage.setHtml(REGISTRATION_MESSAGE)
 
         self.choice = "nosend"
-        QObject.connect(self.btnSend,SIGNAL('clicked()'),self.buttonPressed)
-        QObject.connect(self.btnNoSend,SIGNAL('clicked()'),self.buttonPressed)
-        QObject.connect(self.btnNeverSend,SIGNAL('clicked()'),self.buttonPressed)
+        self.btnSend.clicked.connect(self.buttonPressed)
+        self.btnNoSend.clicked.connect(self.buttonPressed)
+        self.btnNeverSend.clicked.connect(self.buttonPressed)
 
     def buttonPressed(self):
         sender = self.sender()

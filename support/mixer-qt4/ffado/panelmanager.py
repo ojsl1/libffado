@@ -25,7 +25,7 @@
 from ffado.config import * #FFADO_VERSION, FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH
 
 from PyQt4.QtGui import QFrame, QWidget, QTabWidget, QVBoxLayout, QMainWindow, QIcon, QAction, qApp, QStyleOptionTabWidgetFrame, QFileDialog
-from PyQt4.QtCore import QTimer
+from PyQt4.QtCore import QTimer, pyqtSignal
 
 from ffado.dbus_util import *
 from ffado.registration import *
@@ -83,6 +83,7 @@ class OwnTabWidget(QTabWidget):
             self.tabBar().show()
 
 class PanelManager(QWidget):
+    connectionLost = pyqtSignal(name='connectionLost')
     def __init__(self, parent, devmgr=None):
         QWidget.__init__(self, parent)
         self.setObjectName("PanelManager")
@@ -122,7 +123,7 @@ class PanelManager(QWidget):
         self.devmgr.registerDestroyedCallback(self.devmgrDestroyed)
         # create a timer to poll the panels
         self.polltimer = QTimer()
-        self.connect( self.polltimer, SIGNAL('timeout()'), self.pollPanels )
+        self.polltimer.timeout.connect(self.pollPanels)
         self.polltimer.start( POLL_SLEEP_TIME_MSEC )
 
         # create a timer to initialize the panel after the main form is shown
@@ -131,7 +132,7 @@ class PanelManager(QWidget):
 
         # live check timer
         self.alivetimer = QTimer()
-        QObject.connect( self.alivetimer, SIGNAL('timeout()'), self.commCheck )
+        self.alivetimer.timeout.connect(self.commCheck)
         self.alivetimer.start( 2000 )
 
     def count(self):
@@ -211,7 +212,7 @@ class PanelManager(QWidget):
                 w = self.panels[panel]
                 del self.panels[panel]
                 w.deleteLater()
-            self.emit(SIGNAL("connectionLost"))
+            self.connectionLost.emit()
 
     def removePanel(self, guid):
         print "Removing widget for device" + guid

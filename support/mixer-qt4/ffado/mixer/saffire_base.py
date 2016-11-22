@@ -20,8 +20,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
-
 import logging
 log = logging.getLogger('saffirebase')
 
@@ -138,21 +136,21 @@ class SaffireMixerBase:
     def initValues(self):
         self.updateValues()
         for ctrl, info in self.VolumeControls.iteritems():
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateMatrixVolume)
+            ctrl.valueChanged.connect(self.updateMatrixVolume)
 
         for ctrl, info in self.VolumeControlsLowRes.iteritems():
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateLowResVolume)
+            ctrl.valueChanged.connect(self.updateLowResVolume)
 
         for ctrl, info in self.SelectorControls.iteritems():
-            QObject.connect(ctrl,SIGNAL('stateChanged(int)'),self.updateSelector)
+            ctrl.stateChanged.connect(self.updateSelector)
 
         for ctrl, info in self.TriggerButtonControls.iteritems():
-            QObject.connect(ctrl,SIGNAL('clicked()'),self.triggerButton)
+            ctrl.clicked.connect(,self.triggerButton)
 
         for ctrl, info in self.saveTextControls.iteritems():
-            QObject.connect(ctrl,SIGNAL('clicked()'), self.saveText)
+            ctrl.clicked.connect(self.saveText)
 
         for ctrl, info in self.ComboControls.iteritems():
-            QObject.connect(ctrl, SIGNAL('activated(int)'), self.selectCombo)
+            ctrl.activated.connect(self.selectCombo)
 
 # vim: et

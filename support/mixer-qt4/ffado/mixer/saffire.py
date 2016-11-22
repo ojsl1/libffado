@@ -20,7 +20,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QWidget, QHBoxLayout
 from ffado.config import *
 from ffado.mixer.saffire_base import SaffireMixerBase
@@ -168,8 +167,8 @@ class SaffireMixerStereo(QWidget, SaffireMixerBase):
         QWidget.__init__(self,parent)
         uicLoad("ffado/mixer/saffire_stereo", self)
         SaffireMixerBase.__init__(self)
-        QObject.connect(self.btnRefresh, SIGNAL('clicked()'), self.updateValues)
-        QObject.connect(self.btnSwitchStereoMode, SIGNAL('clicked()'), self.switchStereoMode)
+        self.btnRefresh.clicked.connect(self.updateValues)
+        self.btnSwitchStereoMode,.clicked.connect(self.switchStereoMode)
 
         self.VolumeControls={
                 self.sldPC910Out910: ['/Mixer/MatrixMixerStereo', 0, 0],
@@ -296,8 +295,8 @@ class SaffireMixerMono(QWidget, SaffireMixerBase):
         QWidget.__init__(self,parent)
         uicLoad("ffado/mixer/saffire_mono", self)
         SaffireMixerBase.__init__(self)
-        QObject.connect(self.btnRefresh, SIGNAL('clicked()'), self.updateValues)
-        QObject.connect(self.btnSwitchStereoMode, SIGNAL('clicked()'), self.switchStereoMode)
+        self.btnRefresh.clicked.connect(self.updateValues)
+        self.btnSwitchStereoMode.clicked.connect(self.switchStereoMode)
 
         self.VolumeControls={
                 self.sldIN1Out910: ['/Mixer/MatrixMixerMono', 0, 0],

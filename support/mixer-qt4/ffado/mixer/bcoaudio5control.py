@@ -20,7 +20,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QWidget
 from ffado.config import *
 import logging

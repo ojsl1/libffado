@@ -20,7 +20,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject
 from PyQt4.QtGui import QWidget
 from ffado.config import *
 
@@ -83,7 +82,7 @@ class QuataFire(QWidget):
             ctrl.setValue(val)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateVolume)
+            ctrl.valueChanged.connect(self.updateVolume)
 
         for ctrl, info in self.PanControls.iteritems():
             pan_left = self.hw.getContignuous(self.PanControls[ctrl][0], 1)
@@ -99,6 +98,6 @@ class QuataFire(QWidget):
 
             ctrl.setValue(val)
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updatePan)
+            ctrl.valueChanged.connect(self.updatePan)
 
 # vim: et

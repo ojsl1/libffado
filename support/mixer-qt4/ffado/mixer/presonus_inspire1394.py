@@ -20,7 +20,7 @@
 #
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QObject, Qt, SIGNAL
+from PyQt4.QtCore import QObject, Qt
 from PyQt4.QtGui import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt4.QtGui import QGroupBox, QLabel, QSizePolicy, QSlider, QDial, QComboBox, QToolButton
 from math import log10
@@ -204,7 +204,7 @@ class Presonus_Inspire1394(QWidget):
            path = params[0]
            state = self.hw.getDiscrete(path)
            ctl.setCurrentIndex(state)
-           QObject.connect(ctl, SIGNAL('activated(int)'), self.updateSelector)
+           ctl.activated.connect(self.updateSelector)
 
         for ctl, params in self.Volumes.items():
            path = params[0]
@@ -216,7 +216,7 @@ class Presonus_Inspire1394(QWidget):
            db = self.hw.getContignuous(path, idx)
            vol = self.db2vol(db)
            ctl.setValue(vol)
-           QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
+           ctl.valueChanged.connect(self.updateVolume)
 
            if vol == 0:
                mute.setChecked(True)
@@ -234,7 +234,7 @@ class Presonus_Inspire1394(QWidget):
             if vol > 0:
                 ctl.setChecked(True)
 
-            QObject.connect(ctl, SIGNAL('clicked(bool)'), self.updatePreamps)
+            ctl.clicked.connect(self.updatePreamps)
 
         #       Right - Center - Left
         # 0x8000 - 0x0000 - 0x0001 - 0x7FFE
@@ -246,10 +246,10 @@ class Presonus_Inspire1394(QWidget):
             val = self.hw.getContignuous(path, idx)
             state = -(val / 0x7FFE) * 50 + 50
             ctl.setValue(state)
-            QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updatePanning)
+            ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in self.Mutes.items():
-            QObject.connect(ctl, SIGNAL('clicked(bool)'), self.updateMute)
+            ctl.clicked.connect(self.updateMute)
 
     # helper functions
     def vol2db(self, vol):

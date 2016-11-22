@@ -20,7 +20,7 @@
 #
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QObject, Qt, SIGNAL
+from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QHBoxLayout, QVBoxLayout, QGridLayout
 from PyQt4.QtGui import QWidget, QTabWidget, QGroupBox, QLabel, QSizePolicy, QToolButton, QSlider, QComboBox, QSpacerItem, QDial
 from math import log10
@@ -216,14 +216,14 @@ class Presonus_Firebox(QWidget):
             path = params[0]
             state = self.hw.getDiscrete(path)
             elm.setCurrentIndex(state)
-            QObject.connect(elm, SIGNAL('activated(int)'), self.updateSelector)
+            elm.activated.connect(self.updateSelector)
 
         for elm, params in self.MicBoosts.items():
             path = params[0]
             idx  = params[1]
             value = self.hw.getContignuous(path, idx)
             elm.setChecked(not value == 0)
-            QObject.connect(elm, SIGNAL('clicked(bool)'), self.updateMicBoost)
+            elm.clicked.connect(self.updateMicBoost)
 
         for elm, params in self.Volumes.items():
             path = params[0]
@@ -231,7 +231,7 @@ class Presonus_Firebox(QWidget):
             db   = self.hw.getContignuous(path, idx)
             vol  = self.db2vol(db)
             elm.setValue(vol)
-            QObject.connect(elm, SIGNAL('valueChanged(int)'), self.updateVolume)
+            elm.valueChanged.connect(self.updateVolume)
 
             if idx == 0:
                 continue
@@ -259,7 +259,7 @@ class Presonus_Firebox(QWidget):
                 elm.setChecked(True)
                 l_elm.setDisabled(True)
                 r_elm.setDisabled(True)
-            QObject.connect(elm, SIGNAL('clicked(bool)'), self.updateMute)
+            elm.clicked.connect(self.updateMute)
 
         for elm, params in self.Balances.items():
             path = params[0]
@@ -267,7 +267,7 @@ class Presonus_Firebox(QWidget):
             pan = self.hw.getContignuous(path, idx)
             val = self.pan2val(pan)
             elm.setValue(val)
-            QObject.connect(elm, SIGNAL('valueChanged(int)'), self.updateBalance)
+            elm.valueChanged.connect(self.updateBalance)
 
     # helper functions
     def vol2db(self, vol):

@@ -1,4 +1,4 @@
-from PyQt4.QtCore import SIGNAL, QObject, Qt
+from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QSizePolicy, QHBoxLayout, QVBoxLayout, QGroupBox
 from PyQt4.QtGui import QWidget, QTabWidget, QLabel, QSlider, QToolButton
 from math import log10
@@ -542,8 +542,7 @@ class MAudio_BeBoB(QWidget):
             if self.id != 3:
                 self.Selectors[widget.cmb_src] = ("/Mixer/Selector_%d" % hp_id, )
             else:
-                QObject.connect(widget.cmb_src, SIGNAL('activated(int)'),
-                                self.update410HP)
+                widget.cmb_src.activated.connect(self.update410HP)
                 self.FW410HP = widget.cmb_src
 
         layout.addStretch()
@@ -553,7 +552,7 @@ class MAudio_BeBoB(QWidget):
             path = params[0]
             state = self.hw.getDiscrete(path)
             ctl.setCurrentIndex(state)
-            QObject.connect(ctl, SIGNAL('activated(int)'), self.updateSelector)
+            ctl.activated.connect(self.updateSelector)
 
         #       Right - Center - Left
         # 0x8000 - 0x0000 - 0x0001 - 0x7FFE
@@ -564,8 +563,7 @@ class MAudio_BeBoB(QWidget):
             curr = self.hw.getContignuous(path, idx)
             state = -(curr / 0x7FFE) * 50 + 50
             ctl.setValue(state)
-            QObject.connect(ctl, SIGNAL('valueChanged(int)'),
-                            self.updatePanning)
+            ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in list(self.Volumes.items()):
             path = params[0]
@@ -576,7 +574,7 @@ class MAudio_BeBoB(QWidget):
             db = self.hw.getContignuous(path, idx)
             vol = self.db2vol(db)
             ctl.setValue(vol)
-            QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
+            ctl.valueChanged.connect(self.updateVolume)
 
             # to activate link button, a pair is checked twice, sign...
             pair_db = self.hw.getContignuous(path, p_idx)
@@ -584,7 +582,7 @@ class MAudio_BeBoB(QWidget):
                 link.setChecked(True)
 
         for ctl, params in list(self.Mutes.items()):
-            QObject.connect(ctl, SIGNAL('clicked(bool)'), self.updateMute)
+            ctl.clicked.connect(self.updateMute)
 
         for ctl, params in list(self.Mixers.items()):
             path = params[0]
@@ -601,7 +599,7 @@ class MAudio_BeBoB(QWidget):
             else:
                 state = False
             ctl.setChecked(state)
-            QObject.connect(ctl, SIGNAL('clicked(bool)'), self.updateMixer)
+            ctl.clicked.connect(self.updateMixer)
 
         if self.id == 3:
             self.read410HP()

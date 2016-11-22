@@ -94,7 +94,7 @@ class Profire2626(Generic_Dice_EAP):
 
         for l in self.LineUnActivates:
             l.widget.setChecked(l.Interface.selected())
-            self.connect(l.widget, QtCore.SIGNAL("toggled(bool)"), l.Interface.select)
+            l.widget.toggled.connect(l.Interface.select)
 
     def getDisplayTitle(self):
         return "M-Audio Profire 2626 Mixer"

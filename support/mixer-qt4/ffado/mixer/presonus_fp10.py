@@ -20,7 +20,7 @@
 #
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QObject, Qt, SIGNAL
+from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QWidget, QLabel, QSizePolicy, QToolButton, QSlider, QDial
 from math import log10
@@ -130,7 +130,7 @@ class Presonus_FP10(QWidget):
            db = self.hw.getContignuous(path, idx)
            vol = self.db2vol(db)
            ctl.setValue(vol)
-           QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updateVolume)
+           ctl.valueChanged.connect(self.updateVolume)
 
            if vol == 0:
                mute.setChecked(True)
@@ -150,10 +150,10 @@ class Presonus_FP10(QWidget):
             val = self.hw.getContignuous(path, idx)
             state = -(val / 0x7FFE) * 50 + 50
             ctl.setValue(state)
-            QObject.connect(ctl, SIGNAL('valueChanged(int)'), self.updatePanning)
+            ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in self.Mutes.items():
-            QObject.connect(ctl, SIGNAL('clicked(bool)'), self.updateMute)
+            ctl.clicked.connect(self.updateMute)
 
         return
 

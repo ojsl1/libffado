@@ -28,7 +28,7 @@ from ffado.config import *
 
 import subprocess
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject, QTimer, Qt
+from PyQt4.QtCore import QObject, QTimer, Qt
 from PyQt4.QtGui import *
 
 from ffado.dbus_util import *
@@ -63,39 +63,39 @@ class FFADOWindow(QMainWindow):
         logging.getLogger('').addHandler(self.statuslogger)
 
         self.manager = PanelManager(self)
-        self.connect(self.manager, SIGNAL("connectionLost"), self.connectToDBUS)
+        self.manager.connectionLost.connect(self.connectToDBUS)
 
         filemenu = self.menuBar().addMenu("File")
         self.openaction = QAction("Open", self)
         self.openaction.setShortcut(self.tr("Ctrl+O"))
         self.openaction.setEnabled(False)
-        self.connect(self.openaction, SIGNAL("triggered()"), self.manager.readSettings)
+        self.openaction.triggered.connect(self.manager.readSettings)
         filemenu.addAction(self.openaction)
         self.saveaction = QAction("Save as...", self)
         self.saveaction.setShortcut(self.tr("Ctrl+S"))
         self.saveaction.setEnabled(False)
-        self.connect(self.saveaction, SIGNAL("triggered()"), self.manager.saveSettings)
+        self.saveaction.triggered.connect(self.manager.saveSettings)
         filemenu.addAction(self.saveaction)
         quitaction = QAction("Quit", self)
         quitaction.setShortcut(self.tr("Ctrl+q"))
-        self.connect(quitaction, SIGNAL("triggered()"), self, SLOT("close()"))
+        quitaction.triggered.connect(self.close)
         filemenu.addAction(quitaction)
 
         editmenu = self.menuBar().addMenu("Edit")
         self.updateaction = QAction("Update Mixer Panels", self)
         self.updateaction.setEnabled(False)
-        self.connect(self.updateaction, SIGNAL("triggered()"), self.manager.updatePanels)
+        self.updateaction.triggered.connect(self.manager.updatePanels)
         editmenu.addAction(self.updateaction)
         refreshaction = QAction("Refresh Current Panels", self)
-        self.connect(refreshaction, SIGNAL("triggered()"), self.manager.refreshPanels)
+        refreshaction.triggered.connect(self.manager.refreshPanels)
         editmenu.addAction(refreshaction)
 
         helpmenu = self.menuBar().addMenu( "Help" )
         aboutaction = QAction( "About FFADO", self )
-        self.connect( aboutaction, SIGNAL( "triggered()" ), self.aboutFFADO )
+        aboutaction.triggered.connect(self.aboutFFADO)
         helpmenu.addAction( aboutaction )
         aboutqtaction = QAction( "About Qt", self )
-        self.connect( aboutqtaction, SIGNAL( "triggered()" ), qApp, SLOT( "aboutQt()" ) )
+        aboutqtaction.triggered.connect(qApp.aboutQt)
         helpmenu.addAction( aboutqtaction )
 
         log.info( "Starting up" )
@@ -119,7 +119,7 @@ class FFADOWindow(QMainWindow):
             log.error("Could not communicate with the FFADO DBus service...")
             if not hasattr(self,"retry"):
                 self.retry = StartDialog(self)
-                self.connect(self.retry.button, SIGNAL("clicked()"), self.tryStartDBUSServer)
+                self.retry.button.clicked.connect(self.tryStartDBUSServer)
             if hasattr(self, "retry"):
                 self.manager.setParent(None)
                 self.setCentralWidget(self.retry)

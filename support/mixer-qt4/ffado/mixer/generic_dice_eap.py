@@ -48,7 +48,7 @@ class Generic_Dice_EAP(QWidget):
 
     def buildRouter(self, servername, path):
         self.router = CrossbarRouter(servername, path, self)
-        self.connect(self.router, QtCore.SIGNAL("MixerRoutingChanged"), self.mixer.updateRouting)
+        self.router.MixerRoutingChanged.connect(self.mixer.updateRouting)
         scrollarea = QScrollArea(self.tabs)
         scrollarea.setWidgetResizable(True)
         scrollarea.setWidget(self.router)

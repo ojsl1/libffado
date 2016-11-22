@@ -89,14 +89,14 @@ class Saffire_Dice(Generic_Dice_EAP):
         # Global settings
         self.muteInterface = BooleanControl(self.hw, self.hw.basepath+"/EAP/Monitoring/GlobalMute/State")
         widget.GlobalMute.setChecked(self.muteInterface.selected())
-        self.connect(widget.GlobalMute, QtCore.SIGNAL("toggled(bool)"), self.muteToggle)
+        widget.GlobalMute.toggled.connect(self.muteToggle)
 
         self.dimInterface = BooleanControl(self.hw, self.hw.basepath+"/EAP/Monitoring/GlobalDim/State")
         widget.GlobalDim.setChecked(self.dimInterface.selected())
-        self.connect(widget.GlobalDim, QtCore.SIGNAL("toggled(bool)"), self.dimToggle)
+        widget.GlobalDim.toggled.connect(self.dimToggle)
         self.dimLevelInterface = DiscreteControl(self.hw, self.hw.basepath+"/EAP/Monitoring/GlobalDim/Level")
         widget.DimLevel.setValue(self.dimLevelInterface.getvalue())
-        self.connect(widget.DimLevel, QtCore.SIGNAL("valueChanged(int)"), self.dimLevelChanged)
+        widget.DimLevel.valueChanged.connect(self.dimLevelChanged)
         self.DimLevel = widget.DimLevel
         widget.DimLevel.setEnabled(self.dimInterface.selected())
 
@@ -257,7 +257,7 @@ class Saffire_Dice(Generic_Dice_EAP):
             # Adat/Spdif switch control from interface for Pro40
             self.adatSpdifInterface = BooleanControl(self.hw, self.hw.basepath+"/EAP/Monitoring/AdatSpdif/State")
             widget.AdatSpdif.setChecked(self.adatSpdifInterface.selected())
-            self.connect(widget.AdatSpdif, QtCore.SIGNAL("toggled(bool)"), self.adatSpdifToggle)
+            widget.AdatSpdif.toggled.connect(self.adatSpdifToggle)
 
         if ModelName in ("SAFFIRE_PRO_14", "SAFFIRE_PRO_24"):
             # Line/Inst and Hi/Lo switches for Pro14 and 24
@@ -273,7 +273,7 @@ class Saffire_Dice(Generic_Dice_EAP):
             self.LineInSwitches.append(p)
             for i in range(4):
                 self.LineInSwitches[i].widget.setChecked(self.LineInSwitches[i].Interface.selected())
-                self.connect(self.LineInSwitches[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineInSwitches[i].Interface.select)
+                self.LineInSwitches[i].widget.toggled.connect(self.LineInSwitches[i].Interface.select)
             widget.LineInSwitchLine_1.setChecked(not self.LineInSwitches[0].Interface.selected())
             widget.LineInSwitchLine_2.setChecked(not self.LineInSwitches[1].Interface.selected())
             widget.LineInSwitchLo_3.setChecked(not self.LineInSwitches[2].Interface.selected())
@@ -283,24 +283,23 @@ class Saffire_Dice(Generic_Dice_EAP):
         if ModelName != "SAFFIRE_PRO26":
             for i in range(self.nbLines/2):
                 self.LineMonos[i].widget.setChecked(self.LineMonos[i].Interface.selected())
-                self.connect(self.LineMonos[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineMonos[i].Interface.select)
-
+                self.LineMonos[i].toggled.connect(self.LineMonos[i].Interface.select)
 
         for i in range(self.nbLines):
             self.LineUnActivates[i].widget.setChecked(self.LineUnActivates[i].Interface.selected())
-            self.connect(self.LineUnActivates[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineUnActivates[i].Interface.select)
+            self.LineUnActivates[i].toggled.connect(self.LineUnActivates[i].Interface.selecte)
             self.LineMutes[i].widget.setChecked(self.LineMutes[i].Interface.selected())
-            self.connect(self.LineMutes[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineMutes[i].Interface.select)
+            self.LineMutes[i].widget.toggled.connect(self.LineMutes[i].Interface.select)
             self.LineGMutes[i].widget.setChecked(self.LineGMutes[i].Interface.selected())
-            self.connect(self.LineGMutes[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineGMutes[i].Interface.select)
+            self.LineMutes[i].widget.toggled.connect(self.LineGMutes[i].Interface.select)
             self.LineGDims[i].widget.setChecked(self.LineGDims[i].Interface.selected())
-            self.connect(self.LineGDims[i].widget, QtCore.SIGNAL("toggled(bool)"), self.LineGDims[i].Interface.select)
+            self.LineGDims[i].widget.toggled.connect(self.LineGDims[i].Interface.select)
             self.LineVolumes[i].widget.setValue(self.LineVolumes[i].Interface.getvalue())
-            self.connect(self.LineVolumes[i].widget, QtCore.SIGNAL("valueChanged(int)"), self.LineVolumes[i].Interface.setvalue)
+            self.LineVolumes[i].widget.valueChanged.connect(self.LineVolumes[i].Interface.setvalue)
  
         # HW switch controls the possibility of monitoring each output separatly 
         widget.HWSwitch.setChecked(self.HWselected())
-        self.connect(widget.HWSwitch, QtCore.SIGNAL("toggled(bool)"), self.HWToggle)
+        widget.HWSwitch.toggled.connect(self.HWToggle)
 
         # Line Out monitoring enabling depends on H/W switch
         self.LineOut = widget.LineOut

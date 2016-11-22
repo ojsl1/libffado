@@ -20,6 +20,7 @@
 #
 
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import pyqtSignal
 from PyQt4.QtGui import QFrame, QPainter, QGridLayout, QLabel, QComboBox
 from PyQt4.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 import dbus, math
@@ -92,7 +93,7 @@ of the mixer is an available output from the routers point.
             self.combo.setCurrentIndex(self.combo.findText(src))
         else:
             self.combo.setCurrentIndex(0)
-        self.connect(self.combo, QtCore.SIGNAL("activated(QString)"), self.comboCurrentChanged)
+        self.combo.activated.connect(self.comboCurrentChanged)
 
 
     def peakValue(self, value):
@@ -109,7 +110,7 @@ of the mixer is an available output from the routers point.
         if inname != "Disconnected":
             if self.interface.setConnectionState(str(inname), self.outname, True):
                 if self.outname[:5] == "Mixer" or self.lastin[:5] == "Mixer" or str(inname)[:5] == "Mixer":
-                    self.emit(QtCore.SIGNAL("MixerRoutingChanged"))
+                    self.MixerRoutingChanged.emit()
                 self.lastin = str(inname)
             else:
                 log.warning(" Failed to connect %s to %s" % (inname, self.outname))
@@ -118,6 +119,7 @@ of the mixer is an available output from the routers point.
 
 
 class CrossbarRouter(QWidget):
+    MixerRoutingChanged = pyqtSignal(name='MixerRoutingChanged')
     def __init__(self, servername, basepath, parent=None):
         QWidget.__init__(self, parent);
         self.bus = dbus.SessionBus()
@@ -141,7 +143,7 @@ class CrossbarRouter(QWidget):
 
         self.vubtn = QPushButton("Switch peak meters", self)
         self.vubtn.setCheckable(True)
-        self.connect(self.vubtn, QtCore.SIGNAL("toggled(bool)"), self.runVu)
+        self.vubtn.toggled.connect(self.runVu)
         self.toplayout.addWidget(self.vubtn)
 
         self.layout = QGridLayout()
@@ -152,11 +154,11 @@ class CrossbarRouter(QWidget):
             btn = OutputSwitcher(self.interface, out, self)
             self.layout.addWidget(btn, int(out.split(":")[-1]) + 1, self.outgroups.index(out.split(":")[0]))
             self.switchers[out] = btn
-            self.connect(btn, QtCore.SIGNAL("MixerRoutingChanged"), self.updateMixerRouting)
+        self.MixerRoutingChanged.connect(self.updateMixerRouting)
 
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(200)
-        self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.updateLevels)
+        self.timer.timeout.connections(self.updateLevels)
 
         self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False).toBool())
 
@@ -183,7 +185,7 @@ class CrossbarRouter(QWidget):
                 self.switchers[peak[0]].peakValue(peak[1])
 
     def updateMixerRouting(self):
-        self.emit(QtCore.SIGNAL("MixerRoutingChanged"))
+        self.MixerRoutingChanged.emit()
 
     def saveSettings(self, indent):
         routerSaveString = []

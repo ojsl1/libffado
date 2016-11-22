@@ -21,20 +21,21 @@
 #
 
 from PyQt4.QtGui import QTextEdit, QAbstractSlider, QColor
-from PyQt4.QtCore import QObject, SIGNAL, SLOT
+from PyQt4.QtCore import QObject, pyqtSignal, QString
 
 import logging
 log = logging.getLogger('logginghandler')
 
 class QStatusLogger( QObject, logging.Handler ):
+    log = pyqtSignal(QString, int, name='log')
     def __init__( self, parent, statusbar, level=logging.NOTSET ):
         QObject.__init__( self, parent )
         logging.Handler.__init__( self, level )
         self.setFormatter( logging.Formatter( "%(name)s: %(message)s" ) )
-        self.connect( self, SIGNAL("log(QString,int)"), statusbar, SLOT("showMessage(QString,int)") )
+        self.log.connect(statusbar.showMessage)
 
     def emit( self, record ):
-        QObject.emit( self, SIGNAL("log(QString,int)"), "%s: %s" % (record.name, record.getMessage()), 5000 )
+        self.log.emit('%s: %s'.format(record.name, record.getMessage()), 5000)
 
 class QTextLogger( logging.Handler ):
     def __init__( self, parent, level=logging.NOTSET ):

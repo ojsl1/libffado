@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject, Qt
+from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QWidget, QApplication
 from ffado.config import *
 
@@ -829,7 +829,7 @@ class Motu(QWidget):
             vol = self.hw.getMatrixMixerValue(info[0], info[1], info[2])
             log.debug("%s for mix %d channel %d is %d" % (info[0], info[1], info[2], vol))
             ctrl.setValue(vol)
-            QObject.connect(ctrl, SIGNAL('valueChanged(int)'), self.updateChannelFader)
+            ctrl.valueChanged.connect(self.updateChannelFader)
 
         for ctrl, info in self.Faders.iteritems():
             if (not(ctrl.isEnabled())):
@@ -837,7 +837,7 @@ class Motu(QWidget):
             vol = self.hw.getDiscrete(info[0])
             log.debug("%s mix fader is %d" % (info[0] , vol))
             ctrl.setValue(vol)
-            QObject.connect(ctrl, SIGNAL('valueChanged(int)'), self.updateFader)
+            ctrl.valueChanged.connect(self.updateFader)
 
         for ctrl, info in self.ChannelControls.iteritems():
             if (not(ctrl.isEnabled())):
@@ -845,7 +845,7 @@ class Motu(QWidget):
             pan = self.hw.getMatrixMixerValue(info[0], info[1], info[2])
             log.debug("%s for mix %d channel %d is %d" % (info[0], info[1], info[2], pan))
             ctrl.setValue(pan)
-            QObject.connect(ctrl, SIGNAL('valueChanged(int)'), self.updateChannelControl)
+            ctrl.valueChanged.connect(self.updateChannelControl)
 
         for ctrl, info in self.Controls.iteritems():
             if (not(ctrl.isEnabled())):
@@ -853,7 +853,7 @@ class Motu(QWidget):
             pan = self.hw.getDiscrete(info[0])
             log.debug("%s control is %d" % (info[0] , pan))
             ctrl.setValue(pan)
-            QObject.connect(ctrl, SIGNAL('valueChanged(int)'), self.updateControl)
+            ctrl.valueChanged.connect(self.updateControl)
 
         for ctrl, info in self.ChannelBinarySwitches.iteritems():
             if (not(ctrl.isEnabled())):
@@ -864,7 +864,7 @@ class Motu(QWidget):
                 ctrl.setChecked(True)
             else:
                 ctrl.setChecked(False)
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updateChannelBinarySwitch)
+            ctrl.toggled.connect(self.updateChannelBinarySwitch)
 
         for ctrl, info in self.BinarySwitches.iteritems():
             if (not(ctrl.isEnabled())):
@@ -875,7 +875,7 @@ class Motu(QWidget):
                 ctrl.setChecked(True)
             else:
                 ctrl.setChecked(False)
-            QObject.connect(ctrl, SIGNAL('toggled(bool)'), self.updateBinarySwitch)
+            ctrl.toggled.connect(self.updateBinarySwitch)
 
         for ctrl, info in self.Selectors.iteritems():
             if (not(ctrl.isEnabled())):
@@ -883,7 +883,7 @@ class Motu(QWidget):
             dest = self.hw.getDiscrete(info[0])
             log.debug("%s selector is %d" % (info[0] , dest))
             ctrl.setCurrentIndex(dest)
-            QObject.connect(ctrl, SIGNAL('activated(int)'), self.updateSelector)
+            ctrl.activated.connect(self.updateSelector)
 
         # We could enable/disable ADAT controls here depending on whether
         # the optical port is set to ADAT or something else.  A disable

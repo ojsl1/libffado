@@ -20,7 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import SIGNAL, SLOT, QObject, Qt, QTimer
+from PyQt4.QtCore import Qt, QTimer
 from PyQt4.QtGui import QWidget, QHBoxLayout, QVBoxLayout, \
                         QGroupBox, QTabWidget, QLabel, \
                         QPushButton, QToolButton, QSpacerItem, QSizePolicy
@@ -359,7 +359,7 @@ class AudioFire(QWidget):
             ctrl.setValue(vol)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateMatrixVolume)
+            ctrl.valueChanged.connect(self.updateMatrixVolume)
 
         for ctrl, info in self.MatrixButtonControls.iteritems():
             state = self.hw.getMatrixMixerValue(self.MatrixButtonControls[ctrl][0],
@@ -373,7 +373,7 @@ class AudioFire(QWidget):
                 ctrl.setChecked(False)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('clicked(bool)'),self.updateMatrixButton)
+            ctrl.clicked.connect(self.updateMatrixButton)
 
         for ctrl, info in self.MatrixRotaryControls.iteritems():
             vol = self.hw.getMatrixMixerValue(self.MatrixRotaryControls[ctrl][0],
@@ -384,7 +384,7 @@ class AudioFire(QWidget):
             ctrl.setValue(vol)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateMatrixRotary)
+            ctrl.valueChanged.connect(self.updateMatrixRotary)
 
         for ctrl, info in self.VolumeControls.iteritems():
             vol = self.hw.getContignuous(self.VolumeControls[ctrl][0])
@@ -394,7 +394,7 @@ class AudioFire(QWidget):
             ctrl.setValue(vol)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('valueChanged(int)'),self.updateVolume)
+            ctrl.valueChanged.connect(self.updateVolume)
 
         for ctrl, info in self.SelectorControls.iteritems():
             state = self.hw.getDiscrete(self.SelectorControls[ctrl][0])
@@ -405,11 +405,11 @@ class AudioFire(QWidget):
                 ctrl.setChecked(False)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('clicked(bool)'),self.updateSelector)
+            ctrl.clicked.connect(self.updateSelector)
 
         for ctrl, info in self.TriggerControls.iteritems():
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('clicked()'),self.updateTrigger)
+            ctrl.clicked.connect(self.updateTrigger)
 
         for ctrl, info in self.SPDIFmodeControls.iteritems():
             state = self.hw.getDiscrete(self.SPDIFmodeControls[ctrl][0])
@@ -420,7 +420,7 @@ class AudioFire(QWidget):
                 ctrl.setChecked(False)
 
             # connect the UI element
-            QObject.connect(ctrl,SIGNAL('toggled(bool)'),self.updateSPDIFmodeControl)
+            ctrl.toggled.connect(self.updateSPDIFmodeControl)
 
         for ctrl, info in self.DigIfaceControls.iteritems():
             state = self.hw.getDiscrete(self.DigIfaceControls[ctrl][0])
@@ -428,17 +428,17 @@ class AudioFire(QWidget):
             if state > 0:
                 state -= 1
             ctrl.setCurrentIndex(state)
-            QObject.connect(ctrl, SIGNAL('activated(int)'), self.updateDigIfaceControl)
+            ctrl.activated.connect(self.updateDigIfaceControl)
 
         for ctrl, info in self.PlbkRouteControls.iteritems():
             sink = self.PlbkRouteControls[ctrl][1]
             src = self.hw.getDiscrete(self.PlbkRouteControls[ctrl][0], sink)
             ctrl.setCurrentIndex(src)
             self.setStreamLabel(src, sink)
-            QObject.connect(ctrl, SIGNAL('activated(int)'), self.updatePlbkRouteControl)
+            ctrl.activated.connect(self.updatePlbkRouteControl)
 
         self.update_timer = QTimer(self)
-        QObject.connect(self.update_timer, SIGNAL('timeout()'), self.polledUpdate)
+        self.update_timer.timeout.connect(self.polledUpdate)
         self.update_timer.start(1000)
         self.streaming_state = -1
 
