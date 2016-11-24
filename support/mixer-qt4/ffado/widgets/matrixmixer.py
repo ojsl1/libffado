@@ -106,6 +106,7 @@ class BckgrdColorForNumber(ColorForNumber):
             return QColor(0, 0, 0)
     
 class MixerNode(QAbstractSlider):
+    nodeValueChanged = pyqtSignal(tuple)
     def __init__(self, input, output, value, max, muted, inverted, parent, matrix_obj):
         QAbstractSlider.__init__(self, parent)
         #log.debug("MixerNode.__init__( %i, %i, %i, %i, %s )" % (input, output, value, max, str(parent)) )
@@ -189,7 +190,7 @@ class MixerNode(QAbstractSlider):
             self.update()
             self.matrix_obj.inverts_interface.setValue(self.output, self.input, self.inv_action.isChecked())
         else:
-            text = text.split(" ")[0].replace(",",".")
+            text = str(text).split(" ")[0].replace(",",".")
             n = fromDBvalue(float(text))
             #log.debug("  linear value: %g" % n)
             self.setValue(n)
@@ -263,7 +264,7 @@ class MixerNode(QAbstractSlider):
             dB = toDBvalue(value)
             if self.spinbox.value() is not dB:
                 self.spinbox.setValue(dB)
-        self.valueChanged.emit(self.input, self.output, value)
+        self.nodeValueChanged.emit((self.input, self.output, value))
         self.update()
 
     def setSmall(self, small):
@@ -308,7 +309,7 @@ class MixerChannel(QWidget):
 
 # Matrix view widget
 class MatrixControlView(QWidget):
-    valueChanged = pyqtSignal([dict])
+    valueChanged = pyqtSignal([tuple])
     def __init__(self, servername, basepath, parent=None, sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, shortname=False, shortcolname="Ch", shortrowname="Ch", transpose=False):
         QWidget.__init__(self, parent)
 
@@ -400,10 +401,10 @@ class MatrixControlView(QWidget):
         self.hiddenCols = []
 
     def nodeConnect(self, node):
-        node.valueChanged.connect(self.valueChangedFn)
+        node.nodeValueChanged.connect(self.valueChangedFn)
 
     def nodeDisconnect(self, node):
-        node.valueChanged.disconnect(self.valueChangedFn)
+        node.nodeValueChanged.disconnect(self.valueChangedFn)
 
     def checkVisibilities(self):
         for x in range(len(self.items)):
