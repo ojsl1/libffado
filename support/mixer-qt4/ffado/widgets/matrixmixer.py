@@ -649,6 +649,7 @@ class MatrixControlView(QWidget):
         return True
 
 class VolumeSlider(QSlider):
+    sliderChanged = pyqtSignal(tuple)
     def __init__(self, In, Out, value, parent):
         QSlider.__init__(self, QtCore.Qt.Vertical, parent)
 
@@ -677,7 +678,7 @@ class VolumeSlider(QSlider):
     # Emit signal for further use, especially for matrix view
     def sliderValueChanged(self, value):
         value = fromDBvalue(0.1*value)
-        self.valueChanged.emit(self.In, self.Out, value)
+        self.sliderChanged.emit((self.In, self.Out, value))
         self.update()
 
 
@@ -717,6 +718,7 @@ class VolumeSliderValueInfo(QLineEdit):
         self.setText(text)
         
 class BalanceSlider(QSlider):
+    sliderChanged = pyqtSignal(tuple)
     def __init__(self, In, Out, value, parent):
         QSlider.__init__(self, QtCore.Qt.Horizontal, parent)
 
@@ -743,11 +745,11 @@ class BalanceSlider(QSlider):
     def sliderValueChanged(self, value):
         value = float(round(self.value()/50.0, 2))
         #log.debug("Balance fader value changed( %d, %d, %f )" % (self.In, self.Out, value))
-        self.valueChanged.emit(self.In, self.Out, value)
+        self.sliderChanged.emit((self.In, self.Out, value))
 
 # Slider view widget
 class SliderControlView(QWidget):
-    valueChanged = pyqtSignal(list)
+    valueChanged = pyqtSignal(tuple)
     def __init__(self, parent, servername, basepath, rule="Columns_are_inputs", shortname=False, shortinname="Ch", shortoutname="Ch", stereochannels = []):
         QWidget.__init__(self, parent)
 
@@ -845,16 +847,16 @@ class SliderControlView(QWidget):
                 k += 1
 
     def volumeConnect(self, volume):
-        volume.valueChanged.connect(self.valueChangedVolume)
+        volume.sliderChanged.connect(self.valueChangedVolume)
 
     def volumeDisconnect(self, volume):
-        volume.valueChanged.disconnect(self.valueChangedVolume)
+        volume.sliderChanged.disconnect(self.valueChangedVolume)
 
     def balanceConnect(self, balance):
-        balance.valueChanged.connect(self.valueChangedBalance)
+        balance.sliderChanged.connect(self.valueChangedBalance)
 
     def balanceDisconnect(self, balance):
-        balance.valueChanged.disconnect(self.valueChangedBalance)
+        balance.sliderChanged.disconnect(self.valueChangedBalance)
 
     def getNbIn(self):
         if (self.rule == "Columns_are_inputs"):
