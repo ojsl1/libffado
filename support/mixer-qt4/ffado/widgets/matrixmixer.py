@@ -845,10 +845,10 @@ class SliderControlView(QWidget):
                 k += 1
 
     def volumeConnect(self, volume):
-        self.valueChanged.connect(self.valueChangedVolume)
+        volume.valueChanged.connect(self.valueChangedVolume)
 
     def volumeDisconnect(self, volume):
-        self.valueChanged.disconnect(self.valueChangedVolume)
+        volume.valueChanged.disconnect(self.valueChangedVolume)
 
     def balanceConnect(self, balance):
         balance.valueChanged.connect(self.valueChangedBalance)
