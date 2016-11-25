@@ -61,6 +61,7 @@ destination.
 In mixer-usage this widget is at the top of the input-channel. Because the input
 of the mixer is an available output from the routers point.
 """
+    MixerRoutingChanged = pyqtSignal()
     def __init__(self, interface, outname, parent):
         QFrame.__init__(self, parent)
         self.interface = interface
@@ -154,7 +155,7 @@ class CrossbarRouter(QWidget):
             btn = OutputSwitcher(self.interface, out, self)
             self.layout.addWidget(btn, int(out.split(":")[-1]) + 1, self.outgroups.index(out.split(":")[0]))
             self.switchers[out] = btn
-        self.MixerRoutingChanged.connect(self.updateMixerRouting)
+            self.switchers[out].MixerRoutingChanged.connect(self.updateMixerRouting)
 
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(200)
