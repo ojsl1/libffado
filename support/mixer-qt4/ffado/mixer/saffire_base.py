@@ -97,19 +97,19 @@ class SaffireMixerBase:
         sender.setCurrentIndex( self.hw.enumSelected(path) )
 
     def updateValues(self):
-        for ctrl, info in self.VolumeControls.iteritems():
+        for ctrl, info in self.VolumeControls.items():
             vol = self.hw.getMatrixMixerValue(self.VolumeControls[ctrl][0],
                                               self.VolumeControls[ctrl][1],
                                               self.VolumeControls[ctrl][2])
             log.debug("%s volume is %d" % (ctrl.objectName() , vol))
             ctrl.setValue(vol)
-        for ctrl, info in self.VolumeControlsLowRes.iteritems():
+        for ctrl, info in self.VolumeControlsLowRes.items():
             vol = self.hw.getDiscrete(self.VolumeControlsLowRes[ctrl][0])
 
             log.debug("%s volume is %d" % (ctrl.objectName() , 127-vol))
             ctrl.setValue(127 - vol)
 
-        for ctrl, info in self.SelectorControls.iteritems():
+        for ctrl, info in self.SelectorControls.items():
             state = self.hw.getDiscrete(self.SelectorControls[ctrl][0])
             log.debug("%s state is %d" % (ctrl.objectName() , state))
             if state:
@@ -117,15 +117,15 @@ class SaffireMixerBase:
             else:
                 ctrl.setChecked(False)
 
-        for ctrl, info in self.TriggerButtonControls.iteritems():
+        for ctrl, info in self.TriggerButtonControls.items():
             pass
 
-        for ctrl, info in self.TextControls.iteritems():
+        for ctrl, info in self.TextControls.items():
             text = self.hw.getText(self.TextControls[ctrl][0])
             log.debug("%s text is %s" % (ctrl.objectName() , text))
             ctrl.setText(text)
 
-        for ctrl, info in self.ComboControls.iteritems():
+        for ctrl, info in self.ComboControls.items():
             self.initCombo(ctrl)
 
     def polledUpdateVolumeLowRes(self, srcpath, ctrl, divider=1):
@@ -135,22 +135,22 @@ class SaffireMixerBase:
 
     def initValues(self):
         self.updateValues()
-        for ctrl, info in self.VolumeControls.iteritems():
+        for ctrl, info in self.VolumeControls.items():
             ctrl.valueChanged.connect(self.updateMatrixVolume)
 
-        for ctrl, info in self.VolumeControlsLowRes.iteritems():
+        for ctrl, info in self.VolumeControlsLowRes.items():
             ctrl.valueChanged.connect(self.updateLowResVolume)
 
-        for ctrl, info in self.SelectorControls.iteritems():
+        for ctrl, info in self.SelectorControls.items():
             ctrl.stateChanged.connect(self.updateSelector)
 
-        for ctrl, info in self.TriggerButtonControls.iteritems():
+        for ctrl, info in self.TriggerButtonControls.items():
             ctrl.clicked.connect(,self.triggerButton)
 
-        for ctrl, info in self.saveTextControls.iteritems():
+        for ctrl, info in self.saveTextControls.items():
             ctrl.clicked.connect(self.saveText)
 
-        for ctrl, info in self.ComboControls.iteritems():
+        for ctrl, info in self.ComboControls.items():
             ctrl.activated.connect(self.selectCombo)
 
 # vim: et

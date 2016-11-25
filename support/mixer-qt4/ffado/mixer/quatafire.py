@@ -75,7 +75,7 @@ class QuataFire(QWidget):
         self.hw.setContignuous(self.PanControls[sender][0], -pan_right, 2)
 
     def initValues(self):
-        for ctrl, info in self.VolumeControls.iteritems():
+        for ctrl, info in self.VolumeControls.items():
             vol = self.hw.getContignuous(self.VolumeControls[ctrl][0], self.VolumeControls[ctrl][1])
             val = -vol
             log.debug("%s volume is %d, set to %d" % (ctrl.objectName(), vol, val))
@@ -84,7 +84,7 @@ class QuataFire(QWidget):
             # connect the UI element
             ctrl.valueChanged.connect(self.updateVolume)
 
-        for ctrl, info in self.PanControls.iteritems():
+        for ctrl, info in self.PanControls.items():
             pan_left = self.hw.getContignuous(self.PanControls[ctrl][0], 1)
             pan_right = self.hw.getContignuous(self.PanControls[ctrl][0], 2)
 

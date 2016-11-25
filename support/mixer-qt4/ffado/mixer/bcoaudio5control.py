@@ -84,12 +84,12 @@ class BCoAudio5Control(QWidget):
         self.hw.setDiscrete(self.ComboControls[name][0], state)
 
     def initValues(self):
-        for name, ctrl in self.VolumeControls.iteritems():
+        for name, ctrl in self.VolumeControls.items():
             vol = self.hw.getContignuous(ctrl[0])
             log.debug("%s volume is %d" % (name , vol))
             ctrl[1].setValue(-vol)
 
-        for name, ctrl in self.ComboControls.iteritems():
+        for name, ctrl in self.ComboControls.items():
             state = self.hw.getDiscrete(ctrl[0])
             log.debug("%s state is %d" % (name , state))
             ctrl[1].setCurrentIndex( state )

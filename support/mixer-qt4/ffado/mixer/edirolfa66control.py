@@ -90,7 +90,7 @@ class EdirolFa66Control(QWidget):
         self.hw.setContignuous(ctrl[0], val, idx = ctrl[1])
 
     def initValues(self):
-        for name, ctrl in self.VolumeControls.iteritems():
+        for name, ctrl in self.VolumeControls.items():
             val = self.hw.getContignuous(ctrl[0], idx = ctrl[1])
             log.debug("%s value is %d" % (name , val))
 

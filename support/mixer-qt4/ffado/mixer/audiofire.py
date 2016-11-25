@@ -349,7 +349,7 @@ class AudioFire(QWidget):
     def initValues(self):
         log.debug("Init values")
 
-        for ctrl, info in self.MatrixVolumeControls.iteritems():
+        for ctrl, info in self.MatrixVolumeControls.items():
             vol = self.hw.getMatrixMixerValue(self.MatrixVolumeControls[ctrl][0],
                                                 self.MatrixVolumeControls[ctrl][1],
                                                 self.MatrixVolumeControls[ctrl][2])
@@ -361,7 +361,7 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.valueChanged.connect(self.updateMatrixVolume)
 
-        for ctrl, info in self.MatrixButtonControls.iteritems():
+        for ctrl, info in self.MatrixButtonControls.items():
             state = self.hw.getMatrixMixerValue(self.MatrixButtonControls[ctrl][0],
                                                 self.MatrixButtonControls[ctrl][1],
                                                 self.MatrixButtonControls[ctrl][2])
@@ -375,7 +375,7 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.clicked.connect(self.updateMatrixButton)
 
-        for ctrl, info in self.MatrixRotaryControls.iteritems():
+        for ctrl, info in self.MatrixRotaryControls.items():
             vol = self.hw.getMatrixMixerValue(self.MatrixRotaryControls[ctrl][0],
                                                 self.MatrixRotaryControls[ctrl][1],
                                                 self.MatrixRotaryControls[ctrl][2])
@@ -386,7 +386,7 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.valueChanged.connect(self.updateMatrixRotary)
 
-        for ctrl, info in self.VolumeControls.iteritems():
+        for ctrl, info in self.VolumeControls.items():
             vol = self.hw.getContignuous(self.VolumeControls[ctrl][0])
 
             #vol = 0x01000000-vol
@@ -396,7 +396,7 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.valueChanged.connect(self.updateVolume)
 
-        for ctrl, info in self.SelectorControls.iteritems():
+        for ctrl, info in self.SelectorControls.items():
             state = self.hw.getDiscrete(self.SelectorControls[ctrl][0])
             log.debug("%s state is %d" % (ctrl.objectName() , state))
             if state:
@@ -407,11 +407,11 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.clicked.connect(self.updateSelector)
 
-        for ctrl, info in self.TriggerControls.iteritems():
+        for ctrl, info in self.TriggerControls.items():
             # connect the UI element
             ctrl.clicked.connect(self.updateTrigger)
 
-        for ctrl, info in self.SPDIFmodeControls.iteritems():
+        for ctrl, info in self.SPDIFmodeControls.items():
             state = self.hw.getDiscrete(self.SPDIFmodeControls[ctrl][0])
             log.debug("%s state is %d" % (ctrl.objectName() , state))
             if state == self.SPDIFmodeControls[ctrl][1]:
@@ -422,7 +422,7 @@ class AudioFire(QWidget):
             # connect the UI element
             ctrl.toggled.connect(self.updateSPDIFmodeControl)
 
-        for ctrl, info in self.DigIfaceControls.iteritems():
+        for ctrl, info in self.DigIfaceControls.items():
             state = self.hw.getDiscrete(self.DigIfaceControls[ctrl][0])
             # 0/2/3 is available but GUI set 0/1/2
             if state > 0:
@@ -430,7 +430,7 @@ class AudioFire(QWidget):
             ctrl.setCurrentIndex(state)
             ctrl.activated.connect(self.updateDigIfaceControl)
 
-        for ctrl, info in self.PlbkRouteControls.iteritems():
+        for ctrl, info in self.PlbkRouteControls.items():
             sink = self.PlbkRouteControls[ctrl][1]
             src = self.hw.getDiscrete(self.PlbkRouteControls[ctrl][0], sink)
             ctrl.setCurrentIndex(src)

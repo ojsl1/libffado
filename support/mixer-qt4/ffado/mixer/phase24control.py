@@ -140,12 +140,12 @@ class Phase24Control(QWidget):
                 else:
                     self.cmbFrontLevel.setCurrentIndex(0)
 
-            for name, ctrl in self.VolumeControls.iteritems():
+            for name, ctrl in self.VolumeControls.items():
                 vol = self.hw.getContignuous(ctrl[0])
                 log.debug("%s volume is %d" % (name , vol))
                 ctrl[1].setValue(-vol)
 
-            for name, ctrl in self.SelectorControls.iteritems():
+            for name, ctrl in self.SelectorControls.items():
                 state = self.hw.getDiscrete(ctrl[0])
                 log.debug("%s state is %d" % (name , state))
                 ctrl[1].setCurrentIndex(state)

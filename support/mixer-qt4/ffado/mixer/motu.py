@@ -823,7 +823,7 @@ class Motu(QWidget):
 
         # Now fetch the current values into the respective controls.  Don't
         # bother fetching controls which are disabled.
-        for ctrl, info in self.ChannelFaders.iteritems():
+        for ctrl, info in self.ChannelFaders.items():
             if (not(ctrl.isEnabled())):
                 continue
             vol = self.hw.getMatrixMixerValue(info[0], info[1], info[2])
@@ -831,7 +831,7 @@ class Motu(QWidget):
             ctrl.setValue(vol)
             ctrl.valueChanged.connect(self.updateChannelFader)
 
-        for ctrl, info in self.Faders.iteritems():
+        for ctrl, info in self.Faders.items():
             if (not(ctrl.isEnabled())):
                 continue
             vol = self.hw.getDiscrete(info[0])
@@ -839,7 +839,7 @@ class Motu(QWidget):
             ctrl.setValue(vol)
             ctrl.valueChanged.connect(self.updateFader)
 
-        for ctrl, info in self.ChannelControls.iteritems():
+        for ctrl, info in self.ChannelControls.items():
             if (not(ctrl.isEnabled())):
                 continue
             pan = self.hw.getMatrixMixerValue(info[0], info[1], info[2])
@@ -847,7 +847,7 @@ class Motu(QWidget):
             ctrl.setValue(pan)
             ctrl.valueChanged.connect(self.updateChannelControl)
 
-        for ctrl, info in self.Controls.iteritems():
+        for ctrl, info in self.Controls.items():
             if (not(ctrl.isEnabled())):
                 continue
             pan = self.hw.getDiscrete(info[0])
@@ -855,7 +855,7 @@ class Motu(QWidget):
             ctrl.setValue(pan)
             ctrl.valueChanged.connect(self.updateControl)
 
-        for ctrl, info in self.ChannelBinarySwitches.iteritems():
+        for ctrl, info in self.ChannelBinarySwitches.items():
             if (not(ctrl.isEnabled())):
                 continue
             val = self.hw.getMatrixMixerValue(info[0], info[1], info[2])
@@ -866,7 +866,7 @@ class Motu(QWidget):
                 ctrl.setChecked(False)
             ctrl.toggled.connect(self.updateChannelBinarySwitch)
 
-        for ctrl, info in self.BinarySwitches.iteritems():
+        for ctrl, info in self.BinarySwitches.items():
             if (not(ctrl.isEnabled())):
                 continue
             val = self.hw.getDiscrete(info[0])
@@ -877,7 +877,7 @@ class Motu(QWidget):
                 ctrl.setChecked(False)
             ctrl.toggled.connect(self.updateBinarySwitch)
 
-        for ctrl, info in self.Selectors.iteritems():
+        for ctrl, info in self.Selectors.items():
             if (not(ctrl.isEnabled())):
                 continue
             dest = self.hw.getDiscrete(info[0])

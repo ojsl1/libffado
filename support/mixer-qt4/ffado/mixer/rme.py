@@ -305,12 +305,12 @@ class Rme(QWidget):
     def setupSignals(self):
 
         # Connect signal handlers for all command buttons
-        for ctrl, info in self.CommandButtons.iteritems():
+        for ctrl, info in self.CommandButtons.items():
             if (not(ctrl.isEnabled())):
                 continue
             ctrl.clicked.connect(self.sendCommand)
 
-        for ctrl, info in self.Combos.iteritems():
+        for ctrl, info in self.Combos.items():
             if (not(ctrl.isEnabled())):
                 continue;
             ctrl.currentIndexChanged.connect(self.updateCombo)
@@ -319,34 +319,34 @@ class Rme(QWidget):
 
         # Get current hardware values and connect GUI element signals to 
         # their respective slots
-        for ctrl, info in self.PhantomSwitches.iteritems():
+        for ctrl, info in self.PhantomSwitches.items():
             if (not(ctrl.isEnabled())):
                 continue
             ctrl.toggled.connect(self.updatePhantomSwitch)
 
-        for ctrl, info in self.Switches.iteritems():
+        for ctrl, info in self.Switches.items():
             if (not(ctrl.isEnabled())):
                 continue
             ctrl.toggled.connect(self.updateSwitch)
 
-        for ctrl, info in self.Radiobuttons.iteritems():
+        for ctrl, info in self.Radiobuttons.items():
             if (not(ctrl.isEnabled())):
                 continue;
             ctrl.toggled.connect(self.updateRadiobutton)
 
-        for ctrl, info in self.Checkboxes.iteritems():
+        for ctrl, info in self.Checkboxes.items():
             if (not(ctrl.isEnabled())):
                 continue;
             ctrl.toggled.connect(self.updateCheckboxes)
 
-        for ctrl, info in self.Gains.iteritems():
+        for ctrl, info in self.Gains.items():
             if (not(ctrl.isEnabled())):
                 continue
             ctrl.valueChanged.connect(self.updateGain)
 
     # Obtain control values from the Fireface and make the GUI reflect these
     def getValuesFromFF(self):
-        for ctrl, info in self.Combos.iteritems():
+        for ctrl, info in self.Combos.items():
             if (not(ctrl.isEnabled())):
                 continue;
             val = self.hw.getDiscrete(info[0])
@@ -362,7 +362,7 @@ class Rme(QWidget):
         self.bandwidth_limit.setCurrentIndex(val);
 
         # Get current hardware values
-        for ctrl, info in self.PhantomSwitches.iteritems():
+        for ctrl, info in self.PhantomSwitches.items():
             if (not(ctrl.isEnabled())):
                 continue
             val = (self.hw.getDiscrete(info[0]) >> info[1]) & 0x01
@@ -372,7 +372,7 @@ class Rme(QWidget):
             else:
                 ctrl.setChecked(False)
 
-        for ctrl, info in self.Switches.iteritems():
+        for ctrl, info in self.Switches.items():
             if (not(ctrl.isEnabled())):
                 continue
             val = self.hw.getDiscrete(info[0])
@@ -382,7 +382,7 @@ class Rme(QWidget):
             else:
                 ctrl.setChecked(False)
 
-        for ctrl, info in self.Radiobuttons.iteritems():
+        for ctrl, info in self.Radiobuttons.items():
             if (not(ctrl.isEnabled())):
                 continue;
             # This is a touch wasteful since it means we retrieve the control
@@ -402,7 +402,7 @@ class Rme(QWidget):
         if (self.ff800_ch1_src.isEnabled()):
             self.ch1_instr_limiter.setEnabled(1)
 
-        for ctrl, info in self.Checkboxes.iteritems():
+        for ctrl, info in self.Checkboxes.items():
             if (not(ctrl.isEnabled())):
                 continue;
             # This is a touch wasteful since it means we retrieve the control
@@ -424,7 +424,7 @@ class Rme(QWidget):
         if (self.ff800_ch1_src.isEnabled()):
             self.ch1_instr_limiter.setEnabled(ch1_src==0)
 
-        for ctrl, info in self.Gains.iteritems():
+        for ctrl, info in self.Gains.items():
             if (not(ctrl.isEnabled())):
                 continue
             val = self.hw.getMatrixMixerValue(info[0], 0, info[1])

@@ -80,7 +80,7 @@ class Phase88Control(QWidget):
         }
         
 	# gain control
-	for ctl, params in self.VolumeControls.iteritems():
+	for ctl, params in self.VolumeControls.items():
 		path	= params[0]
 		idx	= params[1]
                 dbmeter = params[5]
@@ -107,14 +107,14 @@ class Phase88Control(QWidget):
                 ctl.valueChanged.connect(self.updateVolume)
 
 	# selector controls
-	for ctl, param in self.SelectorControls.iteritems():
+	for ctl, param in self.SelectorControls.items():
 		state = self.hw.getDiscrete(param)
 		ctl.setCurrentIndex(state)
 		
                 ctl.activated.connect(self.updateSelector)
 
 	# mute controls
-	for ctl, param in self.MuteControls.iteritems():
+	for ctl, param in self.MuteControls.items():
                 ctl.toggled.connect(self.muteVolume)
 
 
