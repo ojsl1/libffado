@@ -281,7 +281,7 @@ class Saffire_Dice(Generic_Dice_EAP):
 
         # Mono/Stereo Switch
         if ModelName != "SAFFIRE_PRO26":
-            for i in range(self.nbLines/2):
+            for i in range(int(self.nbLines/2)):
                 self.LineMonos[i].widget.setChecked(self.LineMonos[i].Interface.selected())
                 self.LineMonos[i].toggled.connect(self.LineMonos[i].Interface.select)
 

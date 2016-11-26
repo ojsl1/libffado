@@ -179,7 +179,7 @@ class AudioFire(QWidget):
         outputtabs = QTabWidget(self)
         outputtabslayout.addWidget( outputtabs, 1 )
 
-        for outpair in range(nb_pys_out/2):
+        for outpair in range(int(nb_pys_out/2)):
             tab = QWidget( outputtabs )
             tablayout = QHBoxLayout( tab )
             
@@ -200,7 +200,7 @@ class AudioFire(QWidget):
             grpMonitorLayout = QHBoxLayout()
             grpMonitor.setLayout(grpMonitorLayout);
             output_id = outpair * 2
-            for inpair in range(nb_pys_in/2):
+            for inpair in range(int(nb_pys_in/2)):
                 # create GUI elements
                 strip = AfMonitorWidget( grpMonitor )
                 grpMonitorLayout.addWidget( strip, 1 )

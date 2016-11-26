@@ -1222,7 +1222,7 @@ class MatrixMixer(QWidget):
         self.stereo_channels = []
 
         self.stereo_switch = []
-        for i in range(nb_out_mono/2):
+        for i in range(int(nb_out_mono/2)):
             stereo_switch = QPushButton("%d+%d" % (2*i+1, 2*i+2), mxv_set)
             stereo_switch.setToolTip("Set these output channels as stereo")
             stereo_switch.setCheckable(True)
