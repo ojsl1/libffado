@@ -133,7 +133,7 @@ class MixerNode(QAbstractSlider):
 
         self.setContextMenuPolicy(Qt.Qt.ActionsContextMenu)
         self.mapper = QtCore.QSignalMapper(self)
-        self.mapper.mapped.connect(self.directValues)
+        self.mapper.mapped['QString'].connect(self.directValues)
 
         self.spinbox = QDoubleSpinBox(self)
         self.spinbox.setRange(-40, 12)
