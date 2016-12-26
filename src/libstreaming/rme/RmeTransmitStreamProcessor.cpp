@@ -314,7 +314,7 @@ RmeTransmitStreamProcessor::generatePacketData (
             for (i=0; i<n_events; i++, sample+=m_event_size/4) {
                 static signed int a_cx = 0;
                 signed int val = lrintf(0x7fffff*sin((1000.0*2.0*M_PI/24576000.0)*a_cx));
-                *sample = val << 8;
+                *sample = Rme::ByteSwapToDevice32(val << 8);
                 if ((a_cx+=int_tpf) >= 24576000) {
                     a_cx -= 24576000;
                 }
@@ -662,7 +662,7 @@ int RmeTransmitStreamProcessor::encodePortToRmeEvents(RmeAudioPort *p, quadlet_t
                 buffer+=offset;
 
                 for(j = 0; j < nevents; j += 1) { // Decode nsamples
-                    *target = (*buffer & 0x00ffffff) << 8;
+                    *target = Rme::ByteSwapToDevice32((*buffer & 0x00ffffff) << 8);
                     buffer++;
                     target+=m_event_size/4;
                 }
@@ -684,7 +684,7 @@ int RmeTransmitStreamProcessor::encodePortToRmeEvents(RmeAudioPort *p, quadlet_t
                     if (unlikely(in < -1.0)) in = -1.0;
 #endif
                     unsigned int v = lrintf(in * multiplier);
-                    *target = (v << 8);
+                    *target = Rme::ByteSwapToDevice32(v << 8);
                     buffer++;
                     target+=m_event_size/4;
                 }

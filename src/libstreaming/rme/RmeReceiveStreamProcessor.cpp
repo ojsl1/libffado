@@ -316,7 +316,7 @@ signed int RmeReceiveStreamProcessor::decodeRmeEventsToPort(RmeAudioPort *p,
                 buffer+=offset;
 
                 for(j = 0; j < nevents; j += 1) { // Decode nsamples
-                    *buffer = (*src_data >> 8) & 0x00ffffff;
+                    *buffer = (Rme::ByteSwapFromDevice32(*src_data) >> 8) & 0x00ffffff;
                     // Sign-extend highest bit of 24-bit int.  This isn't
                     // strictly needed since E_Int24 is a 24-bit, but doing
                     // so shouldn't break anything and makes the data easier
@@ -339,7 +339,7 @@ signed int RmeReceiveStreamProcessor::decodeRmeEventsToPort(RmeAudioPort *p,
                 buffer+=offset;
 
                 for(j = 0; j < nevents; j += 1) { // decode max nsamples
-                    signed int v = (*src_data >> 8) & 0x00ffffff;
+                    signed int v = (Rme::ByteSwapFromDevice32(*src_data) >> 8) & 0x00ffffff;
                     /* Sign-extend highest bit of incoming 24-bit integer */
                     if (*src_data & 0x80000000)
                       v |= 0xff000000;
