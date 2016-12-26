@@ -43,6 +43,26 @@ class Ieee1394Service;
 
 namespace Rme {
 
+// The RME devices expect packet data in little endian format (as
+// opposed to bus order, which is big endian).  Therefore define our own
+// 32-bit byteswap function to account for this.
+#if __BYTE_ORDER == __BIG_ENDIAN
+#define RME_BYTESWAP32(x)       ByteSwap32(x)
+#else
+#define RME_BYTESWAP32(x)       (x)
+#endif
+
+static inline uint32_t
+ByteSwapToDevice32(uint32_t d)
+{
+    return RME_BYTESWAP32(d);
+}
+static inline uint32_t
+ByteSwapFromDevice32(uint32_t d)
+{
+    return RME_BYTESWAP32(d);
+}
+        
 // Note: the values in this enum do not have to correspond to the unit
 // version reported by the respective devices.  It just so happens that they
 // currently do for the Fireface-800 and Fireface-400.
