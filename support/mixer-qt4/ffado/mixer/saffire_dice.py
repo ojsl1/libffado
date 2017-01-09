@@ -283,11 +283,11 @@ class Saffire_Dice(Generic_Dice_EAP):
         if ModelName != "SAFFIRE_PRO26":
             for i in range(int(self.nbLines/2)):
                 self.LineMonos[i].widget.setChecked(self.LineMonos[i].Interface.selected())
-                self.LineMonos[i].toggled.connect(self.LineMonos[i].Interface.select)
+                self.LineMonos[i].widget.toggled.connect(self.LineMonos[i].Interface.select)
 
         for i in range(self.nbLines):
             self.LineUnActivates[i].widget.setChecked(self.LineUnActivates[i].Interface.selected())
-            self.LineUnActivates[i].toggled.connect(self.LineUnActivates[i].Interface.selecte)
+            self.LineUnActivates[i].widget.toggled.connect(self.LineUnActivates[i].Interface.selecte)
             self.LineMutes[i].widget.setChecked(self.LineMutes[i].Interface.selected())
             self.LineMutes[i].widget.toggled.connect(self.LineMutes[i].Interface.select)
             self.LineGMutes[i].widget.setChecked(self.LineGMutes[i].Interface.selected())
