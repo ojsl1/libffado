@@ -159,7 +159,7 @@ class CrossbarRouter(QWidget):
 
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(200)
-        self.timer.timeout.connections(self.updateLevels)
+        self.timer.timeout.connect(self.updateLevels)
 
         self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False).toBool())
 
