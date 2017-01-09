@@ -145,7 +145,7 @@ class SaffireMixerBase:
             ctrl.stateChanged.connect(self.updateSelector)
 
         for ctrl, info in self.TriggerButtonControls.items():
-            ctrl.clicked.connect(,self.triggerButton)
+            ctrl.clicked.connect(self.triggerButton)
 
         for ctrl, info in self.saveTextControls.items():
             ctrl.clicked.connect(self.saveText)
