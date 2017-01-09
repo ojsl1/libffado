@@ -19,6 +19,9 @@ SYSTEM_CONFIG_FILE = "$SYSTEM_CONFIG_FILE"
 
 DEBUG = $DEBUG
 
+# If set true it will open all mixers
+bypassdbus = False
+
 UIDIR = PYTHONDIR
 import os.path
 if os.path.exists('support/mixer-qt4/ffado/mixer/globalmixer.ui'):

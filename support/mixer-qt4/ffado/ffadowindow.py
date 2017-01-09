@@ -192,6 +192,10 @@ def ffadomain(args):
 
     get_lock('ffado-mixer')
 
+    # Very simple command line option parser
+    if (len(args) > 1) and (args[1] == "-b" or args[1] == "--bypassdbus"):
+        ffado.config.bypassdbus = True
+
     # main loggers:
     logging.getLogger('main').setLevel(debug_level)
     logging.getLogger('dbus').setLevel(debug_level)

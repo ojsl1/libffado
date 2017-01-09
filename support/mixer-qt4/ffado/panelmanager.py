@@ -226,7 +226,10 @@ class PanelManager(QWidget):
         path = self.devmgr.getDeviceName(idx)
         log.debug("Adding device %d: %s" % (idx, path))
 
-        cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH+'/DeviceManager/'+path)
+        if ffado.config.bypassdbus:
+            cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, path)
+        else:
+            cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH+'/DeviceManager/'+path)
         vendorId = cfgrom.getVendorId()
         modelId = cfgrom.getModelId()
         unitVersion = cfgrom.getUnitVersion()
@@ -236,30 +239,31 @@ class PanelManager(QWidget):
         log.debug(" Found (%s, %X, %X) %s %s" % (str(guid), vendorId, modelId, vendorName, modelName))
 
         # check whether this has already been registered at ffado.org
-        reg = ffado_registration(FFADO_VERSION, int(guid, 16),
-                                     vendorId, modelId,
-                                     vendorName, modelName)
-        reg.check_for_registration()
+        if not ffado.config.bypassdbus:
+            reg = ffado_registration(FFADO_VERSION, int(guid, 16),
+                                         vendorId, modelId,
+                                         vendorName, modelName)
+            reg.check_for_registration()
 
-        # The MOTU devices use unitVersion to differentiate models.  For the
-        # moment though we don't need to know precisely which model we're
-        # using beyond it being a pre-mark3 (modelId=0) or mark3 (modelId=1) 
-        # device.
-        if vendorId == 0x1f2:
-            # All MOTU devices with a unit version of 0x15 or greater are
-            # mark3 devices
-            if (unitVersion >= 0x15):
-                modelId = 0x00000001
-            else:
-                modelId = 0x00000000
+            # The MOTU devices use unitVersion to differentiate models.  For
+            # the moment though we don't need to know precisely which model
+            # we're using beyond it being a pre-mark3 (modelId=0) or mark3
+            # (modelId=1) device.
+            if vendorId == 0x1f2:
+                # All MOTU devices with a unit version of 0x15 or greater are
+                # mark3 devices
+                if (unitVersion >= 0x15):
+                    modelId = 0x00000001
+                else:
+                    modelId = 0x00000000
 
-        # The RME devices use unitVersion to differentiate models. 
-        # Therefore in the configuration file we use the config file's
-        # modelid field to store the unit version.  As a result we must
-        # override the modelId with the unit version here so the correct
-        # configuration file entry (and hense mixer widget) is identified.
-        if vendorId == 0xa35:
-            modelId = unitVersion;
+            # The RME devices use unitVersion to differentiate models. 
+            # Therefore in the configuration file we use the config file's
+            # modelid field to store the unit version.  As a result we must
+            # override the modelId with the unit version here so the correct
+            # configuration file entry (and hense mixer widget) is identified.
+            if vendorId == 0xa35:
+                modelId = unitVersion;
 
         dev = self.devices.getDeviceById( vendorId, modelId )
 
@@ -296,11 +300,20 @@ class PanelManager(QWidget):
         #
         if 'mixer' in dev and dev['mixer'] != None:
             mixerapp = dev['mixer']
+            global mixerwidget
             exec( """
-import ffado.mixer.%s
-mixerwidget = ffado.mixer.%s.%s( w )
-""" % (mixerapp.lower(), mixerapp.lower(), mixerapp) )
+try:
+    import ffado.mixer.%s
+    globals()["mixerwidget"] = ffado.mixer.%s.%s( w )
+    found = True
+except ImportError:
+    log.debug("bypassdbus set, %s module not available: ignored")
+    found = False
+""" % (mixerapp.lower(), mixerapp.lower(), mixerapp, mixerapp.lower()) )
         else:
+            found = False
+
+        if not found:
             mixerwidget = Dummy( w )
             mixerapp = modelName+" (Dummy)"
 
@@ -381,7 +394,10 @@ mixerwidget = ffado.mixer.%s.%s( w )
         guid_indexes = {}
         for idx in range(nbDevices):
             path = self.devmgr.getDeviceName(idx)
-            cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH+'/DeviceManager/'+path)
+            if ffado.config.bypassdbus:
+                cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, path)
+            else:
+                cfgrom = ConfigRomInterface(FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH+'/DeviceManager/'+path)
             guid = cfgrom.getGUID()
             guids_present.append(guid)
             guid_indexes[guid] = idx

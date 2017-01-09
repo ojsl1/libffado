@@ -29,6 +29,8 @@ from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QTabWidget, QToolBar
 from PyQt4.QtGui import QComboBox, QScrollArea, QPushButton, QSizePolicy
 import dbus, math, decimal
 
+import ffado.config
+
 import logging
 log = logging.getLogger("matrixmixer")
 
@@ -313,33 +315,42 @@ class MatrixControlView(QWidget):
     def __init__(self, servername, basepath, parent=None, sliderMaxValue=-1, mutespath=None, invertspath=None, smallFont=False, shortname=False, shortcolname="Ch", shortrowname="Ch", transpose=False):
         QWidget.__init__(self, parent)
 
-        self.bus = dbus.SessionBus()
-        self.dev = self.bus.get_object(servername, basepath)
-        self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
+        if not ffado.config.bypassdbus:
+            self.bus = dbus.SessionBus()
+            self.dev = self.bus.get_object(servername, basepath)
+            self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
 
         self.transpose = transpose
         if (transpose):
             self.shortcolname = shortrowname
             self.shortrowname = shortcolname
-            self.cols = self.interface.getRowCount()
-            self.rows = self.interface.getColCount()
+            if ffado.config.bypassdbus:
+                self.cols = 2
+                self.rows = 2
+            else:
+                self.cols = self.interface.getRowCount()
+                self.rows = self.interface.getColCount()
         else:
             self.shortcolname = shortcolname
             self.shortrowname = shortrowname
-            self.cols = self.interface.getColCount()
-            self.rows = self.interface.getRowCount()
+            if ffado.config.bypassdbus:
+                self.cols = 2
+                self.rows = 2
+            else:
+                self.cols = self.interface.getColCount()
+                self.rows = self.interface.getRowCount()
 
         log.debug("Mixer has %i rows and %i columns" % (self.rows, self.cols))
 
         self.mutes_dev = None
         self.mutes_interface = None
-        if (mutespath != None):
+        if not ffado.config.bypassdbus and (mutespath != None):
             self.mutes_dev = self.bus.get_object(servername, mutespath)
             self.mutes_interface = dbus.Interface(self.mutes_dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
 
         self.inverts_dev = None
         self.inverts_interface = None
-        if (invertspath != None):
+        if not ffado.config.bypassdbus and (invertspath != None):
             self.inverts_dev = self.bus.get_object(servername, invertspath)
             self.inverts_interface = dbus.Interface(self.inverts_dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
 
@@ -380,7 +391,11 @@ class MatrixControlView(QWidget):
                     inv_value = None
                     if (self.inverts_interface != None):
                         inv_value = self.inverts_interface.getValue(j,i)
-                    node = MixerNode(i, j, self.interface.getValue(j,i), sliderMaxValue, mute_value, inv_value, self, self)
+                    if ffado.config.bypassdbus:
+                        val = 0
+                    else:
+                        val = self.interface.getValue(j,i)
+                    node = MixerNode(i, j, val, sliderMaxValue, mute_value, inv_value, self, self)
                 else:
                     mute_value = None
                     if (self.mutes_interface != None):
@@ -388,7 +403,11 @@ class MatrixControlView(QWidget):
                     inv_value = None
                     if (self.inverts_interface != None):
                         inv_value = self.inverts_interface.getValue(i,j)
-                    node = MixerNode(j, i, self.interface.getValue(i,j), sliderMaxValue, mute_value, inv_value, self, self)
+                    if ffado.config.bypassdbus:
+                        val = 0
+                    else:
+                        val = self.interface.getValue(i,j)
+                    node = MixerNode(j, i, val, sliderMaxValue, mute_value, inv_value, self, self)
                 if (smallFont):
                     font = node.font()
                     font.setPointSize(font.pointSize()/1.5)
@@ -430,6 +449,8 @@ class MatrixControlView(QWidget):
 
     # Columns and rows
     def getColName(self, i, shortname):
+        if ffado.config.bypassdbus:
+            return 'col ' + str(i)
         if (self.transpose):
             name = self.interface.getRowName(i)
         else:
@@ -441,6 +462,8 @@ class MatrixControlView(QWidget):
         return name
 
     def getRowName(self, j, shortname):
+        if ffado.config.bypassdbus:
+            return 'row ' + str(j)
         if (self.transpose):
             name = self.interface.getColName(j)
         else:
@@ -453,7 +476,8 @@ class MatrixControlView(QWidget):
 
     def valueChangedFn(self, n):
         #log.debug("MatrixNode.valueChangedFn( %s )" % str(n))
-        self.interface.setValue(n[1], n[0], n[2])
+        if not ffado.config.bypassdbus:
+            self.interface.setValue(n[1], n[0], n[2])
         self.valueChanged.emit(n)
         
     # Update when routing is modified
@@ -487,6 +511,8 @@ class MatrixControlView(QWidget):
             self.nodeConnect(self.items[n_0][n_1])
 
     def refreshValues(self):
+        if ffado.config.bypassdbus:
+            return
         for x in range(len(self.items)):
             for y in range(len(self.items[x])):
                 val = self.interface.getValue(x,y)
@@ -753,9 +779,10 @@ class SliderControlView(QWidget):
     def __init__(self, parent, servername, basepath, rule="Columns_are_inputs", shortname=False, shortinname="Ch", shortoutname="Ch", stereochannels = []):
         QWidget.__init__(self, parent)
 
-        self.bus = dbus.SessionBus()
-        self.dev = self.bus.get_object(servername, basepath)
-        self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
+        if not ffado.config.bypassdbus:
+            self.bus = dbus.SessionBus()
+            self.dev = self.bus.get_object(servername, basepath)
+            self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.MatrixMixer")
 
         self.rule = rule
         self.shortname = shortname
@@ -859,12 +886,16 @@ class SliderControlView(QWidget):
         balance.sliderChanged.disconnect(self.valueChangedBalance)
 
     def getNbIn(self):
+        if ffado.config.bypassdbus:
+            return 2
         if (self.rule == "Columns_are_inputs"):
             return self.interface.getColCount()
         else:
             return self.interface.getRowCount()
         
     def getNbOut(self):
+        if ffado.config.bypassdbus:
+            return 2
         if (self.rule == "Columns_are_inputs"):
             nbout = self.interface.getRowCount()
         else:
@@ -872,6 +903,8 @@ class SliderControlView(QWidget):
         return nbout-len(self.stereochannels)
         
     def getVolumeValue(self, In, i):
+        if ffado.config.bypassdbus:
+            return 1
         Out = self.out[i].out_1
         if (self.rule == "Columns_are_inputs"):
             vl = self.interface.getValue(Out, In)           
@@ -887,6 +920,8 @@ class SliderControlView(QWidget):
             return vl;     
 
     def getBalanceValue(self, In, i):
+        if ffado.config.bypassdbus:
+            return 0.5
         Out = self.out[i].out_1
         if (self.rule == "Columns_are_inputs"):
             vl = self.interface.getValue(Out, In)           
@@ -897,6 +932,8 @@ class SliderControlView(QWidget):
         return getStereoBalance(vl, vr)
 
     def setValue(self, In, Out, val):
+        if ffado.config.bypassdbus:
+            return
         if (self.rule == "Columns_are_inputs"):
             return self.interface.setValue(Out, In, val)           
         else:
@@ -971,6 +1008,8 @@ class SliderControlView(QWidget):
             name = self.shortoutname + number
             return name
         else:
+            if ffado.config.bypassdbus:
+                return 'OutName ' + str(i)
             if (self.rule == "Columns_are_inputs"):                
                 if (self.out[i].is_stereo):
                     name = self.interface.getRowName(k).replace('\n','')+" + "+self.interface.getRowName(k+1).replace('\n','')
@@ -991,6 +1030,8 @@ class SliderControlView(QWidget):
             name = self.shortinname + number
             return name
         else:
+            if ffado.config.bypassdbus:
+                return 'InName ' + str(j)
             if (self.rule == "Columns_are_inputs"):
                 return self.interface.getColName(j)            
             else:
@@ -1032,8 +1073,12 @@ class SliderControlView(QWidget):
                     self.out[i].svl[n_in].sliderSetValue(v)
 
     def saveSettings(self, indent):
-        rows = self.interface.getRowCount()
-        cols = self.interface.getColCount()
+        if ffado.config.bypassdbus:
+            rows = 2
+            cols = 2
+        else:
+            rows = self.interface.getRowCount()
+            cols = self.interface.getColCount()
         matrixSaveString = []
         matrixSaveString.append('%s  <row_number>\n' % indent)
         matrixSaveString.append('%s    %d\n' % (indent, rows))        
@@ -1053,8 +1098,12 @@ class SliderControlView(QWidget):
         return matrixSaveString
 
     def readSettings(self, readMatrixString, transpose_coeff):
-        rows = self.interface.getRowCount()
-        cols = self.interface.getColCount()
+        if ffado.config.bypassdbus:
+            rows = 2
+            cols = 2
+        else:
+            rows = self.interface.getRowCount()
+            cols = self.interface.getColCount()
         if readMatrixString[0].find("<row_number>") == -1:
             log.debug("Number of matrix rows must be specified")
             return False

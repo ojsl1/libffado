@@ -20,6 +20,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import ffado.config
+from ffado.configuration import *
 
 import dbus
 import dbus.mainloop.qt
@@ -32,11 +34,18 @@ class ControlInterface:
     def __init__(self, servername, basepath):
         self.basepath=basepath
         self.servername=servername
-        self.bus=dbus.SessionBus()
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+        else:
+            self.bus=dbus.SessionBus()
 
     def setContignuous(self, subpath, v, idx=None):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would set Continuous %s on server %s" % (path, self.servername))
+            return
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Continuous')
             if idx == None:
@@ -47,8 +56,11 @@ class ControlInterface:
             log.error("Failed to set Continuous %s on server %s" % (path, self.servername))
 
     def getContignuous(self, subpath, idx=None):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get Continuous %s on server %s" % (path, self.servername))
+            return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Continuous')
             if idx == None:
@@ -60,8 +72,11 @@ class ControlInterface:
             return 0
 
     def setDiscrete(self, subpath, v, idx=None):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would set Discrete %s on server %s" % (path, self.servername))
+            return
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Discrete')
             if idx == None:
@@ -72,8 +87,11 @@ class ControlInterface:
             log.error("Failed to set Discrete %s on server %s" % (path, self.servername))
 
     def getDiscrete(self, subpath, idx=None):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+             log.info("bypassdbus set, would get Discrete %s on server %s" % (path, self.servername))
+             return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Discrete')
             if idx == None:
@@ -85,8 +103,11 @@ class ControlInterface:
             return 0
 
     def setText(self, subpath, v):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("DEBUG_BYPASSDBUS set, would set Text %s on server %s" % (path, self.servername))
+            return
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Text')
             dev_cont.setValue(v)
@@ -94,8 +115,11 @@ class ControlInterface:
             log.error("Failed to set Text %s on server %s" % (path, self.servername))
 
     def getText(self, subpath):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get get Text %s on server %s" % (path, self.servername))
+            return ""
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Text')
             return dev_cont.getValue()
@@ -104,8 +128,11 @@ class ControlInterface:
             return 0
 
     def setMatrixMixerValue(self, subpath, row, col, v):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would set MatrixMixer %s on server %s" % (path, self.servername))
+            return
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.MatrixMixer')
             dev_cont.setValue(row, col, v)
@@ -113,8 +140,11 @@ class ControlInterface:
             log.error("Failed to set MatrixMixer %s on server %s" % (path, self.servername))
 
     def getMatrixMixerValue(self, subpath, row, col):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get MatrixMixer %s on server %s" % (path, self.servername))
+            return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.MatrixMixer')
             return dev_cont.getValue(row, col)
@@ -123,8 +153,11 @@ class ControlInterface:
             return 0
 
     def enumSelect(self, subpath, v):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would select %s on server %s" % (path, self.servername))
+            return
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             dev_cont.select(v)
@@ -132,8 +165,11 @@ class ControlInterface:
             log.error("Failed to select %s on server %s" % (path, self.servername))
 
     def enumSelected(self, subpath):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get selected enum %s on server %s" % (path, self.servername))
+            return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.selected()
@@ -142,8 +178,11 @@ class ControlInterface:
             return 0
 
     def enumGetLabel(self, subpath, v):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get enum label %s on server %s" % (path, self.servername))
+            return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.getEnumLabel(v)
@@ -152,8 +191,11 @@ class ControlInterface:
             return 0
 
     def enumCount(self, subpath):
+        path = self.basepath + subpath
+        if ffado.config.bypassdbus:
+            log.info("bypassdbus set, would get enum count %s on server %s" % (path, self.servername))
+            return 0
         try:
-            path = self.basepath + subpath
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.count()
@@ -166,9 +208,13 @@ class DeviceManagerInterface:
     def __init__(self, servername, basepath):
         self.basepath=basepath + '/DeviceManager'
         self.servername=servername
-        self.bus=dbus.SessionBus()
-        self.dev = self.bus.get_object(self.servername, self.basepath)
-        self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Container')
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+        else:
+            self.bus=dbus.SessionBus()
+            self.dev = self.bus.get_object(self.servername, self.basepath)
+            self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Container')
 
         self.updateSignalHandlers = []
         self.updateSignalHandlerArgs = {}
@@ -178,6 +224,9 @@ class DeviceManagerInterface:
         self.postUpdateSignalHandlerArgs = {}
         self.destroyedSignalHandlers = []
         self.destroyedSignalHandlerArgs = {}
+
+        if ffado.config.bypassdbus:
+            return
 
         # signal reception does not work yet since we need a mainloop for that
         # and qt3 doesn't provide one for python/dbus
@@ -268,74 +317,134 @@ class DeviceManagerInterface:
                 log.error("Failed to execute handler %s" % handler)
 
     def getNbDevices(self):
+        if ffado.config.bypassdbus:
+            return len(self.devices.devices)
         return self.iface.getNbElements()
     def getDeviceName(self, idx):
+        if ffado.config.bypassdbus:
+            return str(idx)
         return self.iface.getElementName(idx)
 
 class ConfigRomInterface:
     def __init__(self, servername, devicepath):
         self.basepath=devicepath + '/ConfigRom'
         self.servername=servername
-        self.bus=dbus.SessionBus()
-        self.dev = self.bus.get_object(self.servername, self.basepath)
-        self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.ConfigRomX')
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+            self.idx = int(devicepath)
+        else:
+            self.bus=dbus.SessionBus()
+            self.dev = self.bus.get_object(self.servername, self.basepath)
+            self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.ConfigRomX')
     def getGUID(self):
+        if ffado.config.bypassdbus:
+            return str(self.idx)
         return self.iface.getGUID()
     def getVendorName(self):
+        if ffado.config.bypassdbus:
+            return self.devices.devices[self.idx]['vendorname']
         return self.iface.getVendorName()
     def getModelName(self):
+        if ffado.config.bypassdbus:
+            return self.devices.devices[self.idx]['modelname']
         return self.iface.getModelName()
     def getVendorId(self):
+        if ffado.config.bypassdbus:
+            return int(self.devices.devices[self.idx]['vendorid'], 16)
         return self.iface.getVendorId()
     def getModelId(self):
+        if ffado.config.bypassdbus:
+            return int(self.devices.devices[self.idx]['modelid'], 16)
         return self.iface.getModelId()
     def getUnitVersion(self):
+        if ffado.config.bypassdbus:
+            return 0
         return self.iface.getUnitVersion()
 
 class ClockSelectInterface:
     def __init__(self, servername, devicepath):
         self.basepath=devicepath + '/Generic/ClockSelect'
         self.servername=servername
-        self.bus=dbus.SessionBus()
-        self.dev = self.bus.get_object(self.servername, self.basepath)
-        self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.AttributeEnum')
-        self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+            self.idx = devicepath
+        else:
+            self.bus=dbus.SessionBus()
+            self.dev = self.bus.get_object(self.servername, self.basepath)
+            self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.AttributeEnum')
+            self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
     def count(self):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.count()
     def select(self, idx):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.select(idx)
     def selected(self):
+        if ffado.config.bypassdbus:
+            return True
         return self.iface.selected()
     def getEnumLabel(self, idx):
+        if ffado.config.bypassdbus:
+            return 'enumlabel ' + str(idx)
         return self.iface.getEnumLabel(idx)
     def attributeCount(self):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.attributeCount()
     def getAttributeValue(self, idx):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.getAttributeValue(idx)
     def getAttributeName(self, idx):
+        if ffado.config.bypassdbus:
+            return 'attrib ' + str(idx)
         return self.iface.getAttributeName(idx)
     def canChangeValue(self):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface_element.canChangeValue()
 
 class EnumInterface:
     def __init__(self, servername, basepath):
         self.basepath = basepath
         self.servername = servername
-        self.bus = dbus.SessionBus()
-        self.dev = self.bus.get_object(self.servername, self.basepath)
-        self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Enum')
-        self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+        else:
+            self.bus = dbus.SessionBus()
+            self.dev = self.bus.get_object(self.servername, self.basepath)
+            self.iface = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Enum')
+            self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
     def count(self):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.count()
     def select(self, idx):
+        if ffado.config.bypassdbus:
+            return 1
         return self.iface.select(idx)
     def selected(self):
+        if ffado.config.bypassdbus:
+            return True
         return self.iface.selected()
     def getEnumLabel(self, idx):
+        if ffado.config.bypassdbus:
+            # Can't include text here since some code uses int() to extract
+            # a value from the enum label
+            return '0'
         return self.iface.getEnumLabel(idx)
     def canChangeValue(self):
+        if ffado.config.bypassdbus:
+            return True
         return self.iface_element.canChangeValue()
     def devConfigChanged(self, idx):
+        if ffado.config.bypassdbus:
+            return True
         return self.iface.devConfigChanged(idx)
 
 class SamplerateSelectInterface(EnumInterface):
@@ -350,15 +459,25 @@ class TextInterface:
     def __init__(self, servername, basepath):
         self.basepath=basepath
         self.servername=servername
-        self.bus=dbus.SessionBus()
-        self.dev = self.bus.get_object( self.servername, self.basepath )
-        self.iface = dbus.Interface( self.dev, dbus_interface="org.ffado.Control.Element.Text" )
-        self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
+        if ffado.config.bypassdbus:
+            self.devices = DeviceList(ffado.config.SYSTEM_CONFIG_FILE)
+            self.devices.updateFromFile(ffado.config.USER_CONFIG_FILE)
+        else:
+            self.bus=dbus.SessionBus()
+            self.dev = self.bus.get_object( self.servername, self.basepath )
+            self.iface = dbus.Interface( self.dev, dbus_interface="org.ffado.Control.Element.Text" )
+            self.iface_element = dbus.Interface(self.dev, dbus_interface='org.ffado.Control.Element.Element')
     def text(self):
+        if ffado.config.bypassdbus:
+            return "text"
         return self.iface.getValue()
     def setText(self,text):
+        if ffado.config.bypassdbus:
+            return
         self.iface.setValue(text)
     def canChangeValue(self):
+        if ffado.config.bypassdbus:
+            return True
         return self.iface_element.canChangeValue()
 
 # vim: et

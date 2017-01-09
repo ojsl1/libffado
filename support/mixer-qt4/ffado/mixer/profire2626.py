@@ -22,6 +22,7 @@ from PyQt4 import QtGui, QtCore, Qt
 from PyQt4.QtGui import QWidget, QScrollArea
 import dbus
 
+import ffado.config
 from ffado.widgets.matrixmixer import MatrixMixer
 from ffado.widgets.crossbarrouter import *
 from ffado.mixer.generic_dice_eap import *
@@ -30,6 +31,9 @@ from ffado.config import *
 
 class BooleanControl:
     def __init__(self, hw, path):
+        if ffado.config.bypassdbus:
+            self.value = False
+            return
         self.iface = dbus.Interface(
                 hw.bus.get_object(hw.servername, path),
                 dbus_interface="org.ffado.Control.Element.Boolean")
@@ -46,6 +50,9 @@ class BooleanControl:
 
 class DiscreteControl:
     def __init__(self, hw, path):
+        if ffado.config.bypassdbus:
+            self.value = 0
+            return
         self.iface = dbus.Interface(
                 hw.bus.get_object(hw.servername, path),
                 dbus_interface="org.ffado.Control.Element.Discrete")

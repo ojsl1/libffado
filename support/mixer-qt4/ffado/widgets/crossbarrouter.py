@@ -25,6 +25,8 @@ from PyQt4.QtGui import QFrame, QPainter, QGridLayout, QLabel, QComboBox
 from PyQt4.QtGui import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 import dbus, math
 
+import ffado.config
+
 import logging
 log = logging.getLogger("crossbarrouter")
 
@@ -123,13 +125,16 @@ class CrossbarRouter(QWidget):
     MixerRoutingChanged = pyqtSignal(name='MixerRoutingChanged')
     def __init__(self, servername, basepath, parent=None):
         QWidget.__init__(self, parent);
-        self.bus = dbus.SessionBus()
-        self.dev = self.bus.get_object(servername, basepath)
-        self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.CrossbarRouter")
+        if not ffado.config.bypassdbus:
+            self.bus = dbus.SessionBus()
+            self.dev = self.bus.get_object(servername, basepath)
+            self.interface = dbus.Interface(self.dev, dbus_interface="org.ffado.Control.Element.CrossbarRouter")
+            self.destinations = self.interface.getDestinationNames()
+        else:
+            self.destinations = []
 
         self.settings = QtCore.QSettings(self)
 
-        self.destinations = self.interface.getDestinationNames()
         self.outgroups = []
         for ch in self.destinations:
             tmp = str(ch).split(":")[0]
@@ -178,6 +183,8 @@ class CrossbarRouter(QWidget):
 
     def updateLevels(self):
         #log.debug("CrossbarRouter.updateLevels()")
+        if ffado.config.bypassdbus:
+            return
         peakvalues = self.interface.getPeakValues()
         #log.debug("Got %i peaks" % len(peakvalues))
         for peak in peakvalues:

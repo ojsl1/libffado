@@ -30,6 +30,9 @@ from ffado.config import *
 
 class BooleanControl:
     def __init__(self, hw, path):
+        if bypassdbus:
+            self.value = False
+            return
         self.iface = dbus.Interface(
                 hw.bus.get_object(hw.servername, path),
                 dbus_interface="org.ffado.Control.Element.Boolean")
@@ -39,6 +42,8 @@ class BooleanControl:
         return self.value
 
     def select(self, n):
+        if bypassdbus:
+            return False
         if self.iface.select(n):
             self.value = n
             return True
@@ -46,6 +51,9 @@ class BooleanControl:
 
 class DiscreteControl:
     def __init__(self, hw, path):
+        if bypassdbus:
+            self.value = 0
+            return
         self.iface = dbus.Interface(
                 hw.bus.get_object(hw.servername, path),
                 dbus_interface="org.ffado.Control.Element.Discrete")
@@ -71,6 +79,22 @@ class Saffire_Dice(Generic_Dice_EAP):
         widget = QWidget()
 
         ModelName = self.configrom.getModelName()
+        if ffado.config.bypassdbus:
+            # A hack for the bypassdbus case, where ModelName has a slightly
+            # different format.  Rather than using the name as returned by
+            # the device (eg: "SAFFIRE_PRO_40"), the name is taken from the
+            # configuration file desciption (eg: "Saffire PRO 40").
+            if ModelName[-2:] == "-1":
+                ModelName = ModelName[:-2]
+            if ModelName[-4:] == " DSP":
+                ModelName = ModelName[:-4]
+            ModelNum = ModelName[-2:]
+            ModelName = "SAFFIRE_PRO"
+            if ModelNum != "26":
+                ModelName += "_"
+            ModelName += ModelNum
+            print ModelName
+
         if  ModelName == "SAFFIRE_PRO_14":
             uicLoad("ffado/mixer/Saffire_Pro14_monitoring.ui", widget)
         elif ModelName == "SAFFIRE_PRO_24" or self.configrom.getModelName() == "SAFFIRE_PRO_24DSP":
