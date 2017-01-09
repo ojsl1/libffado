@@ -168,7 +168,7 @@ class SaffireMixerStereo(QWidget, SaffireMixerBase):
         uicLoad("ffado/mixer/saffire_stereo", self)
         SaffireMixerBase.__init__(self)
         self.btnRefresh.clicked.connect(self.updateValues)
-        self.btnSwitchStereoMode,.clicked.connect(self.switchStereoMode)
+        self.btnSwitchStereoMode.clicked.connect(self.switchStereoMode)
 
         self.VolumeControls={
                 self.sldPC910Out910: ['/Mixer/MatrixMixerStereo', 0, 0],
