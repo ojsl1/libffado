@@ -212,6 +212,17 @@ device_definitions = (
     mixer       = "QuataFire";
     xmit_max_cycles_early_transmit = 4;
 },
+# Shalok Shalom has a Quantafire 610 which reports a different modelid.
+# The reasons for this are unknown.
+{
+    vendorid    = 0x000f1b;
+    modelid     = 0x00000210;
+    vendorname  = "ESI";
+    modelname   = "Quatafire 610 variant";
+    driver      = "BEBOB";
+    mixer       = "QuataFire";
+    xmit_max_cycles_early_transmit = 4;
+},
 {
     vendorid    = 0x00130e;
     modelid     = 0x00000003;
