@@ -169,7 +169,7 @@ $ scons DEBUG=yes
 $ scons install
 
 More extended instructions can be found here:
-http://subversion.ffado.org/wiki/CompilationGuides
+http://subversion.ffado.org/wiki/InstallingFfadoFromSource
 
 NOTE: In order to build jackd with ffado support, you have 
 to install libffado before you build jackd. The backend to use in jackd is
