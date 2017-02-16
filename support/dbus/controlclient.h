@@ -26,6 +26,11 @@
 
 #include "debugmodule/debugmodule.h"
 
+/* Work around a bug in dbus-c++ 0.9.0 which prevents compilation under gcc7 */
+#ifndef DBUS_HAS_RECURSIVE_MUTEX
+#define DBUS_HAS_RECURSIVE_MUTEX
+#endif
+
 #include <dbus-c++/dbus.h>
 
 #include "controlclient-glue.h"

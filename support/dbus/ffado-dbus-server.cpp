@@ -37,6 +37,11 @@
 #include "devicemanager.h"
 #include "ffadodevice.h"
 
+/* Work around a bug in dbus-c++ 0.9.0 which prevents compilation under gcc7 */
+#ifndef DBUS_HAS_RECURSIVE_MUTEX
+#define DBUS_HAS_RECURSIVE_MUTEX
+#endif
+
 #include <dbus-c++/dbus.h>
 #include "controlserver.h"
 #include "libcontrol/BasicElements.h"
