@@ -176,7 +176,7 @@ ConfigRom::initialize()
                 ( void* )CSR1212_TEXTUAL_DESCRIPTOR_LEAF_DATA( m_vendorNameKv ),
                 len );
 
-    while ((buf + len - 1) == '\0') {
+    while (*(buf + len - 1) == '\0') {
             len--;
         }
         // \todo XXX seems a bit strage to do this but the nodemgr.c code does
@@ -195,7 +195,7 @@ ConfigRom::initialize()
         memcpy( buf,
                 ( void* )CSR1212_TEXTUAL_DESCRIPTOR_LEAF_DATA( m_modelNameKv ),
                 len );
-    while ((buf + len - 1) == '\0') {
+    while (*(buf + len - 1) == '\0') {
             len--;
         }
         // \todo XXX for edirol fa-66 it seems somehow broken. see above
