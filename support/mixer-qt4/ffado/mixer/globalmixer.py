@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import QObject, pyqtSignature
+from PyQt4.QtCore import QObject, pyqtSlot
 from PyQt4.QtGui import QWidget, QMessageBox
 from ffado.config import *
 
@@ -41,7 +41,7 @@ class GlobalMixer(QWidget):
         else:
             self.lblName.hide()
 
-    @pyqtSignature("int")
+    @pyqtSlot(int)
     def on_clocksource_activated( self, clock ):
         #log.debug("updateClockSource( " + str(clock) + " )")
         if self.clockselect.canChangeValue():
@@ -63,7 +63,7 @@ class GlobalMixer(QWidget):
                 QMessageBox.Ok )
             self.clocksource.setCurrentIndex( selected )
 
-    @pyqtSignature("int")
+    @pyqtSlot(int)
     def on_samplerate_activated( self, sr ):
         log.debug("on_samplerate_activated( " + str(sr) + " )")
         # If there's no clock, don't bother trying to set the sample rate
@@ -91,7 +91,7 @@ class GlobalMixer(QWidget):
                 QMessageBox.Ok )
             self.samplerate.setCurrentIndex( selected )
 
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_txtNickname_returnPressed( self ):
         if self.nickname.canChangeValue():
             asciiData = self.txtNickname.text().toAscii()
