@@ -315,7 +315,7 @@ class Saffire_Dice(Generic_Dice_EAP):
             self.LineMutes[i].widget.setChecked(self.LineMutes[i].Interface.selected())
             self.LineMutes[i].widget.toggled.connect(self.LineMutes[i].Interface.select)
             self.LineGMutes[i].widget.setChecked(self.LineGMutes[i].Interface.selected())
-            self.LineMutes[i].widget.toggled.connect(self.LineGMutes[i].Interface.select)
+            self.LineGMutes[i].widget.toggled.connect(self.LineGMutes[i].Interface.select)
             self.LineGDims[i].widget.setChecked(self.LineGDims[i].Interface.selected())
             self.LineGDims[i].widget.toggled.connect(self.LineGDims[i].Interface.select)
             self.LineVolumes[i].widget.setValue(self.LineVolumes[i].Interface.getvalue())
