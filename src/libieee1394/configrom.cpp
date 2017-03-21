@@ -176,13 +176,11 @@ ConfigRom::initialize()
                 ( void* )CSR1212_TEXTUAL_DESCRIPTOR_LEAF_DATA( m_vendorNameKv ),
                 len );
 
-    while (*(buf + len - 1) == '\0') {
-            len--;
+        while (*(buf + len - 1) == '\0') {
+                len--;
         }
-        // \todo XXX seems a bit strage to do this but the nodemgr.c code does
-        // it. try to figure out why this is needed (or not)
-    buf[len++] = ' ';
-    buf[len] = '\0';
+        // Ensure vendor string is null terminated
+        buf[len] = '\0';
 
 
         debugOutput( DEBUG_LEVEL_VERBOSE, "Vendor name: '%s'\n", buf );
@@ -195,13 +193,11 @@ ConfigRom::initialize()
         memcpy( buf,
                 ( void* )CSR1212_TEXTUAL_DESCRIPTOR_LEAF_DATA( m_modelNameKv ),
                 len );
-    while (*(buf + len - 1) == '\0') {
-            len--;
+        while (*(buf + len - 1) == '\0') {
+                len--;
         }
-        // \todo XXX for edirol fa-66 it seems somehow broken. see above
-        // todo as well.
-    buf[len++] = ' ';
-    buf[len] = '\0';
+        // Ensure model name string is null terminated
+        buf[len] = '\0';
 
         debugOutput( DEBUG_LEVEL_VERBOSE, "Model name: '%s'\n", buf);
         m_modelName = buf;
