@@ -73,8 +73,7 @@ class ColorForNumber:
 
     def getColor(self, n):
         #print "ColorForNumber.getColor( %g )" % (n)
-        keys = self.colors.keys()
-        keys.sort()
+        keys = sorted(self.colors.keys())
         low = keys[-1]
         high = keys[-1]
         for i in range(len(keys)-1):
