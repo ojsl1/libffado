@@ -81,7 +81,7 @@ class FFADOWindow(QMainWindow):
         self.quitaction.triggered.connect(self.close)
         filemenu.addAction(self.quitaction)
 
-        self.editmenu = self.menuBar().addMenu("&Edit")
+        self.editmenu = self.menuBar().addMenu("&View")
         self.updateaction = QAction(QIcon.fromTheme("view-refresh"),"&Update Mixer Panels", self)
         self.updateaction.setEnabled(False)
         self.updateaction.triggered.connect(self.manager.updatePanels)
