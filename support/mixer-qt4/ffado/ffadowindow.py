@@ -115,7 +115,7 @@ class FFADOWindow(QMainWindow):
         log.info("connectToDBUS")
         try:
             self.setupDeviceManager()
-        except dbus.DBusException, ex:
+        except dbus.DBusException as ex:
             log.error("Could not communicate with the FFADO DBus service...")
             if not hasattr(self,"retry"):
                 self.retry = StartDialog(self)
@@ -128,7 +128,7 @@ class FFADOWindow(QMainWindow):
     def tryStartDBUSServer(self):
         try:
             self.setupDeviceManager()
-        except dbus.DBusException, ex:
+        except dbus.DBusException as ex:
             if hasattr(self, "retry"):
                 self.retry.setEnabled(False)
             subprocess.Popen(['ffado-dbus-server', '-v3']).pid
