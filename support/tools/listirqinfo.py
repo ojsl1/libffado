@@ -18,8 +18,14 @@
 #
 
 import os
-import commands
 import re
+
+# Allow for the movement of getstatusoutput from the "commands" module (in
+# python2) to the "subprocess" module in python3.
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
 
 LISTIRQINFO_VERSION="0.3"
 
@@ -62,7 +68,7 @@ class IRQInfo:
 
     def load(self):
         # get PID info
-        (exitstatus, outtext) = commands.getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep IRQ')
+        (exitstatus, outtext) = getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep IRQ')
         
         rawstr = r"""([0-9]+) +\[IRQ-([0-9]+)\] +([A-Z]{2}) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
@@ -81,7 +87,7 @@ class IRQInfo:
                     irq.scheduling_priority = None
                 IRQs[irq.number] = irq
         
-        (exitstatus, outtext) = commands.getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep softirq')
+        (exitstatus, outtext) = getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep softirq')
         
         rawstr = r"""([0-9]+) +\[softirq-(.*)\] +([A-Z]+) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
@@ -102,7 +108,7 @@ class IRQInfo:
                 softIRQs[irq.name] = irq
         
         # get irq info
-        (exitstatus, outtext) = commands.getstatusoutput('cat /proc/interrupts')
+        (exitstatus, outtext) = getstatusoutput('cat /proc/interrupts')
         lines = outtext.splitlines()
         nb_cpus = len(lines[0].split())
         str0 = "([0-9]+): +";

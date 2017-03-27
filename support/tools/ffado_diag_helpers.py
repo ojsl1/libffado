@@ -21,9 +21,15 @@
 import sys
 
 import os
-import commands
 import re
 import logging
+
+# Allow for the movement of getstatusoutput from the "commands" module (in
+# python2) to the "subprocess" module in python3.
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
 
 ## logging setup
 logging.basicConfig()
@@ -63,8 +69,8 @@ def check_for_module_loaded(modulename, procfile):
 def check_for_module_present(modulename):
     log.info("Checking if module '%s' is present... " % modulename)
     kver = get_kernel_version()
-    (exitstatus, outtext) = commands.getstatusoutput("find \"/lib/modules/%s/\" -name '%s.ko' | grep '%s'" % \
-                                                     (kver, modulename, modulename) )
+    (exitstatus, outtext) = getstatusoutput("find \"/lib/modules/%s/\" -name '%s.ko' | grep '%s'" % \
+                                            (kver, modulename, modulename) )
     log.debug("find outputs: %s" % outtext)
     if outtext == "":
         log.info(" not found")
@@ -126,7 +132,7 @@ def check_1394oldstack_devnode_permissions():
         return False
 
 def run_command(cmd):
-    (exitstatus, outtext) = commands.getstatusoutput(cmd)
+    (exitstatus, outtext) = getstatusoutput(cmd)
     log.debug("%s outputs: %s" % (cmd, outtext))
     return outtext
 
