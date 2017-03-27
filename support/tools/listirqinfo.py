@@ -24,8 +24,7 @@ import re
 LISTIRQINFO_VERSION="0.3"
 
 def sortedDictValues(adict):
-    items = adict.items()
-    items.sort()
+    items = sorted(adict.items())
     return [value for key, value in items]
 
 class IRQ:
