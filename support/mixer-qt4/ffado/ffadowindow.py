@@ -176,7 +176,7 @@ def get_lock(process_name):
         lock_socket.bind('\0' + process_name)
         # Lock acquired
     except socket.error:
-        print 'ffado-mixer instance is already running'
+        print( 'ffado-mixer instance is already running' )
         sys.exit()
 
 

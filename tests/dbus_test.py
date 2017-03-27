@@ -44,7 +44,7 @@ class ControlInterface:
             else:
                 dev_cont.setValueIdx(idx,v)
         except:
-            print "Failed to set Continuous %s on server %s" % (path, self.servername)
+            print( "Failed to set Continuous %s on server %s" % (path, self.servername) )
 
     def getContignuous(self, subpath, idx=None):
         try:
@@ -56,7 +56,7 @@ class ControlInterface:
             else:
                 return dev_cont.getValueIdx(idx)
         except:
-            print "Failed to get Continuous %s on server %s" % (path, self.servername)
+            print( "Failed to get Continuous %s on server %s" % (path, self.servername) )
             return 0
 
     def setDiscrete(self, subpath, v):
@@ -66,7 +66,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Discrete')
             dev_cont.setValue(v)
         except:
-            print "Failed to set Discrete %s on server %s" % (path, self.servername)
+            print( "Failed to set Discrete %s on server %s" % (path, self.servername) )
 
     def getDiscrete(self, subpath):
         try:
@@ -75,7 +75,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Discrete')
             return dev_cont.getValue()
         except:
-            print "Failed to get Discrete %s on server %s" % (path, self.servername)
+            print( "Failed to get Discrete %s on server %s" % (path, self.servername) )
             return 0
 
     def setRegister(self, subpath, address, value):
@@ -85,7 +85,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Register')
             dev_cont.setValue(address, value)
         except:
-            print "Failed to set Register %s on server %s" % (path, self.servername)
+            print( "Failed to set Register %s on server %s" % (path, self.servername) )
 
     def getRegister(self, subpath, address):
         try:
@@ -94,7 +94,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Register')
             return dev_cont.getValue(address)
         except:
-            print "Failed to get Register %s on server %s" % (path, self.servername)
+            print( "Failed to get Register %s on server %s" % (path, self.servername) )
             return 0
 
     def setText(self, subpath, v):
@@ -104,7 +104,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Text')
             dev_cont.setValue(v)
         except:
-            print "Failed to set Text %s on server %s" % (path, self.servername)
+            print( "Failed to set Text %s on server %s" % (path, self.servername) )
 
     def getText(self, subpath):
         try:
@@ -113,7 +113,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Text')
             return dev_cont.getValue()
         except:
-            print "Failed to get Text %s on server %s" % (path, self.servername)
+            print( "Failed to get Text %s on server %s" % (path, self.servername) )
             return 0
 
     def setMatrixMixerValue(self, subpath, row, col, v):
@@ -123,7 +123,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.MatrixMixer')
             dev_cont.setValue(row, col, v)
         except:
-            print "Failed to set MatrixMixer %s on server %s" % (path, self.servername)
+            print( "Failed to set MatrixMixer %s on server %s" % (path, self.servername) )
 
     def getMatrixMixerValue(self, subpath, row, col):
         try:
@@ -132,7 +132,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.MatrixMixer')
             return dev_cont.getValue(row, col)
         except:
-            print "Failed to get MatrixMixer %s on server %s" % (path, self.servername)
+            print( "Failed to get MatrixMixer %s on server %s" % (path, self.servername) )
             return 0
 
     def enumSelect(self, subpath, v):
@@ -142,7 +142,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             dev_cont.select(v)
         except:
-            print "Failed to select %s on server %s" % (path, self.servername)
+            print( "Failed to select %s on server %s" % (path, self.servername) )
 
     def enumSelected(self, subpath):
         try:
@@ -151,7 +151,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.selected()
         except:
-            print "Failed to get selected enum %s on server %s" % (path, self.servername)
+            print( "Failed to get selected enum %s on server %s" % (path, self.servername) )
             return 0
 
     def enumGetLabel(self, subpath, v):
@@ -161,7 +161,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.getEnumLabel(v)
         except:
-            print "Failed to get enum label %s on server %s" % (path, self.servername)
+            print( "Failed to get enum label %s on server %s" % (path, self.servername) )
             return 0
 
     def enumCount(self, subpath):
@@ -171,7 +171,7 @@ class ControlInterface:
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Enum')
             return dev_cont.count()
         except:
-            print "Failed to get enum count %s on server %s" % (path, self.servername)
+            print( "Failed to get enum count %s on server %s" % (path, self.servername) )
             return 0
 
 class DeviceManagerInterface:
@@ -190,7 +190,7 @@ class DeviceManagerInterface:
             #traceback.print_exc()
 
     #def updateSignal(self):
-        #print ("Received update signal")
+        #print( ("Received update signal") )
 
     def getNbDevices(self):
         return self.iface.getNbElements()
@@ -256,7 +256,7 @@ class TextInterface:
 
 if __name__ == "__main__":
 
-    print """
+    print( """ )
 ===========================================================
 FFADO DBUS TEST TOOL
 ===========================================================
@@ -272,21 +272,21 @@ FFADO DBUS TEST TOOL
             nbDevices = devmgr.getNbDevices()
             repeat -= 1
         except dbus.DBusException, ex:
-            print "\n"
-            print "==========================================================="
-            print "ERROR: Could not communicate with the FFADO DBus service..."
-            print "==========================================================="
-            print "\n"
+            print( "\n" )
+            print( "===========================================================" )
+            print( "ERROR: Could not communicate with the FFADO DBus service..." )
+            print( "===========================================================" )
+            print( "\n" )
             sys.exit( -1 )
 
     if nbDevices == 0:
-        print "No supported device found..."
+        print( "No supported device found..." )
         sys.exit( -1 )
 
     idx = 0
 
     path=devmgr.getDeviceName(idx)
-    print "Found device %d: %s" % (idx, path)
+    print( "Found device %d: %s" % (idx, path) )
 
     cfgrom = ConfigRomInterface(server, basepath+'/DeviceManager/'+path)
     vendorId = cfgrom.getVendorId()
@@ -295,7 +295,7 @@ FFADO DBUS TEST TOOL
     GUID = cfgrom.getGUID()
     vendorName = cfgrom.getVendorName()
     modelName = cfgrom.getModelName()
-    print " Found (%s, %X, %X) %s %s" % (str(GUID), vendorId, modelId, vendorName, modelName)
+    print( " Found (%s, %X, %X) %s %s" % (str(GUID), vendorId, modelId, vendorName, modelName) )
 
     # create a control objects
     hw = ControlInterface(server, basepath+'/DeviceManager/'+path)
@@ -310,14 +310,14 @@ FFADO DBUS TEST TOOL
             newval = hw.getRegister("/Register", regid)
             oldval = register[regid]
             if newval != oldval:
-                print "%04d: from %8d | %08X to %8d | %08X" % (regid, oldval, oldval, newval, newval)
+                print( "%04d: from %8d | %08X to %8d | %08X" % (regid, oldval, oldval, newval, newval) )
                 register[regid] = newval
             time.sleep(0.2)
-        print "--- %d ---" % i
+        print( "--- %d ---" % i )
         #time.sleep(1)
 
     #regid=eval(sys.argv[1])
     #val=eval(sys.argv[2])
-    #print hw.getRegister("/Register", regid)
+    #print( hw.getRegister("/Register", regid) )
     #hw.setRegister("/Register", regid, val)
     

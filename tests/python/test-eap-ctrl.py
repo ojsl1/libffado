@@ -38,8 +38,8 @@ mixer = dbus.Interface(bus.get_object(servername, path+"MatrixMixer"),
 #nbinputs = mixer.getRowCount()
 #nboutputs = mixer.getColCount()
 
-#print nbinputs
-#print nboutputs
+#print( nbinputs )
+#print( nboutputs )
 
 #for i in range(nbinputs):
     #for o in range(nboutputs):
@@ -49,7 +49,7 @@ mixer = dbus.Interface(bus.get_object(servername, path+"MatrixMixer"),
 #def reroute(src, dsts):
     #srcidx = router.getSourceIndex(src)
     #for dst in dsts:
-        #print dst
+        #print( dst )
         #dstidx = router.getDestinationIndex(dst)
     
         #sourceidx = 0
@@ -60,8 +60,8 @@ mixer = dbus.Interface(bus.get_object(servername, path+"MatrixMixer"),
     
         ## connect
         #if router.canConnect(srcidx, dstidx):
-            #print router.getConnectionState(srcidx, dstidx)
-            #print router.setConnectionState(srcidx, dstidx, 1)
+            #print( router.getConnectionState(srcidx, dstidx) )
+            #print( router.setConnectionState(srcidx, dstidx, 1) )
 
 #reroute("InS1:02", ["InS0:00", "InS1:00", "InS1:02", "InS1:04", "InS1:06"])
 #reroute("InS1:03", ["InS0:01", "InS1:01", "InS1:03", "InS1:05", "InS1:07"])
@@ -97,4 +97,4 @@ for dst in range(nb_destinations):
         s += " %d" % tst[idx]
     s += "\n"
 
-print s
+print( s )

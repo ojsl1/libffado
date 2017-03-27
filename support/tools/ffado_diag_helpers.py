@@ -162,7 +162,7 @@ def list_host_controllers():
         if len(tmp) > 0:
             tmp
             cmd = lspci_cmd + " -vv -nn -s %s" % tmp[0]
-            print run_command(cmd)
+            print( run_command(cmd) )
 
 def get_juju_permissions():
     return run_command('ls -lh /dev/fw*')

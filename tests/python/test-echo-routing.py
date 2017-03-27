@@ -44,7 +44,7 @@ try:
 	hwinfo = dbus.Interface(bus.get_object(servername, path + 'HwInfo/PlaybackRouting'),
 				dbus_interface='org.ffado.Control.Element.Discrete')
 except:
-	print "'ffado-dbus-server' should be started in advance."
+	print( "'ffado-dbus-server' should be started in advance." )
 	sys.exit()
 
 # ask the device supports playback-routing
@@ -52,7 +52,7 @@ try:
 	if(not hwinfo.getValue()):
 		raise Exception()
 except:
-	print "Your device doesn't support playback-routing."
+	print( "Your device doesn't support playback-routing." )
 	sys.exit()
 
 router = dbus.Interface(bus.get_object(servername, path + "PlaybackRouting"),
@@ -66,13 +66,13 @@ if (argc == 3):
 	port = int(argvs[1])
 	strm = int(argvs[2])
 	if ((port > 2) or (strm > 2)):
-		print 'arguments should be less than 3.'
+		print( 'arguments should be less than 3.' )
 		sys.exit()
 	s = router.setValueIdx(port, strm);
-	print s
+	print( s )
 # get status
 else:
-	print "port\tstream"
+	print( "port\tstream" )
 	for i in range(3):
-		print i, "\t", router.getValueIdx(i);
+		print( i, "\t", router.getValueIdx(i); )
 

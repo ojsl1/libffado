@@ -72,8 +72,8 @@ class Saffire_Dice(Generic_Dice_EAP):
         Generic_Dice_EAP.__init__(self, parent)
 
     def buildMixer(self):
-        #print self.hw
-        #print self.hw.getText("/Generic/Nickname")
+        #print( self.hw )
+        #print( self.hw.getText("/Generic/Nickname") )
         Generic_Dice_EAP.buildMixer(self)
 
         widget = QWidget()
@@ -93,7 +93,7 @@ class Saffire_Dice(Generic_Dice_EAP):
             if ModelNum != "26":
                 ModelName += "_"
             ModelName += ModelNum
-            print ModelName
+            print( ModelName )
 
         if  ModelName == "SAFFIRE_PRO_14":
             uicLoad("ffado/mixer/Saffire_Pro14_monitoring.ui", widget)

@@ -215,7 +215,7 @@ class PanelManager(QWidget):
             self.connectionLost.emit()
 
     def removePanel(self, guid):
-        print "Removing widget for device" + guid
+        print( "Removing widget for device" + guid )
         w = self.panels[guid]
         del self.panels[guid] # remove from the list
         idx = self.tabs.indexOf(w)
@@ -491,7 +491,7 @@ except ImportError:
         try:
           f = open(savefilename, 'w')
         except IOError:
-          print "Unable to open save file"
+          print( "Unable to open save file" )
           return
         for s in saveString:
           f.write(s)
@@ -502,7 +502,7 @@ except ImportError:
         try:
           f = open(readfilename, 'r')
         except IOError:
-          print "Unable to open file"
+          print( "Unable to open file" )
           return
         log.debug("Opening file %s" % readfilename)
         # discard useless whitespace characters
@@ -513,28 +513,28 @@ except ImportError:
         # Check it is a compatible "FFADO" file
         # It must start with the <?xml ... tag as the first string
         if readString[0].find("<?xml") == -1:
-            print "Not an xml data file"
+            print( "Not an xml data file" )
             return
         # Then there must be a file version tag somewhere in the file
         try:
             idx = readString.index('<fileversion>')
         except Exception:
-            print "Data file should contain the version tag"
+            print( "Data file should contain the version tag" )
             return
         if readString[idx+1].find("<major>") == -1:
-            print "Incompatible versioning of the file"
+            print( "Incompatible versioning of the file" )
         if readString[idx+3].find("</major>") == -1:
-            print "Not a valid xml file"
+            print( "Not a valid xml file" )
         if readString[idx+4].find("<minor>") == -1:
-            print "Incompatible versioning of the file"
+            print( "Incompatible versioning of the file" )
         if readString[idx+6].find("</minor>") == -1:
-            print "Not a valid xml file"
+            print( "Not a valid xml file" )
         version_major = readString[idx+2]
         version =  version_major + '.' + readString[idx+5]
         log.debug("File version: %s" % version)
         # File version newer than present
         if int(version_major) > int(str(FILE_VERSION).split('.')[0]):
-            print "File version is too recent: you should upgrade your FFADO installation"
+            print( "File version is too recent: you should upgrade your FFADO installation" )
             return
         # FIXME At a time it will be necessary to detect if an older major version is detected
         #
@@ -545,13 +545,13 @@ except ImportError:
         nd = readString.count('<device>');
         n  = readString.count('</device>');
         if n != nd:
-            print "Not a regular xml file: opening device tag must match closing ones"
+            print( "Not a regular xml file: opening device tag must match closing ones" )
             return
         while nd > 0:
           idxb = readString.index('<device>')
           idxe = readString.index('</device>')
           if idxe < idxb+1:
-            print "Not a regular xml file: data must be enclosed between a <device> and </device> tag"
+            print( "Not a regular xml file: data must be enclosed between a <device> and </device> tag" )
             return
           stringDev = []
           for s in readString[idxb:idxe]:
@@ -560,7 +560,7 @@ except ImportError:
           try:
               idx = stringDev.index('<guid>')
           except Exception:
-              print "Device guid not found"
+              print( "Device guid not found" )
               return
           guid = stringDev[idx+1]
           log.debug("Device %s found" % guid)

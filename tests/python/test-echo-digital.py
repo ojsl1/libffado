@@ -36,7 +36,7 @@ try:
 				path + 'HwInfo/OpticalInterface'),
 				dbus_interface='org.ffado.Control.Element.Discrete')
 except:
-	print "'ffado-dbus-server' should be started in advance."
+	print( "'ffado-dbus-server' should be started in advance." )
 	sys.exit()
 
 # ask the device has optical digital interface
@@ -44,7 +44,7 @@ try:
 	if (not hwinfo.getValue()):
 		raise Exception()
 except:
-	print "Your device just supports coaxial digital interface."
+	print( "Your device just supports coaxial digital interface." )
 	sys.exit()
 
 interface = dbus.Interface(bus.get_object(servername,
@@ -55,16 +55,16 @@ argvs = sys.argv
 argc = len(argvs)
 
 if (argc > 2):
-	print "too many arguments"
+	print( "too many arguments" )
 	sys.exit()
 elif (argc > 1):
 	param = int(argvs[1])
 	if ((param == 1) or (param > 3)):
-		print "wrong argument. it should be:"
-		print "\t0(S/PDIF coaxial), 2(S/PDIF optical), or 3(ADAT optical)"
+		print( "wrong argument. it should be:" )
+		print( "\t0(S/PDIF coaxial), 2(S/PDIF optical), or 3(ADAT optical)" )
 	else:
-		print interface.setValue(param)
+		print( interface.setValue(param) )
 		
 else:
-	print interface.getValue()
+	print( interface.getValue() )
 

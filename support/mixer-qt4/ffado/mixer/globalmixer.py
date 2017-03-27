@@ -126,7 +126,7 @@ class GlobalMixer(QWidget):
                 self.samplerate.setCurrentIndex(0);
 
     def initValues( self ):
-        #print "GlobalMixer::initValues()"
+        #print( "GlobalMixer::initValues()" )
         nb_clocks = self.clockselect.count()
         for i in range( nb_clocks ):
             self.clocksource.insertItem( nb_clocks, self.clockselect.getEnumLabel( i ) )
@@ -201,7 +201,7 @@ class GlobalMixer(QWidget):
         try:
             idx = readString.index('<nickname>')
         except Exception:
-            print "No nickname found"
+            print( "No nickname found" )
             idx = -1
         if idx >= 0:
             nickname = readString[idx+1]
@@ -213,7 +213,7 @@ class GlobalMixer(QWidget):
         try:
             idx = readString.index('<clock>')
         except Exception:
-            print "No clock found"
+            print( "No clock found" )
             idx = -1
         if idx >= 0:
             clock = readString[idx+1]
@@ -224,7 +224,7 @@ class GlobalMixer(QWidget):
             try:
                 idxclock = clockLabel.index(clock)
             except Exception:
-                print "No %s clock found" % clock
+                print( "No %s clock found" % clock )
                 idxclock = -1
             if idxclock >= 0:
                 self.on_clocksource_activated(idxclock)           
@@ -235,7 +235,7 @@ class GlobalMixer(QWidget):
         try:
             idx = readString.index('<samplerate>')
         except Exception:
-            print "Samplerate not found"
+            print( "Samplerate not found" )
             idx = -1
         if idx >= 0:
             samplerate = readString[idx+1]
@@ -246,7 +246,7 @@ class GlobalMixer(QWidget):
             try:
                 idxsrate = srateLabel.index(samplerate)
             except Exception:
-                print "No %s samplerate found" % samplerate
+                print( "No %s samplerate found" % samplerate )
                 idxsrate = -1
             if idxsrate >= 0:
                 self.on_samplerate_activated(idxsrate)    

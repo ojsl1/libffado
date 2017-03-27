@@ -72,7 +72,7 @@ class ColorForNumber:
         self.colors[n] = color
 
     def getColor(self, n):
-        #print "ColorForNumber.getColor( %g )" % (n)
+        #print( "ColorForNumber.getColor( %g )" % (n) )
         keys = sorted(self.colors.keys())
         low = keys[-1]
         high = keys[-1]
@@ -80,7 +80,7 @@ class ColorForNumber:
             if keys[i] <= n and keys[i+1] > n:
                 low = keys[i]
                 high = keys[i+1]
-        #print "%g is between %g and %g" % (n, low, high)
+        #print( "%g is between %g and %g" % (n, low, high) )
         f = 0
         if high != low:
             f = (n-low) / (high-low)

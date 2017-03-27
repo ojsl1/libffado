@@ -55,5 +55,5 @@ the user/group permissions.
         return self.strings[sid]
 
     def show(self, sid):
-        print self.get(sid)
+        print( self.get(sid) )
     

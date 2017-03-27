@@ -169,7 +169,7 @@ class CrossbarRouter(QWidget):
         self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False).toBool())
 
     def __del__(self):
-        print "CrossbarRouter.__del__()"
+        print( "CrossbarRouter.__del__()" )
         self.settings.setValue("crossbarrouter/runvu", self.vubtn.isChecked())
 
     def runVu(self, run=True):

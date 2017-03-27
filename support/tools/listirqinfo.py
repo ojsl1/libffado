@@ -157,15 +157,15 @@ class IRQInfo:
 
 if __name__== '__main__':
 
-    print ""
-    print "Interrupt list utility " + LISTIRQINFO_VERSION
-    print "=========================="
-    print "(C) 2008 Pieter Palmers"
-    print ""
+    print( "" )
+    print( "Interrupt list utility " + LISTIRQINFO_VERSION )
+    print( "==========================" )
+    print( "(C) 2008 Pieter Palmers" )
+    print( "" )
     
     info = IRQInfo()
 
     info.load()
-    print str(info)
+    print( str(info) )
     
-    print ""
+    print( "" )

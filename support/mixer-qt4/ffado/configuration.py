@@ -142,7 +142,7 @@ class Parser:
             name = token
             token = self.lex.get_token()
             if token in ("=",":"):
-                #print "%sWill parse value" % level
+                #print( "%sWill parse value" % level )
                 value = self.parsevalue( level )
                 return (name,value)
         log.debug("%sparsenamedvalue() will return None!" % level)
@@ -160,6 +160,6 @@ if __name__ == "__main__":
     log.setLevel(logging.DEBUG)
     devs = DeviceList( file )
 
-    print devs.devices
+    print( devs.devices )
 
 # vim: et

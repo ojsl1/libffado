@@ -71,8 +71,8 @@ class Profire2626(Generic_Dice_EAP):
         Generic_Dice_EAP.__init__(self, parent)
 
     def buildMixer(self):
-        #print self.hw
-        #print self.hw.getText("/Generic/Nickname")
+        #print( self.hw )
+        #print( self.hw.getText("/Generic/Nickname") )
         Generic_Dice_EAP.buildMixer(self)
 
         widget = QWidget()

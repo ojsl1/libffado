@@ -435,8 +435,8 @@ class Rme(QWidget):
 
     def initValues(self):
 
-        # print self.hw.servername
-        # print self.hw.basepath
+        # print( self.hw.servername )
+        # print( self.hw.basepath )
         self.inputmatrix = MatrixMixer(self.hw.servername, self.hw.basepath+"/Mixer/InputFaders", self, "Columns_are_inputs", 0x8000, self.hw.basepath+"/Mixer/InputMutes", self.hw.basepath+"/Mixer/InputInverts", True)
         layout = QVBoxLayout()
         layout.addWidget(self.inputmatrix)

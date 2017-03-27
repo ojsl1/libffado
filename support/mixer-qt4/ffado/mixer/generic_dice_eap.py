@@ -38,8 +38,8 @@ class Generic_Dice_EAP(QWidget):
         self.layout.addWidget(self.tabs)
 
     def buildMixer(self):
-        #print self.hw
-        #print self.hw.getText("/Generic/Nickname")
+        #print( self.hw )
+        #print( self.hw.getText("/Generic/Nickname") )
         self.mixer = MatrixMixer(self.hw.servername, self.hw.basepath+"/EAP/MatrixMixer", self, "Columns_are_outputs", -1, None, None, False, QTabWidget.North, QTabWidget.Rounded)
         self.tabs.addTab(self.mixer, "Mixer")
 
