@@ -64,7 +64,7 @@ Configuration::openFile(std::string filename, enum eFileMode mode)
                 delete c;
                 return false;
             } catch (ParseException& e) {
-                debugWarning("Could not parse file: %s\n", filename.c_str());
+                debugWarning("Could not parse file: %s\nError: %s, Line: %i, What: %s", filename.c_str(), e.getError(), e.getLine(), e.what());
                 delete c;
                 return false;
             } catch (...) {
