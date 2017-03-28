@@ -31,6 +31,15 @@ try:
 except:
     from ConfigParser import SafeConfigParser
 
+# The urlopen()/urlencode() functions from urllib in python2 are in 
+# urllib.request and urllib.parse respectively under python2.
+try:
+    import urllib.request, urllib.parse
+    url_newapi = 1
+except ImportError:
+    import urllib
+    url_newapi = 0
+
 from ffado.config import REGISTER_URL, INI_FILE_PATH, FFADO_CONFIG_DIR
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QByteArray
@@ -82,8 +91,12 @@ class ffado_registration:
         post_vals['email'] = self.email
 
         try:
-            response = urllib.urlopen(REGISTER_URL,
-                                      urllib.urlencode(post_vals))
+            if url_newapi == 1:
+                response = urllib.request.urlopen(REGISTER_URL,
+                                                  urllib.parse.urlencode(post_vals).encode('ascii'))
+            else:
+                response = urllib.urlopen(REGISTER_URL,
+                                          urllib.urlencode(post_vals))
         except:
             log.error("failed, network error")
             return (-1, "Network Error")
