@@ -48,7 +48,7 @@ class DeviceList:
             tmp = lex.parsenamedvalue()
             if tmp != None:
                 config[ tmp[0] ] = tmp[1]
-        if config.has_key("device_definitions"):
+        if "device_definitions" in config:
             for dev in config["device_definitions"]:
                 self.addDevice( dev )
 
