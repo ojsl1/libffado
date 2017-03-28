@@ -22,7 +22,14 @@
 #
 
 import urllib
-import ConfigParser, os
+import os
+
+# Python3 renamed ConfigParser to configparser.  Deal with this in a way
+# which maintains compatibility with python2.
+try:
+    from configparser import SafeConfigParser
+except:
+    from ConfigParser import SafeConfigParser
 
 from ffado.config import REGISTER_URL, INI_FILE_PATH, FFADO_CONFIG_DIR
 from PyQt4.QtGui import QMessageBox
@@ -56,7 +63,7 @@ class ffado_registration:
 
         # parse the ini file
         self.config_filename = os.path.expanduser(INI_FILE_PATH)
-        self.parser = ConfigParser.SafeConfigParser()
+        self.parser = SafeConfigParser()
         self.parser.read(self.config_filename)
         self.section_name = "%s:%X" % (self.ffado_version, self.guid)
         self.email = "(optional)"
