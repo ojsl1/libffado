@@ -86,9 +86,9 @@ class ffado_registration:
         ok = False
         errline = "Bad response from server"
         for i in range(len(lines)):
-            if lines[i][0:10] == "RESULT: OK":
+            if lines[i][0:10] == b"RESULT: OK":
                 ok = True
-            elif lines[i][0:12] == "RESULT: FAIL":
+            elif lines[i][0:12] == b"RESULT: FAIL":
                 ok = False
                 if len(lines)>i+1:
                     errline = lines[i+1]
