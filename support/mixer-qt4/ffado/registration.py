@@ -40,6 +40,8 @@ except ImportError:
     import urllib
     url_newapi = 0
 
+from sys import version_info
+
 from ffado.config import REGISTER_URL, INI_FILE_PATH, FFADO_CONFIG_DIR
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QByteArray
@@ -166,8 +168,13 @@ class ffado_registration:
                 if dlg.choice == "neversend":
                     self.mark_ignore_version()
                 elif dlg.choice == "send":
-                    asciiData = dlg.getEmail().toAscii()
-                    self.email = asciiData.data()
+                    if version_info[0] < 3:
+                        # Python 2.x
+                        asciiData = dlg.getEmail().toAscii()
+                        self.email = asciiData.data()
+                    else:
+                        # Python 3 and above
+                        self.email = ascii(dlg.getEmail())
                     self.remember_email(self.email)
 
                     retval = self.register_ffado_usage()
