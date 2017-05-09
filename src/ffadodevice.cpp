@@ -40,7 +40,7 @@
 
 IMPL_DEBUG_MODULE( FFADODevice, FFADODevice, DEBUG_LEVEL_NORMAL );
 
-FFADODevice::FFADODevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ) )
+FFADODevice::FFADODevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ) )
     : Control::Container(&d)
     , m_pConfigRom( configRom )
     , m_pDeviceManager( d )
@@ -99,7 +99,7 @@ FFADODevice::~FFADODevice()
 }
 
 FFADODevice *
-FFADODevice::createDevice(std::auto_ptr<ConfigRom>( x ))
+FFADODevice::createDevice(ffado_smartptr<ConfigRom>( x ))
 {
     // re-implement this!!
     assert(0);

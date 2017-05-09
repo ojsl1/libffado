@@ -241,7 +241,7 @@ BeBoB::BootloaderManager::downloadFirmware( std::string filename )
     using namespace std;
 
     printf( "parse BCD file\n" );
-    std::auto_ptr<BCD> bcd = std::auto_ptr<BCD>( new BCD( filename ) );
+    ffado_smartptr<BCD> bcd = ffado_smartptr<BCD>( new BCD( filename ) );
     if ( !bcd.get() ) {
         debugError( "downloadFirmware: Could not open or parse BCD '%s'\n",
                     filename.c_str() );
@@ -304,7 +304,7 @@ BeBoB::BootloaderManager::downloadCnE( std::string filename )
     using namespace std;
 
     printf( "parse BCD file\n" );
-    std::auto_ptr<BCD> bcd = std::auto_ptr<BCD>( new BCD( filename ) );
+    ffado_smartptr<BCD> bcd = ffado_smartptr<BCD>( new BCD( filename ) );
     if ( !bcd.get() ) {
         debugError( "downloadCnE: Could not open or parse BCD '%s'\n",
                     filename.c_str() );

@@ -36,7 +36,7 @@ namespace Presonus {
 class FirestudioProject : public Dice::Device {
 public:
     FirestudioProject( DeviceManager& d,
-                  std::auto_ptr<ConfigRom>( configRom ));
+                  ffado_smartptr<ConfigRom>( configRom ));
     virtual ~FirestudioProject();
 
     bool discover();

@@ -84,7 +84,7 @@ namespace Focusrite {
 class SaffirePro40 : public Dice::Device {
 public:
     SaffirePro40( DeviceManager& d,
-                  std::auto_ptr<ConfigRom>( configRom ));
+                  ffado_smartptr<ConfigRom>( configRom ));
     virtual ~SaffirePro40();
 
     bool discover();

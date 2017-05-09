@@ -44,7 +44,7 @@ using namespace std;
 
 namespace Oxford {
 
-Device::Device(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::Device(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : GenericAVC::Device( d, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created Oxford::Device (NodeID %d)\n",
@@ -120,7 +120,7 @@ Device::discover()
 }
 
 FFADODevice *
-Device::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     unsigned int vendorId = configRom->getNodeVendorId();
 

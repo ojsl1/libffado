@@ -28,7 +28,7 @@
 namespace BeBoB {
 namespace Yamaha {
 
-GoDevice::GoDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+GoDevice::GoDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( d, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created BeBoB::Yamaha::GoDevice (NodeID %d)\n",

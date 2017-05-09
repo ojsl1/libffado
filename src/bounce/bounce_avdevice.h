@@ -64,11 +64,11 @@ class Device : public FFADODevice {
 private:
     class BounceNotifier;
 public:
-    Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Device();
 
     static bool probe( Util::Configuration&, ConfigRom& configRom, bool generic = false );
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual bool discover();
 
     virtual bool setSamplingFrequency( int samplingFrequency );

@@ -27,7 +27,7 @@ namespace BeBoB {
 namespace Edirol {
 
 EdirolFa101Device::EdirolFa101Device( DeviceManager& d,
-                                      std::auto_ptr<ConfigRom>( configRom ))
+                                      ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( d , configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created BeBoB::Edirol::EdirolFa101Device (NodeID %d)\n",

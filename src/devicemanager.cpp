@@ -709,8 +709,8 @@ DeviceManager::discover( bool useCache, bool rediscover )
         fb_nodeid_t nodeId = portService->getLocalNodeId();
         debugOutput( DEBUG_LEVEL_VERBOSE, "Starting in slave mode on node %d...\n", nodeId );
 
-        std::auto_ptr<ConfigRom> configRom =
-            std::auto_ptr<ConfigRom>( new ConfigRom( *portService,
+        ffado_smartptr<ConfigRom> configRom =
+            ffado_smartptr<ConfigRom>( new ConfigRom( *portService,
                                                      nodeId ) );
         if ( !configRom->initialize() ) {
             // \todo If a PHY on the bus is in power safe mode then
@@ -1031,21 +1031,21 @@ DeviceManager::getDriverForDeviceDo( ConfigRom *configRom,
 #ifdef ENABLE_BEBOB
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying BeBoB...\n" );
     if ( BeBoB::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return BeBoB::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return BeBoB::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_FIREWORKS
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying ECHO Audio FireWorks...\n" );
     if ( FireWorks::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return FireWorks::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return FireWorks::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_OXFORD
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Oxford FW90x...\n" );
     if ( Oxford::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return Oxford::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Oxford::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
@@ -1053,42 +1053,42 @@ DeviceManager::getDriverForDeviceDo( ConfigRom *configRom,
 #ifdef ENABLE_GENERICAVC
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Generic AV/C...\n" );
     if ( GenericAVC::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return GenericAVC::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return GenericAVC::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_MOTU
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Motu...\n" );
     if ( Motu::MotuDevice::probe( getConfiguration(), *configRom, generic ) ) {
-        return Motu::MotuDevice::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Motu::MotuDevice::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_DICE
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Dice...\n" );
     if ( Dice::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return Dice::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Dice::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_METRIC_HALO
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Metric Halo...\n" );
     if ( MetricHalo::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return MetricHalo::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return MetricHalo::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_RME
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying RME...\n" );
     if ( Rme::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return Rme::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Rme::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
 #ifdef ENABLE_BOUNCE
     debugOutput( DEBUG_LEVEL_VERBOSE, "Trying Bounce...\n" );
     if ( Bounce::Device::probe( getConfiguration(), *configRom, generic ) ) {
-        return Bounce::Device::createDevice( *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Bounce::Device::createDevice( *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
 
@@ -1119,11 +1119,11 @@ DeviceManager::getDriverForDevice( ConfigRom *configRom,
 }
 
 FFADODevice*
-DeviceManager::getSlaveDriver( std::auto_ptr<ConfigRom>( configRom ) )
+DeviceManager::getSlaveDriver( ffado_smartptr<ConfigRom>( configRom ) )
 {
 #ifdef ENABLE_BOUNCE
     if ( Bounce::SlaveDevice::probe( getConfiguration(), *configRom, false ) ) {
-        return Bounce::SlaveDevice::createDevice(  *this, std::auto_ptr<ConfigRom>( configRom ) );
+        return Bounce::SlaveDevice::createDevice(  *this, ffado_smartptr<ConfigRom>( configRom ) );
     }
 #endif
     return NULL;

@@ -29,7 +29,7 @@
 namespace BeBoB {
 namespace Focusrite {
 
-FocusriteDevice::FocusriteDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+FocusriteDevice::FocusriteDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( d, configRom)
     , m_cmd_time_interval( 0 )
     , m_earliest_next_cmd_time( 0 )

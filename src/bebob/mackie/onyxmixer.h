@@ -33,7 +33,7 @@ namespace Mackie {
 class OnyxMixerDevice : public BeBoB::Device {
 
 public:
-    OnyxMixerDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    OnyxMixerDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~OnyxMixerDevice();
 
     // override these since the mackie does not report

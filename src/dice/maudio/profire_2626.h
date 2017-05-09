@@ -43,7 +43,7 @@ namespace Maudio {
 class Profire2626 : public Dice::Device {
 public:
     Profire2626( DeviceManager& d,
-                  std::auto_ptr<ConfigRom>( configRom ));
+                  ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Profire2626();
 
     bool discover();

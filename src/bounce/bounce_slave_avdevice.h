@@ -44,11 +44,11 @@ class SlaveDevice : public Device {
     class BounceSlaveNotifier;
 public:
 
-    SlaveDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ) );
+    SlaveDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ) );
     virtual ~SlaveDevice();
 
     static bool probe( Util::Configuration&, ConfigRom& configRom, bool generic = false );
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
 
     bool discover();
     bool prepare();

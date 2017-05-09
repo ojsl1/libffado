@@ -315,7 +315,7 @@ const DevicePropertyEntry DevicesProperty[] = {
     { PORTGROUPS(4PRE),          96000, },
 };
 
-MotuDevice::MotuDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+MotuDevice::MotuDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : FFADODevice( d, configRom )
     , m_motu_model( MOTU_MODEL_NONE )
     , m_iso_recv_channel ( -1 )
@@ -382,7 +382,7 @@ MotuDevice::probe( Util::Configuration& c, ConfigRom& configRom, bool generic)
 }
 
 FFADODevice *
-MotuDevice::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+MotuDevice::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     return new MotuDevice(d, configRom);
 }

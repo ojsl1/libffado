@@ -37,7 +37,7 @@
 
 namespace Bounce {
 
-SlaveDevice::SlaveDevice( DeviceManager& d, std::auto_ptr< ConfigRom >( configRom ) )
+SlaveDevice::SlaveDevice( DeviceManager& d, ffado_smartptr< ConfigRom >( configRom ) )
     : Device( d, configRom )
 {
     addOption(Util::OptionContainer::Option("isoTimeoutSecs",(int64_t)120));
@@ -55,7 +55,7 @@ SlaveDevice::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-SlaveDevice::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+SlaveDevice::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     return new SlaveDevice(d, configRom );
 }

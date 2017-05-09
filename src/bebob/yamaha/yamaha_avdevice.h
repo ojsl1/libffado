@@ -34,7 +34,7 @@ namespace Yamaha {
 
 class GoDevice : public BeBoB::Device {
 public:
-    GoDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    GoDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~GoDevice();
 
     virtual void showDevice();

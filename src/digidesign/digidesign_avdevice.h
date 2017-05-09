@@ -50,7 +50,7 @@ class Device : public FFADODevice {
 public:
 
     Device( DeviceManager& d,
-               std::auto_ptr<ConfigRom>( configRom ));
+               ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Device();
 
     virtual bool buildMixer();
@@ -58,7 +58,7 @@ public:
 
     static bool probe( Util::Configuration& c, ConfigRom& configRom, bool generic = false );
     static FFADODevice * createDevice( DeviceManager& d,
-                                        std::auto_ptr<ConfigRom>( configRom ));
+                                        ffado_smartptr<ConfigRom>( configRom ));
     static int getConfigurationId( );
     virtual bool discover();
 

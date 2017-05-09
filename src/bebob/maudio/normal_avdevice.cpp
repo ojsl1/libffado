@@ -28,7 +28,7 @@ namespace BeBoB {
 namespace MAudio {
 namespace Normal {
 
-Device::Device(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ),
+Device::Device(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ),
                            unsigned int modelId)
     : BeBoB::Device( d, configRom)
 {

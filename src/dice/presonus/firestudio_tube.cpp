@@ -142,7 +142,7 @@ FirestudioTube::FirestudioTubeEAP::setupDefaultRouterConfig_high() {
   Device
 */
 FirestudioTube::FirestudioTube( DeviceManager& d,
-                                    std::auto_ptr<ConfigRom>( configRom ))
+                                    ffado_smartptr<ConfigRom>( configRom ))
     : Dice::Device( d , configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created Dice::Presonus::FirestudioTube (NodeID %d)\n",

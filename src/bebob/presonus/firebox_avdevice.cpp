@@ -28,7 +28,7 @@ namespace BeBoB {
 namespace Presonus {
 namespace Firebox {
 
-Device::Device(DeviceManager& d, std::auto_ptr<ConfigRom>(configRom))
+Device::Device(DeviceManager& d, ffado_smartptr<ConfigRom>(configRom))
     : BeBoB::Device( d, configRom)
 {
     m_intl_clksrc.type = FFADODevice::eCT_Internal;

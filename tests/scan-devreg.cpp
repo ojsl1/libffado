@@ -28,6 +28,7 @@
 #include "libutil/ByteSwap.h"
 
 #include "debugmodule/debugmodule.h"
+#include "ffadodevice.h"   // Needed for ffado_smartptr
 
 #include "libieee1394/configrom.h"
 #include "libieee1394/ieee1394service.h"
@@ -230,8 +231,8 @@ main(int argc, char **argv)
           n2++;
         }
         for (fb_nodeid_t node = n1; node < n2; node++) {
-            std::auto_ptr<ConfigRom> configRom =
-                std::auto_ptr<ConfigRom>( new ConfigRom(*tmp1394, node));
+            ffado_smartptr<ConfigRom> configRom =
+                ffado_smartptr<ConfigRom>( new ConfigRom(*tmp1394, node));
             if (!configRom->initialize()) {
                 continue;
             }

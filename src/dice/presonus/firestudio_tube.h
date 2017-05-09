@@ -36,7 +36,7 @@ namespace Presonus {
 class FirestudioTube : public Dice::Device {
 public:
     FirestudioTube( DeviceManager& d,
-                  std::auto_ptr<ConfigRom>( configRom ));
+                  ffado_smartptr<ConfigRom>( configRom ));
     virtual ~FirestudioTube();
 
     bool discover();

@@ -362,7 +362,7 @@ Profire2626::Profire2626EAP::SettingsSection::SettingsSection(
 /**
   Device
 */
-Profire2626::Profire2626( DeviceManager& d, std::auto_ptr<ConfigRom>(configRom))
+Profire2626::Profire2626( DeviceManager& d, ffado_smartptr<ConfigRom>(configRom))
     : Dice::Device( d, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created Dice::Maudio::Profire2626 (NodeID %d)\n",

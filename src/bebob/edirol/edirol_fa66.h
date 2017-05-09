@@ -32,7 +32,7 @@ namespace Edirol {
 class EdirolFa66Device : public BeBoB::Device {
 public:
     EdirolFa66Device( DeviceManager& d,
-                       std::auto_ptr<ConfigRom>( configRom ));
+                       ffado_smartptr<ConfigRom>( configRom ));
     virtual ~EdirolFa66Device();
 
     virtual ClockSourceVector getSupportedClockSources();

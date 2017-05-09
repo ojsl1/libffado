@@ -46,7 +46,7 @@
 namespace MetricHalo {
 
 Device::Device( DeviceManager& d,
-                        std::auto_ptr<ConfigRom>( configRom ))
+                        ffado_smartptr<ConfigRom>( configRom ))
     : FFADODevice( d, configRom )
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created MetricHalo::Device (NodeID %d)\n",
@@ -75,7 +75,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 
 FFADODevice *
 Device::createDevice( DeviceManager& d,
-                          std::auto_ptr<ConfigRom>( configRom ))
+                          ffado_smartptr<ConfigRom>( configRom ))
 {
     return new Device(d, configRom );
 }

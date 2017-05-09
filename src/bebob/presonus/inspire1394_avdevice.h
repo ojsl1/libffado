@@ -44,7 +44,7 @@ enum ECmdSubfunc {
 
 class Device : public BeBoB::Device {
 public:
-    Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Device();
 
     virtual void showDevice();

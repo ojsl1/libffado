@@ -33,7 +33,7 @@ namespace GenericAVC {
 namespace Stanton {
 
 ScsDevice::ScsDevice( DeviceManager& d,
-                      std::auto_ptr<ConfigRom>( configRom ))
+                      ffado_smartptr<ConfigRom>( configRom ))
 : GenericAVC::Device( d , configRom)
 , m_hss1394handler( NULL )
 {

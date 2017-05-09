@@ -226,7 +226,7 @@ protected:
 
 class FocusriteDevice : public BeBoB::Device {
 public:
-    FocusriteDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    FocusriteDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~FocusriteDevice() {};
 
     virtual void showDevice();

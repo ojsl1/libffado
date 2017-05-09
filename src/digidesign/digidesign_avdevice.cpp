@@ -51,7 +51,7 @@
 namespace Digidesign {
 
 Device::Device( DeviceManager& d,
-                      std::auto_ptr<ConfigRom>( configRom ))
+                      ffado_smartptr<ConfigRom>( configRom ))
     : FFADODevice( d, configRom )
     , m_digidesign_model( DIGIDESIGN_MODEL_NONE )
     , num_channels( 0 )
@@ -124,7 +124,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-Device::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     return new Device(d, configRom );
 }

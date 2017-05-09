@@ -28,7 +28,7 @@
 namespace BeBoB {
 namespace Mackie {
 
-OnyxMixerDevice::OnyxMixerDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+OnyxMixerDevice::OnyxMixerDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( d, configRom)
 {
     m_fixed_clocksource.type = FFADODevice::eCT_Internal;

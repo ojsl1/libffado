@@ -34,7 +34,7 @@ namespace __Vendor__ {
 class VendorDevice : public BeBoB::Device {
 public:
     VendorDevice( Ieee1394Service& ieee1394Service,
-              std::auto_ptr<ConfigRom>( configRom ));
+              ffado_smartptr<ConfigRom>( configRom ));
     virtual ~VendorDevice();
 
     virtual void showDevice();

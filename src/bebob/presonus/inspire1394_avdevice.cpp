@@ -104,7 +104,7 @@ int BinaryControl::getValue(int idx)
     return val;
 }
 
-Device::Device(DeviceManager& d, std::auto_ptr<ConfigRom>(configRom))
+Device::Device(DeviceManager& d, ffado_smartptr<ConfigRom>(configRom))
     : BeBoB::Device( d, configRom )
 {
     addSpecificControls();

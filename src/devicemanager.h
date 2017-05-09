@@ -148,7 +148,7 @@ protected:
                                        int id, bool generic );
     FFADODevice* getDriverForDevice( ConfigRom *configRom,
                                      int id );
-    FFADODevice* getSlaveDriver( std::auto_ptr<ConfigRom>( configRom ) );
+    FFADODevice* getSlaveDriver( ffado_smartptr<ConfigRom>( configRom ) );
 
     void busresetHandler(Ieee1394Service &);
 

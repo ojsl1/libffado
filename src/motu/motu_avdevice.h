@@ -380,14 +380,14 @@ extern const DevicePropertyEntry DevicesProperty[];
 class MotuDevice : public FFADODevice {
 public:
 
-    MotuDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ) );
+    MotuDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ) );
     virtual ~MotuDevice();
 
     virtual bool buildMixer();
     virtual bool destroyMixer();
 
     static bool probe( Util::Configuration&, ConfigRom& configRom, bool generic = false );
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     static int getConfigurationId( );
     virtual bool discover();
 

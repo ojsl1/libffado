@@ -35,7 +35,7 @@ namespace BeBoB {
 namespace MAudio {
 namespace Special {
 
-Device::Device(DeviceManager& d, std::auto_ptr<ConfigRom>(configRom))
+Device::Device(DeviceManager& d, ffado_smartptr<ConfigRom>(configRom))
     : BeBoB::Device(d, configRom)
 {
     is1814 = (getConfigRom().getModelId() == 0x00010071);

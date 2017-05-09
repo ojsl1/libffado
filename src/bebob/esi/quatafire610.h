@@ -33,7 +33,7 @@ namespace ESI {
 class QuataFireDevice : public BeBoB::Device {
 
 public:
-    QuataFireDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    QuataFireDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~QuataFireDevice();
 
     // override these since the quatafire does not support

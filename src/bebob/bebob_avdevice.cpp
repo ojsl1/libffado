@@ -64,7 +64,7 @@ using namespace AVC;
 
 namespace BeBoB {
 
-Device::Device( DeviceManager& d, std::auto_ptr< ConfigRom >( configRom ) )
+Device::Device( DeviceManager& d, ffado_smartptr< ConfigRom >( configRom ) )
     : GenericAVC::Device( d, configRom )
     , m_last_discovery_config_id ( 0xFFFFFFFFFFFFFFFFLLU )
     , m_Mixer ( 0 )
@@ -130,7 +130,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-Device::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     unsigned int vendorId = configRom->getNodeVendorId();
     unsigned int modelId = configRom->getModelId();

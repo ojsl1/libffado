@@ -244,7 +244,7 @@ main( int argc, char** argv )
     }
 
     DeviceManager d = DeviceManager();
-    Device *dev = new Device(d, std::auto_ptr<ConfigRom>(configRom) );
+    Device *dev = new Device(d, ffado_smartptr<ConfigRom>(configRom) );
     if (dev == NULL) {
         printMessage("Could not create FireWorks::Device\n");
         delete configRom;

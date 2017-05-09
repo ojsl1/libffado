@@ -51,7 +51,7 @@ namespace GenericAVC {
 
 IMPL_DEBUG_MODULE( Device, Device, DEBUG_LEVEL_NORMAL );
 
-Device::Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : FFADODevice( d, configRom )
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created GenericAVC::Device (NodeID %d)\n",
@@ -108,7 +108,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-Device::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     unsigned int vendorId = configRom->getNodeVendorId();
     unsigned int modelId = configRom->getModelId();

@@ -28,7 +28,7 @@
 namespace BeBoB {
 namespace Terratec {
 
-Phase88Device::Phase88Device(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Phase88Device::Phase88Device(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( d, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created BeBoB::Terratec::Phase88Device (NodeID %d)\n",

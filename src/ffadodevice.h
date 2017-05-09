@@ -36,6 +36,13 @@
 #include <vector>
 #include <string>
 
+// Prefer shared_ptr over auto_ptr if it is available
+#if __cplusplus >= 201103L
+#define ffado_smartptr std::shared_ptr
+#else
+#define ffado_smartptr std::auto_ptr
+#endif
+
 class DeviceManager;
 class ConfigRom;
 class Ieee1394Service;
@@ -60,7 +67,7 @@ class FFADODevice
       public Control::Container
 {
 public:
-    FFADODevice( DeviceManager&, std::auto_ptr< ConfigRom >( configRom ) );
+    FFADODevice( DeviceManager&, ffado_smartptr< ConfigRom >( configRom ) );
 
     virtual ~FFADODevice();
 
@@ -128,7 +135,7 @@ public:
      *
      * @return a new instance of the AvDevice type, NULL when unsuccessful
      */
-    static FFADODevice * createDevice( std::auto_ptr<ConfigRom>( x ));
+    static FFADODevice * createDevice( ffado_smartptr<ConfigRom>( x ));
 
     /**
      * @brief This is called by the DeviceManager to discover & configure the device
@@ -480,7 +487,7 @@ public:
     DeviceManager& getDeviceManager()
         {return m_pDeviceManager;};
 private:
-    std::auto_ptr<ConfigRom>( m_pConfigRom );
+    ffado_smartptr<ConfigRom>( m_pConfigRom );
     DeviceManager& m_pDeviceManager;
     Control::Container* m_genericContainer;
 protected:

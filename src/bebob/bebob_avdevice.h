@@ -60,7 +60,7 @@ namespace BeBoB {
 
 class Device : public GenericAVC::Device {
 public:
-    Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Device();
 
     static bool probe( Util::Configuration&, ConfigRom& configRom, bool generic = false );
@@ -68,7 +68,7 @@ public:
     virtual bool saveCache();
     virtual bool discover();
 
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
 
     virtual AVC::Subunit* createSubunit(AVC::Unit& unit,
                                         AVC::ESubunitType type,

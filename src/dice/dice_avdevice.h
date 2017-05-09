@@ -68,12 +68,12 @@ private:
 
 public:
     /// constructor
-    Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     /// destructor
     ~Device();
 
     static bool probe( Util::Configuration& c, ConfigRom& configRom, bool generic = false );
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual bool discover();
 
     static int getConfigurationId( );

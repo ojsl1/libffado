@@ -27,7 +27,7 @@ namespace BeBoB {
 namespace __Vendor__ {
 
 VendorDevice::VendorDevice( Ieee1394Service& ieee1394Service,
-                            std::auto_ptr<ConfigRom>( configRom ))
+                            ffado_smartptr<ConfigRom>( configRom ))
     : BeBoB::Device( ieee1394Service, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created BeBoB::__Vendor__::VendorDevice (NodeID %d)\n",

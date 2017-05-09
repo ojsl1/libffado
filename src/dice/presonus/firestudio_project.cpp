@@ -154,7 +154,7 @@ FirestudioProject::FirestudioProjectEAP::setupDefaultRouterConfig_high() {
   Device
 */
 FirestudioProject::FirestudioProject( DeviceManager& d,
-                                    std::auto_ptr<ConfigRom>( configRom ))
+                                    ffado_smartptr<ConfigRom>( configRom ))
     : Dice::Device( d , configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created Dice::Presonus::FirestudioProject (NodeID %d)\n",

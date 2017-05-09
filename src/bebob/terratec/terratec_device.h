@@ -33,7 +33,7 @@ namespace Terratec {
 
 class Phase88Device : public BeBoB::Device {
 public:
-    Phase88Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Phase88Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Phase88Device();
 
     virtual bool discover();

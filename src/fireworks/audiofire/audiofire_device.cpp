@@ -29,7 +29,7 @@
 namespace FireWorks {
 namespace ECHO {
 
-AudioFire::AudioFire( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+AudioFire::AudioFire( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : FireWorks::Device( d, configRom)
 {
     debugOutput( DEBUG_LEVEL_VERBOSE, "Created FireWorks::ECHO::AudioFire (NodeID %d)\n",

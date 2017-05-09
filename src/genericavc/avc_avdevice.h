@@ -47,12 +47,12 @@ namespace GenericAVC {
 
 class Device : public FFADODevice, public AVC::Unit {
 public:
-    Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~Device();
 
     static bool probe( Util::Configuration&, ConfigRom& configRom, bool generic = false );
     virtual bool discover();
-    static FFADODevice * createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    static FFADODevice * createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
 
     virtual bool serialize( std::string basePath, Util::IOSerialize& ser ) const;
     virtual bool deserialize( std::string basePath, Util::IODeserialize& deser );

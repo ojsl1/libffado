@@ -70,7 +70,7 @@ public:
 
 public:
     ScsDevice( DeviceManager& d,
-               std::auto_ptr<ConfigRom>( configRom ));
+               ffado_smartptr<ConfigRom>( configRom ));
     virtual ~ScsDevice();
 
     virtual void showDevice();

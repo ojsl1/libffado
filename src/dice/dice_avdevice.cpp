@@ -60,7 +60,7 @@ using namespace std;
 
 namespace Dice {
 
-Device::Device( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::Device( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : FFADODevice( d, configRom )
     , m_eap( NULL )
     , m_global_reg_offset (0xFFFFFFFFLU)
@@ -125,7 +125,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-Device::createDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     unsigned int vendorId = configRom->getNodeVendorId();
     unsigned int modelId = configRom->getModelId();

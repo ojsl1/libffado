@@ -33,7 +33,7 @@
 namespace BeBoB {
 namespace Focusrite {
 
-SaffireProDevice::SaffireProDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+SaffireProDevice::SaffireProDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
     : FocusriteDevice( d, configRom )
     , m_MixerContainer( NULL )
     , m_ControlContainer( NULL )

@@ -407,7 +407,7 @@ SaffirePro24::SaffirePro24EAP::MonitorSection::MonitorSection(Dice::Focusrite::F
 }
 
 SaffirePro24::SaffirePro24( DeviceManager& d,
-                            std::auto_ptr<ConfigRom>( configRom ))
+                            ffado_smartptr<ConfigRom>( configRom ))
     : Dice::Device(d , configRom)
 {
     debugOutput(DEBUG_LEVEL_VERBOSE, "Created Dice::Focusrite::SaffirePro24 (NodeID %d)\n",

@@ -356,7 +356,7 @@ friend class SaffireProMultiControl;
 friend class SaffireProDeviceNameControl;
 
 public:
-    SaffireProDevice( DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ));
+    SaffireProDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ));
     virtual ~SaffireProDevice();
 
     virtual void showDevice();

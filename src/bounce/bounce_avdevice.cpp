@@ -42,7 +42,7 @@
 
 namespace Bounce {
 
-Device::Device( DeviceManager& d, std::auto_ptr< ConfigRom >( configRom ) )
+Device::Device( DeviceManager& d, ffado_smartptr< ConfigRom >( configRom ) )
     : FFADODevice( d, configRom )
     , m_samplerate (44100)
     , m_Notifier ( NULL )
@@ -74,7 +74,7 @@ Device::probe( Util::Configuration& c, ConfigRom& configRom, bool generic )
 }
 
 FFADODevice *
-Device::createDevice(DeviceManager& d, std::auto_ptr<ConfigRom>( configRom ))
+Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
 {
     return new Device(d, configRom );
 }
