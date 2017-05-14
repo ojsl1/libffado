@@ -191,9 +191,12 @@ Device::init_hardware(void)
     set_hardware_output_rec(0);
 
     if (ret==0 && m_rme_model==RME_MODEL_FIREFACE400 && provide_midi) {
-        // Precisely mirror the method used under other operating systems
-        // to set the high quadlet of the MIDI ARM address, even though it
-        // is a little inflexible.  We can refine this later if need be.
+        // Precisely mirror the method used under other operating systems to
+        // set the high quadlet of the MIDI ARM address, even though it is a
+        // little inflexible.  We can refine this later if need be.  This is
+        // only done if FFADO is providing MIDI functionality.  If not, the
+        // RME_FF400_MIDI_HIGH_ADDR is left alone for other drivers (such as
+        // snd-fireface in Linux kernel >= 4.12) to configure if desired.
         unsigned int node_id = getConfigRom().getNodeId();
         unsigned int midi_hi_addr;
         midi_hi_addr = 0x01;
@@ -542,8 +545,14 @@ Device::set_hardware_params(FF_software_settings_t *use_settings)
     /* Drop-and-stop is hardwired on in other drivers */
     data[2] |= CR2_DROP_AND_STOP;
 
-    if (m_rme_model == RME_MODEL_FIREFACE400) {
-        data[2] |= CR2_FF400_BIT;
+    if (m_rme_model==RME_MODEL_FIREFACE400 && !provide_midi) {
+        // If libffado is not providing MIDI, configure the register to
+        // allow snd-fireface (linux kernel >= 4.12) - or any other driver
+        // for the FF400 which might appear in future - to do so if desired. 
+        // The choice of tx address 1 matches that which is coded in
+        // snd-fireface as of kernel 4.12.
+        data[2] &= ~CR2_FF400_DISABLE_MIDI_TX_MASK;
+        data[2] |= CR2_FF400_SELECT_MIDI_TX_ADDR_1;
     }
 
     switch (sw_settings->sync_ref) {

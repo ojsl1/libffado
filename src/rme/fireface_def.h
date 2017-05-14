@@ -249,7 +249,12 @@
 #define CR2_WORD_CLOCK_1x       0x00002000
 #define CR2_TOGGLE_TCO          0x00004000  // Normally set to 0
 #define CR2_P12DB_AN0           0x00010000  // Disable soft-limiter.  Normally set to 0
-#define CR2_FF400_BIT           0x04000000  // Set on FF400, clear on FF800
+#define CR2_FF400_DISABLE_MIDI_TX_MASK  0x03000000  // Either or all bits will disable
+#define CR2_FF400_SELECT_MIDI_TX_ADDR_1 0x04000000  // FF400 tx to 0x'....'....'0000'0000'0000'0000
+#define CR2_FF400_SELECT_MIDI_TX_ADDR_2 0x08000000  // FF400 tx to 0x'....'....'0000'0000'0000'0080
+#define CR2_FF400_SELECT_MIDI_TX_ADDR_3 0x10000000  // FF400 tx to 0x'....'....'0000'0000'0000'0100
+#define CR2_FF400_SELECT_MIDI_TX_ADDR_4 0x20000000  // FF400 tx to 0x'....'....'0000'0000'0000'0180
+                                                    // '....'....' = content of RME_FF400_MIDI_HIGH_ADDR
 #define CR2_TMS                 0x40000000  // Unit option, normally 0
 #define CR2_DROP_AND_STOP       0x80000000  // Normally set to 1
 
