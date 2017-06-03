@@ -121,6 +121,7 @@ if __name__== '__main__':
     print "   gcc ............... %s" % get_version_first_line('gcc --version')
     print "   g++ ............... %s" % get_version_first_line('g++ --version')
     print "   PyQt4 (by pyuic4) . %s" % get_version_first_line('pyuic4 --version')
+    print "   PyQt5 (by pyuic5) . %s" % get_version_first_line('pyuic5 --version')
     print "   jackd ............. %s" % get_version_first_line('jackd --version')
     print "     path ............ %s" % get_command_path('jackd')
     print "     flags ........... %s" % get_package_flags("jack")

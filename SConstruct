@@ -88,7 +88,7 @@ Build the tests in their directory. As some contain quite some functionality,
 ## Load the builders in config
 buildenv=os.environ
 
-env = Environment( tools=['default','scanreplace','pyuic','pyuic4','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
+env = Environment( tools=['default','scanreplace','pyuic','pyuic4','pyuic5','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
 
 custom_flags = False
 
@@ -393,20 +393,23 @@ results above get rechecked.
 
 # PyQT checks
 if env['BUILD_MIXER'] != 'false':
-    if conf.CheckForApp( 'which pyuic4' ) and conf.CheckForPyModule( 'dbus' ) and conf.CheckForPyModule( 'PyQt4' ) and conf.CheckForPyModule( 'dbus.mainloop.qt' ):
+    have_dbus = (conf.CheckForApp( 'which pyuic4' ) and conf.CheckForPyModule( 'dbus.mainloop.qt' ))
+    have_pyqt4 = (conf.CheckForApp( 'which pyuic4' ) and conf.CheckForPyModule( 'PyQt4' ))
+    have_pyqt5 = (conf.CheckForApp( 'which pyuic5' ) and conf.CheckForPyModule( 'PyQt5' ))
+    if ((have_pyqt4 or have_pyqt5) and have_dbus):
         env['BUILD_MIXER'] = 'true'
     elif not env.GetOption('clean'):
         if env['BUILD_MIXER'] == 'auto':
             env['BUILD_MIXER'] = 'false'
             print """
-The prerequisites ('pyuic4' and the python-modules 'dbus' and 'PyQt4', the
-packages could be named like dbus-python and PyQt) to build the mixer were not
-found. Therefore the qt4 mixer will not be installed."""
+The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
+'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
+build the mixer were not found. Therefore the qt mixer will not be installed."""
         else: # env['BUILD_MIXER'] == 'true'
             print """
-The prerequisites ('pyuic4' and the python-modules 'dbus' and 'PyQt4', the
-packages could be named like dbus-python and PyQt) to build the mixer were not
-found, but BUILD_MIXER was requested."""
+The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
+'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
+build the mixer were not found, but BUILD_MIXER was requested."""
             Exit( 1 )
 
 env['XDG_TOOLS'] = False
