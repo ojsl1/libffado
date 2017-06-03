@@ -83,6 +83,21 @@ class FFADOWindow(QMainWindow):
         filemenu.addAction(self.quitaction)
 
         self.editmenu = self.menuBar().addMenu("&View")
+
+        self.thememenu = self.editmenu.addMenu("Theme")
+        themes = QStyleFactory.keys()
+        self.menuTheme = {}
+        for theme in themes:
+            self.menuTheme[theme] = QAction(QIcon.fromTheme("preferences-desktop-theme"), theme, self )
+            self.menuTheme[theme].setCheckable(True)
+
+            if (ffado_python3 and (self.style().objectName().lower() == theme.lower()) or
+                    not(ffado_python3) and (self.style().objectName().toLower() == theme.toLower())):
+                self.menuTheme[theme].setDisabled(True)
+                self.menuTheme[theme].setChecked(True)
+            self.menuTheme[theme].triggered.connect(self.switchTheme )
+            self.thememenu.addAction( self.menuTheme[theme] )
+
         self.updateaction = QAction(QIcon.fromTheme("view-refresh"),"&Update Mixer Panels", self)
         self.updateaction.setEnabled(False)
         self.updateaction.triggered.connect(self.manager.updatePanels)
@@ -107,6 +122,16 @@ class FFADOWindow(QMainWindow):
         log.info("__del__")
         del self.manager
         log.info("__del__ finished")
+
+    def switchTheme(self, checked) :
+        for theme in self.menuTheme :
+            if not self.menuTheme[theme].isEnabled() :
+                self.menuTheme[theme].setChecked(False)
+                self.menuTheme[theme].setDisabled(False)
+        for theme in self.menuTheme :
+            if self.menuTheme[theme].isChecked() :
+                self.menuTheme[theme].setDisabled(True)
+                QApplication.setStyle(QStyleFactory.create(theme))
 
     def closeEvent(self, event):
         log.info("closeEvent()")
