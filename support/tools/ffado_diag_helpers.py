@@ -153,6 +153,8 @@ def get_version_first_line(cmd):
     ver = run_command(cmd).split("\n")
     if len(ver) == 0:
         ver = ["None"]
+    if "sh: " in ver[0]:
+        ver = ["Not found"]
     return ver[0]
 
 
