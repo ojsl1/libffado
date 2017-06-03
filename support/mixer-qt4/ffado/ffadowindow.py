@@ -28,8 +28,9 @@ from ffado.config import *
 
 import subprocess
 
-from PyQt4.QtCore import QObject, QTimer, Qt
-from PyQt4.QtGui import *
+# from PyQt4.QtCore import QObject, QTimer, Qt
+# from PyQt4.QtGui import *
+from ffado.import_pyqt import *
 
 from ffado.dbus_util import *
 

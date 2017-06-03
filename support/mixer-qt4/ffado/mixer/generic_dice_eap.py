@@ -19,8 +19,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4 import QtGui, QtCore, Qt
-from PyQt4.QtGui import QWidget, QGridLayout, QTabWidget, QScrollArea
+# from PyQt4 import QtGui, QtCore, Qt
+# from PyQt4.QtGui import QWidget, QGridLayout, QTabWidget, QScrollArea
+from ffado.import_pyqt import *
+
 import dbus
 
 from ffado.widgets.matrixmixer import MatrixMixer

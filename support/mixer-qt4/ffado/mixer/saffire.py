@@ -20,7 +20,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtGui import QWidget, QHBoxLayout
+# from PyQt4.QtGui import QWidget, QHBoxLayout
+from ffado.import_pyqt import *
+
 from ffado.config import *
 from ffado.mixer.saffire_base import SaffireMixerBase
 

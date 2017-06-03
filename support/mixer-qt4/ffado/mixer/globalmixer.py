@@ -21,8 +21,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import QObject, pyqtSlot
-from PyQt4.QtGui import QWidget, QMessageBox
+# from PyQt4.QtCore import QObject, pyqtSlot
+# from PyQt4.QtGui import QWidget, QMessageBox
+from ffado.import_pyqt import *
+
 from ffado.config import *
 
 import logging

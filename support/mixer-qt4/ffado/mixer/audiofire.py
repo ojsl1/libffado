@@ -20,10 +20,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import Qt, QTimer
-from PyQt4.QtGui import QWidget, QHBoxLayout, QVBoxLayout, \
-                        QGroupBox, QTabWidget, QLabel, \
-                        QPushButton, QToolButton, QSpacerItem, QSizePolicy
+# from PyQt4.QtCore import Qt, QTimer
+# from PyQt4.QtGui import QWidget, QHBoxLayout, QVBoxLayout
+# from PyQt4.QtGui import QGroupBox, QTabWidget, QLabel
+# from PyQt4.QtGui import QPushButton, QToolButton, QSpacerItem, QSizePolicy
+from ffado.import_pyqt import *
+
 from ffado.config import *
 import logging
 log = logging.getLogger('audiofire')

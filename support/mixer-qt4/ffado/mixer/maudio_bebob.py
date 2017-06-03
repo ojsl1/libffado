@@ -1,6 +1,8 @@
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QSizePolicy, QHBoxLayout, QVBoxLayout, QGroupBox
-from PyQt4.QtGui import QWidget, QTabWidget, QLabel, QSlider, QToolButton
+# from PyQt4.QtCore import Qt
+# from PyQt4.QtGui import QSizePolicy, QHBoxLayout, QVBoxLayout, QGroupBox
+# from PyQt4.QtGui import QWidget, QTabWidget, QLabel, QSlider, QToolButton
+from ffado.import_pyqt import *
+
 from math import log10
 from ffado.config import *
 

@@ -20,8 +20,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtGui import QTextEdit, QAbstractSlider, QColor
-from PyQt4.QtCore import QObject, pyqtSignal, QString
+# from PyQt4.QtGui import QTextEdit, QAbstractSlider, QColor
+# from PyQt4.QtCore import QObject, pyqtSignal, QString
+from ffado.import_pyqt import *
 
 import logging
 log = logging.getLogger('logginghandler')

@@ -24,8 +24,9 @@
 
 from ffado.config import * #FFADO_VERSION, FFADO_DBUS_SERVER, FFADO_DBUS_BASEPATH
 
-from PyQt4.QtGui import QFrame, QWidget, QTabWidget, QVBoxLayout, QMainWindow, QIcon, QAction, qApp, QStyleOptionTabWidgetFrame, QFileDialog
-from PyQt4.QtCore import QTimer, pyqtSignal
+# from PyQt4.QtGui import QFrame, QWidget, QTabWidget, QVBoxLayout, QMainWindow, QIcon, QAction, qApp, QStyleOptionTabWidgetFrame, QFileDialog
+# from PyQt4.QtCore import QTimer, pyqtSignal
+from ffado.import_pyqt import *
 
 from ffado.dbus_util import *
 from ffado.registration import *

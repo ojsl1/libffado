@@ -30,7 +30,10 @@ if os.path.exists('ffado/mixer/globalmixer.ui'):
     UIDIR = "."
 
 import os.path
-from PyQt4 import uic
+
+# from PyQt4 import uic
+from ffado.import_pyqt import *
+
 def uicLoad(file, object):
     if not file.endswith(".ui"):
         file += ".ui"

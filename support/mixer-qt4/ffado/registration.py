@@ -43,8 +43,10 @@ except ImportError:
 from sys import version_info
 
 from ffado.config import REGISTER_URL, INI_FILE_PATH, FFADO_CONFIG_DIR
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtCore import QByteArray
+
+# from PyQt4.QtGui import QMessageBox
+# from PyQt4.QtCore import QByteArray
+from ffado.import_pyqt import *
 
 from ffado.regdialog import *
 

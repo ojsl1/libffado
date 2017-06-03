@@ -22,7 +22,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtGui import QWidget
+# from PyQt4.QtGui import QWidget
+from ffado.import_pyqt import *
+
 from math import log10
 from ffado.config import *
 

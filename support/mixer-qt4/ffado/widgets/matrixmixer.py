@@ -20,13 +20,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4 import QtGui, QtCore, Qt
-from PyQt4.QtCore import pyqtSignal
-from PyQt4.QtGui import QColor, QAbstractSlider, QDoubleSpinBox, QWidgetAction
-from PyQt4.QtGui import QAction, QPainter, QWidget, QGridLayout, QLabel
-from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette
-from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QTabWidget, QToolBar
-from PyQt4.QtGui import QComboBox, QScrollArea, QPushButton, QSizePolicy
+# from PyQt4 import QtGui, QtCore, Qt
+# from PyQt4.QtCore import pyqtSignal
+# from PyQt4.QtGui import QColor, QAbstractSlider, QDoubleSpinBox, QWidgetAction
+# from PyQt4.QtGui import QAction, QPainter, QWidget, QGridLayout, QLabel
+# from PyQt4.QtGui import QLayout, QSlider, QLineEdit, QPalette
+# from PyQt4.QtGui import QVBoxLayout, QHBoxLayout, QTabWidget, QToolBar
+# from PyQt4.QtGui import QComboBox, QScrollArea, QPushButton, QSizePolicy
+from ffado.import_pyqt import *
+
 import dbus, math, decimal
 
 import ffado.config
@@ -121,7 +123,7 @@ class MixerNode(QAbstractSlider):
         self.pos = QtCore.QPointF(0, 0)
         self.input = input
         self.output = output
-        self.setOrientation(Qt.Qt.Vertical)
+        self.setOrientation(Qt.Vertical)
         if max == -1:
             max = pow(2, 16)-1
         self.setRange(0, max)
@@ -132,7 +134,7 @@ class MixerNode(QAbstractSlider):
 
         self.bgcolors = BckgrdColorForNumber()
 
-        self.setContextMenuPolicy(Qt.Qt.ActionsContextMenu)
+        self.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.mapper = QtCore.QSignalMapper(self)
         self.mapper.mapped['QString'].connect(self.directValues)
 
@@ -197,7 +199,7 @@ class MixerNode(QAbstractSlider):
             self.setValue(n)
 
     def mousePressEvent(self, ev):
-        if ev.buttons() & Qt.Qt.LeftButton:
+        if ev.buttons() & Qt.LeftButton:
             self.pos = ev.posF()
             self.tmpvalue = self.value()
             ev.accept()
@@ -224,7 +226,7 @@ class MixerNode(QAbstractSlider):
     # Wheel event is mainly for scrolling inside the mixer window
     #   Additionnaly press Control key for wheel controling the values
     def wheelEvent (self, ev):
-        if (ev.modifiers() & Qt.Qt.ControlModifier):
+        if (ev.modifiers() & Qt.ControlModifier):
             tmpvalue = self.value()
             change = ev.delta()/8
             self.setValue( tmpvalue + math.copysign(pow(abs(change), 2), change) )
@@ -255,9 +257,9 @@ class MixerNode(QAbstractSlider):
         if v == 0:
             symb_inf = u"\u221E"
             text = "-" + symb_inf + " dB"
-        p.drawText(rect, Qt.Qt.AlignCenter, QtCore.QString.fromUtf8(text))
+        p.drawText(rect, Qt.AlignCenter, QtCore.QString.fromUtf8(text))
         if (self.inv_action!=None and self.inv_action.isChecked()):
-            p.drawText(rect, Qt.Qt.AlignLeft|Qt.Qt.AlignTop, QtCore.QString.fromUtf8(" ϕ"))
+            p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, QtCore.QString.fromUtf8(" ϕ"))
 
     def internalValueChanged(self, value):
         #log.debug("MixerNode.internalValueChanged( %i )" % value)
@@ -285,7 +287,7 @@ class MixerChannel(QWidget):
         self.number = number
         self.name = name
         self.lbl = QLabel(self)
-        self.lbl.setAlignment(Qt.Qt.AlignCenter)
+        self.lbl.setAlignment(Qt.AlignCenter)
         if (smallFont):
             font = self.lbl.font()
             font.setPointSize(font.pointSize()/1.5)
@@ -293,7 +295,7 @@ class MixerChannel(QWidget):
         layout.addWidget(self.lbl, 0, 0, 1, 2)
         self.hideChannel(False)
 
-        self.setContextMenuPolicy(Qt.Qt.ActionsContextMenu)
+        self.setContextMenuPolicy(Qt.ActionsContextMenu)
 
         action = QAction("Make this channel small", self)
         action.setCheckable(True)
@@ -712,7 +714,7 @@ class VolumeSliderValueInfo(QLineEdit):
         QLineEdit.__init__(self, parent)
 
         self.setReadOnly(True)
-        self.setAlignment(Qt.Qt.AlignCenter)
+        self.setAlignment(Qt.AlignCenter)
         self.setAutoFillBackground(True)
         self.setFrame(False)
 
@@ -799,7 +801,7 @@ class SliderControlView(QWidget):
         for i in range(self.nbOut):
             widget = QWidget(parent)
             v_layout = QVBoxLayout(widget)
-            v_layout.setAlignment(Qt.Qt.AlignCenter)
+            v_layout.setAlignment(Qt.AlignCenter)
             widget.setLayout(v_layout)
             self.out.append(widget)
 
@@ -818,13 +820,13 @@ class SliderControlView(QWidget):
             if (self.nbOut > 1):
                 lbl = QLabel(widget)
                 lbl.setText(self.getOutName(i, self.shortname))
-                lbl.setAlignment(Qt.Qt.AlignCenter)
+                lbl.setAlignment(Qt.AlignCenter)
                 v_layout.addWidget(lbl)
                 self.out[i].lbl.append(lbl)
 
             h_layout_wid = QWidget(widget)
             h_layout = QHBoxLayout(h_layout_wid)
-            h_layout.setAlignment(Qt.Qt.AlignCenter)
+            h_layout.setAlignment(Qt.AlignCenter)
             h_layout_wid.setLayout(h_layout)
             v_layout.addWidget(h_layout_wid)
             self.out[i].volume = []
@@ -834,7 +836,7 @@ class SliderControlView(QWidget):
             for j in range(self.nbIn):
                 h_v_layout_wid = QWidget(h_layout_wid)
                 h_v_layout = QVBoxLayout(h_v_layout_wid)
-                h_v_layout.setAlignment(Qt.Qt.AlignCenter)
+                h_v_layout.setAlignment(Qt.AlignCenter)
                 h_v_layout_wid.setLayout(h_v_layout)
                 h_layout.addWidget(h_v_layout_wid)
 
@@ -842,13 +844,13 @@ class SliderControlView(QWidget):
                 if (self.nbIn > 1):
                     lbl = QLabel(h_v_layout_wid)
                     lbl.setText(self.getInName(j, self.shortname))
-                    lbl.setAlignment(Qt.Qt.AlignCenter)
+                    lbl.setAlignment(Qt.AlignCenter)
                     h_v_layout.addWidget(lbl)
                     self.out[i].lbl.append(lbl)
 
                 h_v_h_layout_wid = QWidget(h_v_layout_wid)
                 h_v_h_layout = QHBoxLayout(h_v_h_layout_wid)
-                h_v_h_layout.setAlignment(Qt.Qt.AlignCenter)
+                h_v_h_layout.setAlignment(Qt.AlignCenter)
                 h_v_h_layout_wid.setLayout(h_v_h_layout)
                 h_v_layout.addWidget(h_v_h_layout_wid)
 

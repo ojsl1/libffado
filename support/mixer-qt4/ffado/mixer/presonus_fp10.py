@@ -19,10 +19,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QWidget, QLabel, QSizePolicy, QToolButton, QSlider, QDial
+# from PyQt4 import QtGui, QtCore
+# from PyQt4.QtCore import Qt
+# from PyQt4.QtGui import QGridLayout
+# from PyQt4.QtGui import QWidget, QLabel, QSizePolicy, QToolButton, QSlider, QDial
+from ffado.import_pyqt import *
+
 from math import log10
 from ffado.config import *
 
