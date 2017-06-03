@@ -257,9 +257,19 @@ class MixerNode(QAbstractSlider):
         if v == 0:
             symb_inf = u"\u221E"
             text = "-" + symb_inf + " dB"
-        p.drawText(rect, Qt.AlignCenter, QtCore.QString.fromUtf8(text))
+        if ffado_python3:
+            # Python3 uses native python UTF strings rather than QString.
+            # This therefore appears to be the correct way to display this
+            # UTF8 string, but testing may prove otherwise.
+            p.drawText(rect, Qt.AlignCenter, text)
+        else:
+            p.drawText(rect, Qt.AlignCenter, QtCore.QString.fromUtf8(text))
         if (self.inv_action!=None and self.inv_action.isChecked()):
-            p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, QtCore.QString.fromUtf8(" ϕ"))
+            if ffado_python3:
+                # Refer to the comment about about Python UTF8 strings.
+                p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, " ϕ")
+            else:
+                p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, QtCore.QString.fromUtf8(" ϕ"))
 
     def internalValueChanged(self, value):
         #log.debug("MixerNode.internalValueChanged( %i )" % value)
