@@ -105,6 +105,8 @@ class FFADOWindow(QMainWindow):
         self.refreshaction = QAction(QIcon.fromTheme("view-refresh"),"&Refresh Current Panels", self)
         self.refreshaction.triggered.connect(self.manager.refreshPanels)
         self.editmenu.addAction(self.refreshaction)
+        self.editmenu.addSeparator()
+        self.devices = {}
 
         helpmenu = self.menuBar().addMenu( "&Help" )
         self.aboutaction = QAction(QIcon.fromTheme("help-about"), "About &FFADO", self )

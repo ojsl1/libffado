@@ -222,6 +222,8 @@ class PanelManager(QWidget):
         idx = self.tabs.indexOf(w)
         self.tabs.removeTab(idx)
         w.deleteLater()
+        self.parent.editmenu.removeAction(self.parent.devices[guid])
+        self.parent.devices.pop(guid, None)
 
     def addPanel(self, idx):
         path = self.devmgr.getDeviceName(idx)
@@ -354,6 +356,22 @@ except ImportError:
         if 'readSettings' in dir(mixerwidget):
           w.smixReadSetgs = mixerwidget.readSettings
           self.parent.openaction.setEnabled(True)
+
+        self.parent.devices[guid] = QAction(QIcon.fromTheme("audio-card"), str(title), self.parent)
+        # Ensure a standard type is passed to setDate() so a UserType is not
+        # adopted by the QVariant which underpins the QAction data.  "guid"
+        # is a dbus.String object; it will be stored as a UserType if passed
+        # directly, which makes it difficult to extract in setTabVisible().
+        self.parent.devices[guid].setData(str(guid))
+        self.parent.editmenu.addAction(self.parent.devices[guid])
+        self.parent.devices[guid].triggered.connect(self.setTabVisible)
+    
+    def setTabVisible(self) :
+        action = self.sender()
+        # Extract the action data and store as a dbus.String type so 
+        # it is usable as a key into self.panels[].
+        panel_key = dbus.String(action.data().toString())
+        self.tabs.setCurrentIndex(self.tabs.indexOf(self.panels[panel_key]))
 
     def displayPanels(self):
         # if there is no panel, add the no-device message
