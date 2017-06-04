@@ -36,6 +36,7 @@ from ffado.configuration import *
 from ffado.mixer.globalmixer import GlobalMixer
 from ffado.mixer.dummy import Dummy
 
+import sys
 import time
 
 import logging
@@ -339,7 +340,14 @@ except ImportError:
         else:
             title = mixerapp
 
-        globalmixer.setName(title)
+        mixer_icon = UIDIR + '/ffado/mixer/' + vendorName.replace(" ", "_").lower() + '.png'
+        if os.path.exists(mixer_icon) :
+            globalmixer.lblName.setPixmap(QPixmap(mixer_icon))
+            globalmixer.lblName.setToolTip(title)
+            globalmixer.lblName.show()
+        else :
+            globalmixer.setName(title)
+
         self.tabs.addTab( w, title )
         self.panels[guid] = w
 
