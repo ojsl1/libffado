@@ -28,7 +28,7 @@ from ffado.config import *
 class MackieOnyx(QWidget):
     def __init__(self,parent = None):
         QWidget.__init__(self,parent)
-        uicLoad("ffado/mixer/mackie_onyxmixer", self)
+        uicLoad("ffado/mixer/mackieonyx", self)
 
     def initValues(self):
         pass
