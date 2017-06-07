@@ -24,8 +24,13 @@ import ffado.config
 from ffado.configuration import *
 
 import dbus
-import dbus.mainloop.qt
-dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
+try:
+    # First try the PyQt4 module name
+    from dbus.mainloop.qt import DBusQtMainLoop
+except ImportError:
+    from dbus.mainloop.pyqt5 import DBusQtMainLoop
+
+DBusQtMainLoop(set_as_default=True)
 
 import logging
 log = logging.getLogger('dbus')
