@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <string.h>
 #include <poll.h>
+#include <signal.h>
 
 #define MQ_INVALID_ID ((mqd_t) -1)
 // one second
