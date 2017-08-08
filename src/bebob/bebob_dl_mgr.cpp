@@ -33,6 +33,8 @@
 
 #include "libutil/ByteSwap.h"
 
+#include "ffadodevice.h"
+
 #include <cstdio>
 #include <cstring>
 #include <unistd.h>
