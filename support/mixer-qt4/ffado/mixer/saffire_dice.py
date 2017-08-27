@@ -80,7 +80,7 @@ class Saffire_Dice(Generic_Dice_EAP):
 
         widget = QWidget()
 
-        ModelName = self.configrom.getModelName()
+        ModelName = self.configrom.getModelName().rstrip()
         if ffado.config.bypassdbus:
             # A hack for the bypassdbus case, where ModelName has a slightly
             # different format.  Rather than using the name as returned by
