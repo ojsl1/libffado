@@ -555,7 +555,7 @@ class Rme(QWidget):
         saveString.append('%s</inputmatrix>\n' % indent)
 
         saveString.append('%s<playbackmatrix>\n' % indent)
-        saveString.extend(self.inputmatrix.saveSettings(idt))
+        saveString.extend(self.playbackmatrix.saveSettings(idt))
         # Do not forget to mention the adopted rule for matrix columns mixer
         #  This might be useful for future import function
         saveString.append("%s  <col_rule>\n" % indent)
@@ -564,7 +564,7 @@ class Rme(QWidget):
         saveString.append('%s</playbackmatrix>\n' % indent)
 
         saveString.append('%s<outputmatrix>\n' % indent)
-        saveString.extend(self.inputmatrix.saveSettings(idt))
+        saveString.extend(self.outputmatrix.saveSettings(idt))
         # Do not forget to mention the adopted rule for matrix columns mixer
         #  This might be useful for future import function
         saveString.append("%s  <col_rule>\n" % indent)
