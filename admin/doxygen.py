@@ -43,6 +43,7 @@ import os
 import os.path
 import glob
 from fnmatch import fnmatch
+from functools import reduce
 
 def DoxyfileParse(file_contents):
    """
@@ -52,7 +53,7 @@ def DoxyfileParse(file_contents):
    data = {}
 
    import shlex
-   lex = shlex.shlex(instream = file_contents, posix = True)
+   lex = shlex.shlex(instream = file_contents.decode(), posix = True)
    lex.wordchars += "*+./-:"
    lex.whitespace = lex.whitespace.replace("\n", "")
    lex.escape = ""
@@ -98,9 +99,11 @@ def DoxyfileParse(file_contents):
          append_data( data, key, new_data, '\\' )
 
    # compress lists of len 1 into single strings
+   to_pop = []
    for (k, v) in data.items():
       if len(v) == 0:
-         data.pop(k)
+         # data.pop(k)  # Shouldn't modify dictionary while looping
+         to_pop.append(k)
 
       # items in the following list will be kept as lists and not converted to strings
       if k in ["INPUT", "FILE_PATTERNS", "EXCLUDE_PATTERNS"]:
@@ -108,6 +111,9 @@ def DoxyfileParse(file_contents):
 
       if len(v) == 1:
          data[k] = v[0]
+
+   for k in to_pop:
+      data.pop(k)
 
    return data
 
