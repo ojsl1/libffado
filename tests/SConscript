@@ -67,7 +67,7 @@ apps = {
 if env['ENABLE_BEBOB']:
 	apps.update( { "test-focusrite" : "test-focusrite.cpp" } )
 if env['ENABLE_GENERICAVC']:
-	if env.has_key("ALSA_FLAGS") and env["ALSA_FLAGS"]:
+	if 'ALSA_FLAGS' in env and env["ALSA_FLAGS"]:
 		env.MergeFlags( env["ALSA_FLAGS"] )
 		apps.update( { "test-scs" : "test-scs.cpp" } )
 	apps.update( { "test-volume" : "test-volume.cpp" } )

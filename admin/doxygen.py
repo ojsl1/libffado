@@ -83,7 +83,7 @@ def DoxyfileParse(file_contents):
          key_token = False
       else:
          if token == "+=":
-            if not data.has_key(key):
+            if not key in data:
                data[key] = list()
          elif token == "=":
             data[key] = list()
