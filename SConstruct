@@ -92,7 +92,7 @@ env = Environment( tools=['default','scanreplace','pyuic','pyuic4','pyuic5','dbu
 
 custom_flags = False
 
-if env.has_key('COMPILE_FLAGS') and len(env['COMPILE_FLAGS']) > 0:
+if 'COMPILE_FLAGS' in env and len(env['COMPILE_FLAGS']) > 0:
     print("The COMPILE_FLAGS option is deprecated. Use CFLAGS and CXXFLAGS with CUSTOM_ENV=True instead")
     custom_flags = True
     env.MergeFlags(env['COMPILE_FLAGS'])
@@ -101,17 +101,17 @@ if env['CUSTOM_ENV']:
     custom_flags = True
 
     # Honour the user choice of compiler (if any).
-    if os.environ.has_key('CC') and len(os.environ['CC']) > 0:
+    if 'CC' in os.environ and len(os.environ['CC']) > 0:
         env['CC'] = os.environ['CC']
-    if os.environ.has_key('CXX') and len(os.environ['CXX']) > 0:
+    if 'CXX' in os.environ and len(os.environ['CXX']) > 0:
         env['CXX'] = os.environ['CXX']
 
     # Honour the user supplied flags (if any), but notify the user that this is not supported.
-    if os.environ.has_key('CFLAGS') and len(os.environ['CFLAGS']) > 0:
+    if 'CFLAGS' in os.environ and len(os.environ['CFLAGS']) > 0:
         env.Append(CFLAGS = str(os.environ['CFLAGS'].replace('\"', '')))
-    if os.environ.has_key('CXXFLAGS') and len(os.environ['CXXFLAGS']) > 0:
+    if 'CXXFLAGS' in os.environ and len(os.environ['CXXFLAGS']) > 0:
         env.Append(CXXFLAGS = str(os.environ['CXXFLAGS'].replace('\"', '')))
-    if os.environ.has_key('LDFLAGS') and len(os.environ['LDFLAGS']) > 0:
+    if 'LDFLAGS' in os.environ and len(os.environ['LDFLAGS']) > 0:
         env.Append(LINKFLAGS = str(os.environ['LDFLAGS'].replace('\"', '')))
 
 if custom_flags:
@@ -372,7 +372,7 @@ results above get rechecked.
     # might not be the best way of testing for these but it's the only
     # way which seems to work properly.  CheckFunc() fails due to
     # argument count problems.
-    if env.has_key( 'CFLAGS' ):
+    if 'CFLAGS' in env:
         oldcf = env['CFLAGS']
     else:
         oldcf = ""
@@ -836,7 +836,7 @@ if env['DETECT_USERSPACE_ENV']:
 #=== End Revised CXXFLAGS =========================================
 
 
-if needs_fPIC or ( env.has_key('COMPILE_FLAGS') and '-fPIC' in env['COMPILE_FLAGS'] ):
+if needs_fPIC or ( 'COMPILE_FLAGS' in env and '-fPIC' in env['COMPILE_FLAGS'] ):
     env.MergeFlags( "-fPIC" )
 
 # end of processor-specific section
