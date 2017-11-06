@@ -711,7 +711,7 @@ def is_userspace_32bit(cpuinfo):
         # /bin/mount:     file format elf64-x86-64
         # or like this:
         # /bin/mount:     file format elf32-powerpc
-        for line in x.split('\n'):
+        for line in x.split(b'\n'):
             line = line.strip()
             if line.startswith(real_exe):
                 x, fmt = line.rsplit(None, 1)
