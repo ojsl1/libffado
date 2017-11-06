@@ -35,6 +35,7 @@
 #include <time.h>
 #include <mqueue.h>
 #include <string>
+#include <signal.h>
 
 namespace Util
 {
