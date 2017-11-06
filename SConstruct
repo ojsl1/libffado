@@ -93,7 +93,7 @@ env = Environment( tools=['default','scanreplace','pyuic','pyuic4','pyuic5','dbu
 custom_flags = False
 
 if env.has_key('COMPILE_FLAGS') and len(env['COMPILE_FLAGS']) > 0:
-    print "The COMPILE_FLAGS option is deprecated. Use CFLAGS and CXXFLAGS with CUSTOM_ENV=True instead"
+    print("The COMPILE_FLAGS option is deprecated. Use CFLAGS and CXXFLAGS with CUSTOM_ENV=True instead")
     custom_flags = True
     env.MergeFlags(env['COMPILE_FLAGS'])
 
@@ -115,7 +115,7 @@ if env['CUSTOM_ENV']:
         env.Append(LINKFLAGS = str(os.environ['LDFLAGS'].replace('\"', '')))
 
 if custom_flags:
-    print '''
+    print('''
  * Usage of additional flags is not supported by the ffado-devs.
  * Use at own risk!
  *
@@ -125,7 +125,7 @@ if custom_flags:
  *   CFLAGS = %s
  *   CXXFLAGS = %s
  *   LDFLAGS = %s
-''' % (env['CC'], env['CXX'], env['CFLAGS'], env['CXXFLAGS'], env['LINKFLAGS'])
+''' % (env['CC'], env['CXX'], env['CFLAGS'], env['CXXFLAGS'], env['LINKFLAGS']))
 
 Help( """
 For building ffado you can set different options as listed below. You have to
@@ -225,13 +225,15 @@ def VersionInt(vers):
     return (int(maj) << 24) | (int(min) << 8) | int(patch)
 
 def CheckJackdVer():
-    print 'Checking jackd version...',
+    # Suppress newline in python 2 and 3
+    sys.stdout.write('Checking jackd version...')
+    sys.stdout.flush()
     ret = Popen("which jackd >/dev/null 2>&1 && jackd --version | tail -n 1 | cut -d ' ' -f 3", shell=True, stdout=PIPE).stdout.read()[:-1]
     if (ret == ""):
-        print "not installed"
+        print("not installed")
         return -1
     else:
-        print ret
+        print(ret)
     return VersionInt(ret)
 
 if env['SERIALIZE_USE_EXPAT']:
@@ -249,12 +251,12 @@ if not env.GetOption('clean'):
     # Check for working gcc and g++ compilers and their environment.
     #
     if not conf.CompilerCheck():
-        print "\nIt seems as if your system isn't even able to compile any C-/C++-programs. Probably you don't have gcc and g++ installed. Compiling a package from source without a working compiler is very hard to do, please install the needed packages.\nHint: on *ubuntu you need both gcc- and g++-packages installed, easiest solution is to install build-essential which depends on gcc and g++."
+        print("\nIt seems as if your system isn't even able to compile any C-/C++-programs. Probably you don't have gcc and g++ installed. Compiling a package from source without a working compiler is very hard to do, please install the needed packages.\nHint: on *ubuntu you need both gcc- and g++-packages installed, easiest solution is to install build-essential which depends on gcc and g++.")
         Exit( 1 )
 
     # Check for pkg-config before using pkg-config to check for other dependencies.
     if not conf.CheckForPKGConfig():
-        print "\nThe program 'pkg-config' could not be found.\nEither you have to install the corresponding package first or make sure that PATH points to the right directions."
+        print("\nThe program 'pkg-config' could not be found.\nEither you have to install the corresponding package first or make sure that PATH points to the right directions.")
         Exit( 1 )
 
     #
@@ -301,58 +303,58 @@ if not env.GetOption('clean'):
 
     if env['ENABLE_SETBUFFERSIZE_API_VER'] == 'auto':
         if not(have_jack):
-            print """
+            print("""
 No Jack Audio Connection Kit (JACK) installed: assuming a FFADO 
 setbuffersize-compatible version will be used.
-"""
+""")
         elif not(good_jack1 or good_jack2):
             FFADO_API_VERSION="8"
-            print """
+            print("""
 Installed Jack Audio Connection Kit (JACK) jack does not support FFADO 
 setbuffersize API: will report earlier API version at runtime.  Consider 
 upgrading to jack1 >=0.122.0 or jack2 >=1.9.9 at some point, and then 
 recompile ffado to gain access to this added feature.
-"""
+""")
         else:
-            print "Installed Jack Audio Connection Kit (JACK) supports FFADO setbuffersize API"
+            print("Installed Jack Audio Connection Kit (JACK) supports FFADO setbuffersize API")
     elif env['ENABLE_SETBUFFERSIZE_API_VER'] == 'true':
         if (have_jack and not(good_jack1) and not(good_jack2)):
-            print """
+            print("""
 SetBufferSize API version is enabled but no suitable version of Jack Audio 
 Connection Kit (JACK) has been found.  The resulting FFADO would cause your 
 jackd to abort with "incompatible FFADO version".  Please upgrade to 
 jack1 >=0.122.0 or jack2 >=1.9.9, or set ENABLE_SETBUFFERSIZE_API_VER to "auto"
 or "false".
-"""
+""")
             # Although it's not strictly an error, in almost every case that 
             # this occurs the user will want to know about it and fix the
             # problem, so we exit so they're guaranteed of seeing the above
             # message.
             Exit( 1 )
         else:
-            print "Will report SetBufferSize API version at runtime"
+            print("Will report SetBufferSize API version at runtime")
     elif env['ENABLE_SETBUFFERSIZE_API_VER'] == 'force':
-        print "Will report SetBufferSize API version at runtime"
+        print("Will report SetBufferSize API version at runtime")
     else:
         FFADO_API_VERSION="8"
-        print "Will not report SetBufferSize API version at runtime"
+        print("Will not report SetBufferSize API version at runtime")
 
     for pkg in pkgs:
         name2 = pkg.replace("+","").replace(".","").replace("-","").upper()
         env['%s_FLAGS' % name2] = conf.GetPKGFlags( pkg, pkgs[pkg] )
-        #print '%s_FLAGS' % name2
+        #print('%s_FLAGS' % name2)
         if env['%s_FLAGS'%name2] == 0:
             allpresent &= 0
 
     if not allpresent:
-        print """
+        print("""
 (At least) One of the dependencies is missing. I can't go on without it, please
 install the needed packages for each of the lines saying "no".
 (Remember to also install the *-devel packages!)
 
 And remember to remove the cache with "rm -Rf .sconsign.dblite cache" so the
 results above get rechecked.
-"""
+""")
         Exit( 1 )
 
     # libxml++-2.6 requires a c++11 compiler as of version 2.39.1.  The 
@@ -401,15 +403,15 @@ if env['BUILD_MIXER'] != 'false':
     elif not env.GetOption('clean'):
         if env['BUILD_MIXER'] == 'auto':
             env['BUILD_MIXER'] = 'false'
-            print """
+            print("""
 The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
 'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
-build the mixer were not found. Therefore the qt mixer will not be installed."""
+build the mixer were not found. Therefore the qt mixer will not be installed.""")
         else: # env['BUILD_MIXER'] == 'true'
-            print """
+            print("""
 The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
 'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
-build the mixer were not found, but BUILD_MIXER was requested."""
+build the mixer were not found, but BUILD_MIXER was requested.""")
             Exit( 1 )
 
 env['XDG_TOOLS'] = False
@@ -417,10 +419,10 @@ if env['BUILD_MIXER'] == 'true':
     if conf.CheckForApp( 'xdg-desktop-menu --help' ) and conf.CheckForApp( 'xdg-icon-resource --help' ):
         env['XDG_TOOLS'] = True
     else:
-        print """
+        print("""
 I couldn't find the 'xdg-desktop-menu' and 'xdg-icon-resource' programs. These
 are needed to add the fancy entry for the mixer to your menu, but you can still
-start it by executing "ffado-mixer"."""
+start it by executing "ffado-mixer".""")
 
 #
 # Optional pkg-config
@@ -437,11 +439,11 @@ for pkg in pkgs:
 if not env['DBUS1_FLAGS'] or not env['DBUSC1_FLAGS'] or not conf.CheckForApp('which dbusxx-xml2cpp'):
     env['DBUS1_FLAGS'] = ""
     env['DBUSC1_FLAGS'] = ""
-    print """
+    print("""
 One of the dbus-headers, the dbus-c++-headers and/or the application
 'dbusxx-xml2cpp' where not found. The dbus-server for ffado will therefore not
 be built.
-"""
+""")
 else:
     # Get the directory where dbus stores the service-files
     env['dbus_service_dir'] = conf.GetPKGVariable( 'dbus-1', 'session_bus_services_dir' ).strip()
@@ -463,7 +465,7 @@ config_guess = conf.ConfigGuess()
 env = conf.Finish()
 
 if env['DEBUG']:
-    print "Doing a debug build"
+    print("Doing a debug build")
     env.MergeFlags( "-Wall -g -DDEBUG" )
     env['DEBUG_MESSAGES'] = True
 elif not custom_flags:
@@ -474,7 +476,7 @@ if env['DEBUG_MESSAGES']:
     env.MergeFlags( "-DDEBUG_MESSAGES" )
 
 if env['PROFILE']:
-    print "Doing a PROFILE build"
+    print("Doing a PROFILE build")
     env.MergeFlags( "-Wall -g" )
 
 if env['PEDANTIC']:
@@ -495,7 +497,7 @@ if env['ENABLE_ALL']:
 
 env['BUILD_STATIC_LIB'] = False
 if env['BUILD_STATIC_TOOLS']:
-    print "Building static versions of the tools..."
+    print("Building static versions of the tools...")
     env['BUILD_STATIC_LIB'] = True
 
 env['build_base']="#/"
@@ -694,10 +696,10 @@ def is_userspace_32bit(cpuinfo):
     # We'll make an educated guess by examining a known executable
     exe = '/bin/mount'
     if os.path.isfile(exe):
-        #print 'Found %s' % exe
+        #print('Found %s' % exe)
         if os.path.islink(exe):
             real_exe = os.path.join(os.path.dirname(exe), os.readlink(exe))
-            #print '%s is a symlink to %s' % (exe, real_exe)
+            #print('%s is a symlink to %s' % (exe, real_exe))
         else:
             real_exe = exe
         # presumably if a person is running this script, they should have
@@ -716,7 +718,7 @@ def is_userspace_32bit(cpuinfo):
                 answer = 'elf32' in fmt
                 break
     else:
-        print '!!! Not found %s' % exe
+        print('!!! Not found %s' % exe)
     return answer
 
 
@@ -791,7 +793,7 @@ if env['DIST_TARGET'] == 'auto':
         env['DIST_TARGET'] = 'powerpc'
     else:
         env['DIST_TARGET'] = config[config_cpu]
-    print "Detected DIST_TARGET = " + env['DIST_TARGET']
+    print("Detected DIST_TARGET = " + env['DIST_TARGET'])
 
 #=== Begin Revised CXXFLAGS =========================================
 # comment on DIST_TARGET up top implies it can be used for cross-compiling
@@ -810,24 +812,24 @@ if '-msse2' in opt_flags:
 
 if env['DETECT_USERSPACE_ENV']:
     m32 = is_userspace_32bit(cpuinfo)
-    print 'User space is %s' % (m32 and '32-bit' or '64-bit')
+    print('User space is %s' % (m32 and '32-bit' or '64-bit'))
     if cpuinfo.is_powerpc:
         if m32:
-            print "Doing a 32-bit PowerPC build for %s CPU" % cpuinfo.ppc_type
+            print("Doing a 32-bit PowerPC build for %s CPU" % cpuinfo.ppc_type)
             machineflags = { 'CXXFLAGS' : ['-m32'] }
         else:
-            print "Doing a 64-bit PowerPC build for %s CPU" % cpuinfo.ppc_type
+            print("Doing a 64-bit PowerPC build for %s CPU" % cpuinfo.ppc_type)
             machineflags = { 'CXXFLAGS' : ['-m64'] }
         env.MergeFlags( machineflags )
     elif cpuinfo.is_x86:
         if m32:
-            print "Doing a 32-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name)
+            print("Doing a 32-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name))
             if cpuinfo.machine == 'x86_64':
                 machineflags = { 'CXXFLAGS' : ['-mx32'] }
             else:
                 machineflags = { 'CXXFLAGS' : ['-m32'] }
         else:
-            print "Doing a 64-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name)
+            print("Doing a 64-bit %s build for %s" % (cpuinfo.machine, cpuinfo.model_name))
             machineflags = { 'CXXFLAGS' : ['-m64'] }
             needs_fPIC = True
         env.MergeFlags( machineflags )
@@ -841,7 +843,7 @@ if needs_fPIC or ( env.has_key('COMPILE_FLAGS') and '-fPIC' in env['COMPILE_FLAG
 if env['ENABLE_OPTIMIZATIONS']:
     opt_flags.extend (["-fomit-frame-pointer","-ffast-math","-funroll-loops"])
     env.MergeFlags( opt_flags )
-    print "Doing an optimized build..."
+    print("Doing an optimized build...")
 
 env['REVISION'] = os.popen('svnversion .').read()[:-1]
 # This may be as simple as '89' or as complex as '4123:4184M'.
@@ -921,7 +923,7 @@ if not env.GetOption('clean'):
 #
 if len(env.destdir) > 0:
     if not len( ARGUMENTS.get( "WILL_DEAL_WITH_XDG_MYSELF", "" ) ) > 0:
-        print """
+        print("""
 WARNING!
 You are using the (packagers) option DESTDIR to install this package to a
 different place than the real prefix. As the xdg-tools can't cope with
@@ -929,7 +931,7 @@ that, the .desktop-files are not installed by this build, you have to
 deal with them your own.
 (And you have to look into the SConstruct to learn how to disable this
 message.)
-"""
+""")
 else:
 
     def CleanAction( action ):
