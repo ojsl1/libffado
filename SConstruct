@@ -581,7 +581,7 @@ class CpuInfo (object):
         # general CPU architecture
         self.is_x86 = self.machine in ('i686', 'x86_64') or \
                       re.match("i[3-5]86", self.machine) or False
-        self.is_powerpc = self.machine in ('ppc64', 'ppc', 'powerpc', 'powerpc64')
+        self.is_powerpc = self.machine in ('ppc64', 'ppc', 'powerpc', 'powerpc64', 'ppc64le')
         #!!! probably not comprehensive
         self.is_mips = self.machine == 'mips'
         #!!! not a comprehensive list. uname -m on one android phone reports 'armv71'
@@ -599,7 +599,8 @@ class CpuInfo (object):
         # 64-bit (x86_64/AMD64/Intel64)
         # Long Mode (x86-64: amd64, also known as Intel 64, i.e. 64-bit capable)
         self.is_64bit = (self.is_x86 and 'lm' in self.x86_flags) or \
-                        (self.is_powerpc and '970' in self.ppc_type)
+                        (self.is_powerpc and \
+                            ('970' in self.ppc_type or 'power8' in self.ppc_type.lower()))
 
         # Hardware virtualization capable: vmx (Intel), svm (AMD)
         self.has_hwvirt = self.is_x86 and (
