@@ -34,9 +34,9 @@ e.MergeFlags( "-I#/ -I#/src -L%ssrc -lffado" % env['build_base'] )
 if not e.GetOption( "clean" ):
         if not env['SERIALIZE_USE_EXPAT']:
             if 'LIBXML30_FLAGS' in env :
-		e.MergeFlags( env['LIBXML30_FLAGS'] )
+		e.MergeFlags( env['LIBXML30_FLAGS'].decode() )
             if not('LIBXML30_FLAGS' in env) :
-                e.MergeFlags( env['LIBXML26_FLAGS'] )
+                e.MergeFlags( env['LIBXML26_FLAGS'].decode() )
         else:
                 e.PrependUnique( LIBS=["expat"] )
 

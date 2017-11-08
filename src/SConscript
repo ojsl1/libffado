@@ -284,19 +284,19 @@ if env['ENABLE_GENERICAVC']:
 
 if not env.GetOption( "clean" ):
 	libenv.MergeFlags( "-lrt -lpthread" )
-	libenv.MergeFlags( env['LIBRAW1394_FLAGS'] )
-	libenv.MergeFlags( env['LIBIEC61883_FLAGS'] )
-	libenv.MergeFlags( env['LIBCONFIG_FLAGS'] )
+	libenv.MergeFlags( env['LIBRAW1394_FLAGS'].decode() )
+	libenv.MergeFlags( env['LIBIEC61883_FLAGS'].decode() )
+	libenv.MergeFlags( env['LIBCONFIG_FLAGS'].decode() )
 	if not env['SERIALIZE_USE_EXPAT']:
             if 'LIBXML30_FLAGS' in env :
-		libenv.MergeFlags( env['LIBXML30_FLAGS'] )
+		libenv.MergeFlags( env['LIBXML30_FLAGS'].decode() )
             if not('LIBXML30_FLAGS' in env) :
-		libenv.MergeFlags( env['LIBXML26_FLAGS'] )
+		libenv.MergeFlags( env['LIBXML26_FLAGS'].decode() )
 	else:
 		libenv.PrependUnique( LIBS=["expat"] )
 		libenv.MergeFlags( "-DSERIALIZE_USE_EXPAT" )
 	if env['REQUIRE_LIBAVC']:
-		libenv.MergeFlags( env['LIBAVC1394_FLAGS'] )
+		libenv.MergeFlags( env['LIBAVC1394_FLAGS'].decode() )
 
 libname_versioned = "libffado.so.%s" % libenv['VERSION']
 libname_versioned_short = "libffado.so.%s" % libenv['VERSION'].split('.')[0]

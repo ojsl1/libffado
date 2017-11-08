@@ -30,13 +30,13 @@ env.AppendUnique( CPPPATH=["#/", "#/src"] )
 
 if not env.GetOption( "clean" ):
     env.MergeFlags( "-lrt -lpthread" )
-    env.MergeFlags( env['LIBRAW1394_FLAGS'] )
-    env.MergeFlags( env['LIBIEC61883_FLAGS'] )
+    env.MergeFlags( env['LIBRAW1394_FLAGS'].decode() )
+    env.MergeFlags( env['LIBIEC61883_FLAGS'].decode() )
     if not env['SERIALIZE_USE_EXPAT']:
         if 'LIBXML30_FLAGS' in env :
-            env.MergeFlags( env['LIBXML30_FLAGS'] )
+            env.MergeFlags( env['LIBXML30_FLAGS'].decode() )
         if not('LIBXML30_FLAGS' in env) :
-            env.MergeFlags( env['LIBXML26_FLAGS'] )
+            env.MergeFlags( env['LIBXML26_FLAGS'].decode() )
     else:
         env.PrependUnique( LIBS=["expat"] )
 

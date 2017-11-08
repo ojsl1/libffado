@@ -37,14 +37,14 @@ env.PrependUnique( LIBPATH=[env['build_base']+"src"] )
 env.PrependUnique( LIBS=["ffado", "pthread"] )
 
 if not env.GetOption( "clean" ):
-    env.MergeFlags( env["DBUS1_FLAGS"] )
-    env.MergeFlags( env["DBUSC1_FLAGS"] )
-    env.MergeFlags( env['LIBRAW1394_FLAGS'] )
+    env.MergeFlags( env["DBUS1_FLAGS"].decode() )
+    env.MergeFlags( env["DBUSC1_FLAGS"].decode() )
+    env.MergeFlags( env['LIBRAW1394_FLAGS'].decode() )
     if not env['SERIALIZE_USE_EXPAT']:
         if 'LIBXML30_FLAGS' in env :
-            env.MergeFlags( env['LIBXML30_FLAGS'] )
+            env.MergeFlags( env['LIBXML30_FLAGS'].decode() )
         if not('LIBXML30_FLAGS' in env) :
-            env.MergeFlags( env['LIBXML26_FLAGS'] )
+            env.MergeFlags( env['LIBXML26_FLAGS'].decode() )
     else:
         env.PrependUnique( LIBS=["expat"] )
 
@@ -83,8 +83,8 @@ for manpage in manpages:
 servicefile = env.ScanReplace('org.ffado.Control.service.in')
 if env['dbus_service_dir'] and ( env.destdir or os.access( env['dbus_service_dir'], os.W_OK ) ):
     print("Will install the service-file")
-    targetdir = env.destdir + env['dbus_service_dir']
-    env.Alias( "install", env.Install( env.destdir + env['dbus_service_dir'], servicefile ) )
+    targetdir = env.destdir + env['dbus_service_dir'].decode()
+    env.Alias( "install", env.Install( env.destdir + env['dbus_service_dir'].decode(), servicefile ) )
 else:
     if not env['dbus_service_dir']:
         print('Can\'t install the system-wide dbus service file as the concerned variable is not defined.')

@@ -228,7 +228,7 @@ def CheckJackdVer():
     # Suppress newline in python 2 and 3
     sys.stdout.write('Checking jackd version...')
     sys.stdout.flush()
-    ret = Popen("which jackd >/dev/null 2>&1 && jackd --version | tail -n 1 | cut -d ' ' -f 3", shell=True, stdout=PIPE).stdout.read()[:-1]
+    ret = Popen("which jackd >/dev/null 2>&1 && jackd --version | tail -n 1 | cut -d ' ' -f 3", shell=True, stdout=PIPE).stdout.read()[:-1].decode()
     if (ret == ""):
         print("not installed")
         return -1
@@ -713,7 +713,7 @@ def is_userspace_32bit(cpuinfo):
         # or like this:
         # /bin/mount:     file format elf32-powerpc
         for line in x.split(b'\n'):
-            line = line.strip()
+            line = line.strip().decode()
             if line.startswith(real_exe):
                 x, fmt = line.rsplit(None, 1)
                 answer = 'elf32' in fmt

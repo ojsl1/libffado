@@ -29,13 +29,13 @@ env.MergeFlags( "-I#/ -I#/src -L%ssrc -lffado" % env['build_base'] )
 
 if not env.GetOption( "clean" ):
 	env.MergeFlags( "-lpthread" )
-	env.MergeFlags( env['LIBIEC61883_FLAGS'] )
-	env.MergeFlags( env['LIBRAW1394_FLAGS'] )
+	env.MergeFlags( env['LIBIEC61883_FLAGS'].decode() )
+	env.MergeFlags( env['LIBRAW1394_FLAGS'].decode() )
 	if not env['SERIALIZE_USE_EXPAT']:
             if 'LIBXML30_FLAGS' in env :
-		env.MergeFlags( env['LIBXML30_FLAGS'] )
+		env.MergeFlags( env['LIBXML30_FLAGS'].decode() )
             if not('LIBXML30_FLAGS' in env) :
-		env.MergeFlags( env['LIBXML26_FLAGS'] )
+		env.MergeFlags( env['LIBXML26_FLAGS'].decode() )
 	else:
 		env.PrependUnique( LIBS=["expat"] )
 
@@ -68,7 +68,7 @@ if env['ENABLE_BEBOB']:
 	apps.update( { "test-focusrite" : "test-focusrite.cpp" } )
 if env['ENABLE_GENERICAVC']:
 	if 'ALSA_FLAGS' in env and env["ALSA_FLAGS"]:
-		env.MergeFlags( env["ALSA_FLAGS"] )
+		env.MergeFlags( env["ALSA_FLAGS"].decode() )
 		apps.update( { "test-scs" : "test-scs.cpp" } )
 	apps.update( { "test-volume" : "test-volume.cpp" } )
 	apps.update( { "test-enhanced-mixer" : "test-enhanced-mixer.cpp" } )
