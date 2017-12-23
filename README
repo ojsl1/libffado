@@ -1,4 +1,4 @@
-FFADO v2.2
+FFADO v2.4
 ==========
 
 The FFADO project aims to provide a free driver implemenation for FireWire
@@ -114,6 +114,12 @@ We constantly try to persuade vendors to help us extend our device support.
 Dependencies
 ------------
 
+FFADO uses the scons build system, which must be available on the system
+when building FFADO.  It is not a runtime dependency.  Scons 2 is currently
+used to build FFADO.  Work continues on making FFADO's scons scripts
+compatible with both scons 2 and 3.  Testing and bug reports when using
+scons 3 are welcomed.
+
 To build libffado you need several libraries. For all libraries a
 version is provided which is a 'known good' version.  The first few
 libraries it seems it is not necessary that the version must
@@ -134,8 +140,6 @@ Currently only the jackd audio server is supported:
 
 While jack1 0.109.12 will work, jack1 >= 0.122.0 or jack2 >= 1.9.9 are
 recommended if support for jack's setbufsize functionality is desired. 
-[NOTE: at the time of writing, jack1 0.122.0 and jack2 1.9.9 are the 
-development (SVN) versions.]
 
 Optionally, but recommended is that you install qjackctl:
 
@@ -237,8 +241,19 @@ In general it is no longer necessary to use an RT-patched kernel.
 In case of problems
 -------------------
 
-First of all, check whether your problem is in fact a problem, and whether
-it is a FFADO problem.  The magic tool for this is google.
+First of all, check whether your problem is a known issue, and whether
+it is a FFADO problem.  Use your chosen web search engine for this.
+
+Many distributor kernels now include the alternative ALSA audio streaming
+drivers for selected firewire audio interfaces (snd-bebob, snd-dice, etc). 
+These are developed independently of FFADO.  If these kernel modules are
+loaded then FFADO's streaming engine cannot be used: using jackd's
+"firewire" driver will fail because the kernel drivers have ownership of the
+interface.  To continue to use FFADO's streaming system, the applicable
+snd-* module must be unloaded from the kernel and prevented from loading on
+boot.  Use "rmmod" to remove the module from the running system, and
+blacklist the relevant snd-* module in a file under /lib/modprobe.d/ (or
+your distribution's equivalent).
 
 When seeking support from the developers keep in mind that none of the FFADO
 developers are paid to work on FFADO or to support FFADO users.  Answering
@@ -247,7 +262,7 @@ work on the code.  Before contacting the developers please see if your query
 or problem has been seen before.  The following places are helpful:
  * http://www.ffado.org/
  * http://subversion.ffado.org/
- * http://www.google.com/
+ * your chosen search engine
    (the terms "ffado-devel" and "ffado-user" work well)
 
 If you have tried to find a solution to your problem but couldn't or are
@@ -279,7 +294,11 @@ this will create a ffado.log file containing the output. Use CTRL-C
 to exit jack if necessary.
 
 The distribution contains a tool to gather some information about your
-system. you can run it as follows:
+system. When FFADO is installed on the system it can be run directly:
+
+    $ ffado-diag > ffado-diag.log
+
+It is also possible to run it from the source tree:
 
     $ cd support/tools
     $ python ffado-diag.py > ffado-diag.log
