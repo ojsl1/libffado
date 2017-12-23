@@ -24,7 +24,7 @@
 #
 
 FFADO_API_VERSION = "9"
-FFADO_VERSION="2.3.9999"
+FFADO_VERSION="2.4.0"
 
 from subprocess import Popen, PIPE
 import os
