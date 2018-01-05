@@ -28,7 +28,7 @@ import logging
 log = logging.getLogger('logginghandler')
 
 class QStatusLogger( QObject, logging.Handler ):
-    log = pyqtSignal(QString, int, name='log')
+    log = pyqtSignal(QString if ffado_pyqt_version == 4 else str, int, name='log')
     def __init__( self, parent, statusbar, level=logging.NOTSET ):
         QObject.__init__( self, parent )
         logging.Handler.__init__( self, level )

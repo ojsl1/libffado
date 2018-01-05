@@ -378,7 +378,7 @@ except ImportError:
         action = self.sender()
         # Extract the action data and store as a dbus.String type so 
         # it is usable as a key into self.panels[].
-        panel_key = dbus.String(action.data().toString())
+        panel_key = dbus.String(action.data().toString() if ffado_pyqt_version == 4 else action.data())
         self.tabs.setCurrentIndex(self.tabs.indexOf(self.panels[panel_key]))
 
     def displayPanels(self):
@@ -515,6 +515,8 @@ except ImportError:
           saveString.append('</device>\n')
         # file saving
         savefilename = QFileDialog.getSaveFileName(self, 'Save File', os.getenv('HOME'))
+        if isinstance(savefilename, tuple): # newer PyQt5
+            savefilename = savefilename[0]
         try:
           f = open(savefilename, 'w')
         except IOError:
@@ -526,6 +528,8 @@ except ImportError:
 
     def readSettings(self):
         readfilename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))
+        if isinstance(readfilename, tuple): # newer PyQt5
+            readfilename = readfilename[0]
         try:
           f = open(readfilename, 'r')
         except IOError:

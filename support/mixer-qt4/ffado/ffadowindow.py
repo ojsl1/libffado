@@ -22,6 +22,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import ctypes
+import datetime
 import os
 
 from ffado.config import *
@@ -92,7 +94,8 @@ class FFADOWindow(QMainWindow):
             self.menuTheme[theme].setCheckable(True)
 
             if (ffado_python3 and (self.style().objectName().lower() == theme.lower()) or
-                    not(ffado_python3) and (self.style().objectName().toLower() == theme.toLower())):
+                    not(ffado_python3) and (self.style().objectName().toLower() == theme.toLower() if ffado_pyqt_version == 4 else
+                                            self.style().objectName().lower() == theme.lower())):
                 self.menuTheme[theme].setDisabled(True)
                 self.menuTheme[theme].setChecked(True)
             self.menuTheme[theme].triggered.connect(self.switchTheme )
@@ -174,9 +177,11 @@ class FFADOWindow(QMainWindow):
         QMessageBox.about( self, "About FFADO", """
 <h1>ffado.org</h1>
 
+<p>{ffado_version}</p>
+
 <p>FFADO is the new approach to have firewire audio on linux.</p>
 
-<p>&copy; 2006-2014 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
+        <p>&copy; 2006-2018 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
 
 <p>FFADO developers are:<ul>
 <li>Pieter Palmers
@@ -191,8 +196,17 @@ with contributions from:<ul>
 <li>Stefan Richter
 <li>Jano Svitok
 </ul>
-""" )
+        """.format(ffado_version=get_ffado_version(), thisyear=datetime.datetime.now().year))
 
+def get_ffado_version():
+    try:
+        # call the C function ffado_get_version() to figure out the version
+        lib = ctypes.cdll.LoadLibrary('libffado.so')
+        func = ctypes.CFUNCTYPE(ctypes.c_char_p)
+        ffado_get_version = func(('ffado_get_version', lib))
+        return ffado_get_version()
+    except:
+        return "libffado"
 
 def get_lock(process_name):
     import socket
@@ -252,6 +266,7 @@ def ffadomain(args):
     logging.getLogger('global').setLevel(debug_level)
 
     log = logging.getLogger('main')
+    log.debug("Using %s with Qt: %s PyQt: %s" % (get_ffado_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR))
 
     app = QApplication(args)
     app.setWindowIcon( QIcon( SHAREDIR + "/icons/hi64-apps-ffado.png" ) )

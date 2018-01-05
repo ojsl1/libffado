@@ -200,14 +200,14 @@ class MixerNode(QAbstractSlider):
 
     def mousePressEvent(self, ev):
         if ev.buttons() & Qt.LeftButton:
-            self.pos = ev.posF()
+            self.pos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             self.tmpvalue = self.value()
             ev.accept()
             #log.debug("MixerNode.mousePressEvent() %s" % str(self.pos))
 
     def mouseMoveEvent(self, ev):
         if hasattr(self, "tmpvalue") and self.pos is not QtCore.QPointF(0, 0):
-            newpos = ev.posF()
+            newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
             self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
@@ -215,7 +215,7 @@ class MixerNode(QAbstractSlider):
 
     def mouseReleaseEvent(self, ev):
         if hasattr(self, "tmpvalue") and self.pos is not QtCore.QPointF(0, 0):
-            newpos = ev.posF()
+            newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
             self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
@@ -257,19 +257,19 @@ class MixerNode(QAbstractSlider):
         if v == 0:
             symb_inf = u"\u221E"
             text = "-" + symb_inf + " dB"
-        if ffado_python3:
+        if ffado_python3 or ffado_pyqt_version == 5:
             # Python3 uses native python UTF strings rather than QString.
             # This therefore appears to be the correct way to display this
             # UTF8 string, but testing may prove otherwise.
             p.drawText(rect, Qt.AlignCenter, text)
         else:
-            p.drawText(rect, Qt.AlignCenter, QtCore.QString.fromUtf8(text))
+            p.drawText(rect, Qt.AlignCenter, QString.fromUtf8(text))
         if (self.inv_action!=None and self.inv_action.isChecked()):
-            if ffado_python3:
+            if ffado_python3 or ffado_pyqt_version == 5:
                 # Refer to the comment about about Python UTF8 strings.
                 p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, " ϕ")
             else:
-                p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, QtCore.QString.fromUtf8(" ϕ"))
+                p.drawText(rect, Qt.AlignLeft|Qt.AlignTop, QString.fromUtf8(" ϕ"))
 
     def internalValueChanged(self, value):
         #log.debug("MixerNode.internalValueChanged( %i )" % value)

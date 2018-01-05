@@ -168,7 +168,10 @@ class CrossbarRouter(QWidget):
         self.timer.setInterval(200)
         self.timer.timeout.connect(self.updateLevels)
 
-        self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False).toBool())
+        if ffado_pyqt_version == 4:
+            self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False).toBool())
+        else:
+            self.vubtn.setChecked(self.settings.value("crossbarrouter/runvu", False) == u'true')
 
     def __del__(self):
         print( "CrossbarRouter.__del__()" )
