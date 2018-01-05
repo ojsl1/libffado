@@ -31,6 +31,7 @@
 #include "libavc/avc_definitions.h"
 
 #include "libutil/Configuration.h"
+#include "libutil/ByteSwap.h"
 
 #include "fireface_def.h"
 #include "libstreaming/rme/RmeReceiveStreamProcessor.h"

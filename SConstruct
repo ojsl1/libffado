@@ -29,6 +29,7 @@ FFADO_VERSION="2.4.9999"
 from subprocess import Popen, PIPE
 import os
 import re
+import sys
 from string import Template
 import imp
 import distutils.sysconfig
