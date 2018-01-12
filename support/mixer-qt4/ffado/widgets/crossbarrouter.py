@@ -194,7 +194,7 @@ class CrossbarRouter(QWidget):
         #log.debug("Got %i peaks" % len(peakvalues))
         for peak in peakvalues:
             #log.debug("peak = [%s,%s]" % (str(peak[0]),str(peak[1])))
-            if peak[0] >= 0:
+            if peak[1] >= 0:
                 self.switchers[peak[0]].peakValue(peak[1])
 
     def updateMixerRouting(self):

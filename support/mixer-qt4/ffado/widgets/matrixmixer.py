@@ -512,7 +512,7 @@ class MatrixControlView(QWidget):
                     self.rowHeaders[j].lbl.setText(row_name)
 
     def updateValues(self, n):
-        nbitems = len(n)/3
+        nbitems = len(n) // 3
         for i in range(nbitems):
             n_0 = n[3*i]    
             n_1 = n[3*i+1]   
@@ -951,7 +951,7 @@ class SliderControlView(QWidget):
             return self.interface.setValue(In, Out, val)            
 
     def updateValues(self, n):
-        nbitems = len(n)/3
+        nbitems = len(n) // 3
         for j in range(nbitems):
             n_0 = n[3*j]    
             n_1 = n[3*j+1]   
@@ -1406,7 +1406,7 @@ class MatrixMixer(QWidget):
     def matrixControlChanged(self, n):
         # Update value needed for "per Out" view
         #log.debug("Update per Output( %s )" % str(n))
-        nbitems = len(n)/3
+        nbitems = len(n) // 3
         if (self.rule == "Columns_are_inputs"):
            n_t = n
         else:
@@ -1420,7 +1420,7 @@ class MatrixMixer(QWidget):
     def sliderControlChanged(self, n):
         # Update value needed for matrix view
         #log.debug("Update Matrix( %s )" % str(n))
-        nbitems = len(n)/3
+        nbitems = len(n) // 3
         if (((self.rule == "Columns_are_inputs") and not self.transpose) or ((self.rule != "Columns_are_inputs") and self.transpose)):
             n_t = ()
             for i in range(nbitems):
@@ -1512,7 +1512,7 @@ class MatrixMixer(QWidget):
                 log.debug("Number of stereo output channels must be specified")
                 return False
             n = int(readMixerString[idx+2])
-            if n > self.perOut.nbOut/2:
+            if n > self.perOut.nbOut // 2:
                 log.debug("Incoherent number of stereo channels")
                 return False
             if n > 0:

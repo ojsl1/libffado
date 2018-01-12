@@ -38,6 +38,7 @@ from ffado.mixer.dummy import Dummy
 
 import sys
 import time
+import importlib
 
 import logging
 log = logging.getLogger('panelmanager')
@@ -302,20 +303,15 @@ class PanelManager(QWidget):
         #
         # Specific (or dummy) mixer widgets get loaded in the following
         #
+        found = False
         if 'mixer' in dev and dev['mixer'] != None:
             mixerapp = dev['mixer']
-            global mixerwidget
-            exec( """
-try:
-    import ffado.mixer.%s
-    globals()["mixerwidget"] = ffado.mixer.%s.%s( w )
-    found = True
-except ImportError:
-    log.debug("bypassdbus set, %s module not available: ignored")
-    found = False
-""" % (mixerapp.lower(), mixerapp.lower(), mixerapp, mixerapp.lower()) )
-        else:
-            found = False
+            try:
+                mixer_module = importlib.import_module("ffado.mixer.%s" % mixerapp.lower())
+                mixerwidget = getattr(mixer_module, mixerapp)(w)
+                found = True
+            except ImportError:
+                log.debug("bypassdbus set, %s module not available: ignored" % mixerapp.lower())
 
         if not found:
             mixerwidget = Dummy( w )
