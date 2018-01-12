@@ -608,8 +608,10 @@ Device::read_device_mixer_settings(FF_software_settings_t *dsettings)
     // indicates MIDI control is active while [31] is a submix number.
     // It's suspected that neither of these are used by the device directly,
     // and that these elements are just a convenient place for computer
-    // control applications to store things.
-    for (out=0; out<30; out++) {
+    // control applications to store things.  FFADO does not make use
+    // of these.  nch is assumed to be <= RME_FF800_MAX_CHANNELS (28),
+    // the size of the output_faders[] array.
+    for (out=0; out<nch; out++) {
       dsettings->output_faders[out] = flashvol2fader(obuf[out]);
     }
 
@@ -688,7 +690,7 @@ Device::write_device_mixer_settings(FF_software_settings_t *dsettings)
     // Elements 30 and 31 of obuf[] are not output fader values.  See
     // comments in read_device_mixer_settings().
     memset(obuf, 0, sizeof(obuf));
-    for (out=0; out<30; out++) {
+    for (out=0; out<nch; out++) {
       obuf[out] = fader2flashvol(dsettings->output_faders[out]);
     }
 
