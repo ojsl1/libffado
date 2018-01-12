@@ -98,7 +98,7 @@ of the mixer is an available output from the routers point.
             self.combo.setCurrentIndex(self.combo.findText(src))
         else:
             self.combo.setCurrentIndex(0)
-        self.combo.activated.connect(self.comboCurrentChanged)
+        self.combo.activated[str].connect(self.comboCurrentChanged)
 
 
     def peakValue(self, value):
