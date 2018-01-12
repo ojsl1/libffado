@@ -143,12 +143,12 @@ class AudioFire(QWidget):
     def updateDigIfaceControl(self, a0):
         sender = self.sender()
         state = a0
-	# 0/2/3 is available but GUI set 0/1/2
+        # 0/2/3 is available but GUI set 0/1/2
         if a0 > 0:
             state += 1
         log.debug("set %s to %d" % (
             self.DigIfaceControls[sender][0], state))
-	self.hw.setDiscrete(self.DigIfaceControls[sender][0], state)
+        self.hw.setDiscrete(self.DigIfaceControls[sender][0], state)
 
     def updatePlbkRouteControl(self, src):
         sender = self.sender()

@@ -81,54 +81,54 @@ class Phase88Control(QWidget):
             self.muteButtonWavePlayR: [self.sldInputWavePlayR, self.muteButtonWavePlayL]
         }
         
-	# gain control
-	for ctl, params in self.VolumeControls.items():
-		path	= params[0]
-		idx	= params[1]
+        # gain control
+        for ctl, params in self.VolumeControls.items():
+                path    = params[0]
+                idx     = params[1]
                 dbmeter = params[5]
-		
-		#db = self.hw.getContignuous(path, idx)
-		#vol = self.db2vol(db)
+                
+                #db = self.hw.getContignuous(path, idx)
+                #vol = self.db2vol(db)
                 vol = self.hw.getContignuous(path, idx)
                 print("%s ch %d volume is %d" % (path, idx, vol))
                 ctl.setValue(vol)
                 dbmeter.setText(self.vol2dbstr(vol))
                 self.VolumeControls[ctl][6] = vol
-		
-		pair	= params[2]
-		pidx	= params[3]
-		link	= params[4]
-		
-#		pdb = self.hw.getContignuous(path, pidx)
-#		pvol = self.db2vol(db)
-		pvol = self.hw.getContignuous(path, pidx)
+                
+                pair    = params[2]
+                pidx    = params[3]
+                link    = params[4]
+                
+#               pdb = self.hw.getContignuous(path, pidx)
+#               pvol = self.db2vol(db)
+                pvol = self.hw.getContignuous(path, pidx)
 
-		if pvol == vol:
-			link.setChecked(True)
-		
+                if pvol == vol:
+                        link.setChecked(True)
+                
                 ctl.valueChanged.connect(self.updateVolume)
 
-	# selector controls
-	for ctl, param in self.SelectorControls.items():
-		state = self.hw.getDiscrete(param)
-		ctl.setCurrentIndex(state)
-		
+        # selector controls
+        for ctl, param in self.SelectorControls.items():
+                state = self.hw.getDiscrete(param)
+                ctl.setCurrentIndex(state)
+                
                 ctl.activated.connect(self.updateSelector)
 
-	# mute controls
-	for ctl, param in self.MuteControls.items():
+        # mute controls
+        for ctl, param in self.MuteControls.items():
                 ctl.toggled.connect(self.muteVolume)
 
 
     # helper functions 
     def muteVolume(self, state):
-        sender	  = self.sender()
+        sender    = self.sender()
         volctl    = self.MuteControls[sender][0]
-        path	  = self.VolumeControls[volctl][0]
-        idx	  = self.VolumeControls[volctl][1]
-        pair	  = self.VolumeControls[volctl][2]
-        pidx	  = self.VolumeControls[volctl][3]
-        link	  = self.VolumeControls[volctl][4]
+        path      = self.VolumeControls[volctl][0]
+        idx       = self.VolumeControls[volctl][1]
+        pair      = self.VolumeControls[volctl][2]
+        pidx      = self.VolumeControls[volctl][3]
+        link      = self.VolumeControls[volctl][4]
         savedvol  = self.VolumeControls[volctl][6]
         psavedvol = self.VolumeControls[pair][6]
 
@@ -146,12 +146,12 @@ class Phase88Control(QWidget):
 #                self.hw.setContignuous(path, psavedvol, pidx)
 
     def updateVolume(self, vol):
-        sender	= self.sender()
-        path	= self.VolumeControls[sender][0]
-        idx	= self.VolumeControls[sender][1]
-        pair	= self.VolumeControls[sender][2]
-        pidx	= self.VolumeControls[sender][3]
-        link	= self.VolumeControls[sender][4]
+        sender  = self.sender()
+        path    = self.VolumeControls[sender][0]
+        idx     = self.VolumeControls[sender][1]
+        pair    = self.VolumeControls[sender][2]
+        pidx    = self.VolumeControls[sender][3]
+        link    = self.VolumeControls[sender][4]
         dbmeter = self.VolumeControls[sender][5]
 
         #db = self.vol2dbstr(vol)
@@ -164,8 +164,8 @@ class Phase88Control(QWidget):
             pair.setValue(vol)
 
     def updateSelector(self, state):
-        sender	= self.sender()
-        path	= self.SelectorControls[sender]
+        sender  = self.sender()
+        path    = self.SelectorControls[sender]
         self.hw.setDiscrete(path, state)
 #       if path == '/Mixer/Selector_7'
 #            ctrl  = self.VolumeControls['line78']
@@ -175,7 +175,7 @@ class Phase88Control(QWidget):
 #            ctrl[1].setValue(-vol)
 
     def vol2dbstr(self, vol):
-	vol = vol + 25600
+        vol = vol + 25600
         if vol == 0 :
             return "- "+u"\u221E"+" dB"
         return str("{0:.2f}".format(log10( float(abs(vol) + 0.001) / 25600 ) * 20))+"dB"
