@@ -773,7 +773,7 @@ bool MultiControl::setValue(const int v)
         debugOutput(DEBUG_LEVEL_VERBOSE, "saving session\n");
         return m_ParentDevice.saveSession();
     case eT_Identify:
-        debugOutput(DEBUG_LEVEL_VERBOSE, "indentify device\n");
+        debugOutput(DEBUG_LEVEL_VERBOSE, "identify device\n");
         {
             EfcIdentifyCmd cmd;
             if (!m_ParentDevice.doEfcOverAVC(cmd)) 

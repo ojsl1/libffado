@@ -222,7 +222,7 @@ int PosixThread::AcquireRealTime()
 {
     struct sched_param rtparam;
     int res;
-    debugOutput( DEBUG_LEVEL_VERBOSE, "(%s, %p) Aquire realtime, prio %d\n", m_id.c_str(), this, fPriority);
+    debugOutput( DEBUG_LEVEL_VERBOSE, "(%s, %p) Acquire realtime, prio %d\n", m_id.c_str(), this, fPriority);
 
     if (!fThread)
         return -1;

@@ -615,7 +615,7 @@ bool StreamProcessorManager::syncStartAll() {
     m_sync_delay = max_of_min_delay + signal_delay_ticks;
 
     //STEP X: when we implement such a function, we can wait for a signal from the devices that they
-    //        have aquired lock
+    //        have acquired lock
     //debugOutput( DEBUG_LEVEL_VERBOSE, "Waiting for device(s) to indicate clock sync lock...\n");
     //sleep(2); // FIXME: be smarter here
 

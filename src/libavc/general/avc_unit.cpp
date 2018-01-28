@@ -174,7 +174,7 @@ Unit::discover()
     }
 
     if ( !enumerateSubUnits() ) {
-        debugError( "Could not enumarate sub units\n" );
+        debugError( "Could not enumerate sub units\n" );
         return false;
     }
 

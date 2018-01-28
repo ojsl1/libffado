@@ -539,7 +539,7 @@ BeBoB::BootloaderManager::downloadObject( BCD& bcd, EObjectType eObject )
             result = false;
         }
     }
-    printf( "download protocol successfuly completed\n" );
+    printf( "download protocol successfully completed\n" );
     return result;
 }
 

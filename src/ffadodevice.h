@@ -140,7 +140,7 @@ public:
     /**
      * @brief This is called by the DeviceManager to discover & configure the device
      *
-     * @return true if the device was discovered successfuly
+     * @return true if the device was discovered successfully
      */
     virtual bool discover() = 0;
 
