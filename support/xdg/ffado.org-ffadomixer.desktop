@@ -12,3 +12,4 @@ GenericName[fr]=Mixeur audio Firewire
 Icon=hi64-apps-ffado
 Type=Application
 Categories=Mixer;Audio;AudioVideo;HardwareSettings;Qt;
+Keywords=Firewire;Sound Interface;
