@@ -69,6 +69,7 @@ Enable/Disable the the generic avc part (mainly used by apple).
   this code.""", False ),
     BoolVariable( "ENABLE_ALL", "Enable/Disable support for all devices.", False ),
     BoolVariable( "SERIALIZE_USE_EXPAT", "Use libexpat for XML serialization.", False ),
+    EnumVariable( "BUILD_DOC", "Build API documentation", 'none', allowed_values=('all', 'user', 'none'), ignorecase=2),
     EnumVariable( "BUILD_MIXER", "Build the ffado-mixer", 'auto', allowed_values=('auto', 'true', 'false'), ignorecase=2),
     BoolVariable( "BUILD_TESTS", """\
 Build the tests in their directory. As some contain quite some functionality,
@@ -917,6 +918,8 @@ if not env.GetOption('clean'):
     Default( 'support' )
     if env['BUILD_TESTS']:
         Default( 'tests' )
+    if env['BUILD_DOC'] != 'none':
+        Default( 'doc' )
 
 #
 # Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
