@@ -84,6 +84,7 @@ Build the tests in their directory. As some contain quite some functionality,
     BoolVariable( "CUSTOM_ENV", "Respect CC, CXX, CFLAGS, CXXFLAGS and LDFLAGS.\nOnly meant for distributors and gentoo-users who want to over-optimize their build.\n Using this is not supported by the ffado-devs!", False ),
     ( "COMPILE_FLAGS", "Deprecated (use CFLAGS and CXXFLAGS with CUSTOM_ENV=True instead).  Add additional flags to the environment.\nOnly meant for distributors and gentoo-users who want to over-optimize their build.\n Using this is not supported by the ffado-devs!" ),
     EnumVariable( "ENABLE_SETBUFFERSIZE_API_VER", "Report API version at runtime which includes support for dynamic buffer resizing (requires recent jack).", 'auto', allowed_values=('auto', 'true', 'false', 'force'), ignorecase=2),
+    ("PYTHON_INTERPRETER", "Python interpreter to be used by FFADO installation.", "/usr/bin/python"),
 
     )
 
@@ -166,7 +167,7 @@ def CheckForApp( context, app ):
 
 def CheckForPyModule( context, module ):
     context.Message( "Checking for the python module '" + module + "' " )
-    ret = context.TryAction( "python $SOURCE", "import %s" % module, ".py" )
+    ret = context.TryAction( "$PYTHON_INTERPRETER $SOURCE", "import %s" % module, ".py" )
     context.Result( ret[0] )
     return ret[0]
 
@@ -518,6 +519,7 @@ env['LIBDIR'] = Template( env['LIBDIR'] ).safe_substitute( env )
 env['INCLUDEDIR'] = Template( env['INCLUDEDIR'] ).safe_substitute( env )
 env['SHAREDIR'] = Template( env['SHAREDIR'] ).safe_substitute( env )
 env['UDEVDIR'] = Template( env['UDEVDIR'] ).safe_substitute( env )
+env['PYTHON_INTERPRETER'] = Template( env['PYTHON_INTERPRETER'] ).safe_substitute( env )
 env['prefix'] = Template( env.destdir + env['PREFIX'] ).safe_substitute( env )
 env['bindir'] = Template( env.destdir + env['BINDIR'] ).safe_substitute( env )
 env['libdir'] = Template( env.destdir + env['LIBDIR'] ).safe_substitute( env )
