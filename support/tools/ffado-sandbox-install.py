@@ -296,65 +296,63 @@ print( " Successfully fetched jack source" )
 cwd = os.getcwd()
 
 ffado_log = "%s/ffadobuild.log" % build_dir
-ffado_scons_options = ("-j2") # TODO: interactive config of the build
-os.system('echo "" > %s' % ffado_log)
+ffado_scons_options = ("-j2",) # TODO: interactive config of the build
+with open (ffado_log, 'w') as log:
+  log.write ('\n')
 
-# configure FFADO
-os.chdir("%s/libffado/" % build_dir)
-print( "Building FFADO..." )
-print( " Compiling..." )
-retval = os.system('scons PREFIX="%s" %s >> %s' % (sandbox_dir, ffado_scons_options, ffado_log))
-if retval:
+  # configure FFADO
+  os.chdir("%s/libffado/" % build_dir)
+  print( "Building FFADO..." )
+  print( " Compiling..." )
+  if subprocess.call (('scons', 'PREFIX="' + sandbox_dir + '"') + ffado_scons_options,
+                      stdout=log):
     print( """ )
 Failed to configure/build FFADO. Most likely this is due to uninstalled dependencies.
 Check %s for details.
 """ % ffado_log
     exit(-1)
 
-# install FFADO
-print( " Installing into %s..." % sandbox_dir )
-retval = os.system('scons install >> %s' % (ffado_log))
-if retval:
+  # install FFADO
+  print( " Installing into %s..." % sandbox_dir )
+  if subprocess.check_output (('scons', 'install'), stdout=log):
     print( "Failed to install FFADO. Check %s for details." % ffado_log )
     exit(-1)
 
 # configure JACK
 os.chdir("%s/jack/" % build_dir)
 jack_log = "%s/jackbuild.log" % build_dir
-os.system('echo "" > %s' % jack_log)
+with open (jack_log, 'w') as log:
+  log.write ('\n')
 
-print( "Building Jack..." )
-if use_jack_version[1] == 'svn':
+  print( "Building Jack..." )
+  if use_jack_version[1] == 'svn':
     print( " Initializing build system..." )
-    retval = os.system('./autogen.sh >> %s' % jack_log)
-    if retval:
+    if subprocess.check_output (('./autogen.sh',), stdout=log):
         print( """ )
 Failed to initialize the jack build system. Most likely this is due to uninstalled dependencies.
 Check %s for details.
 """ % jack_log
         exit(-1)
 
-print( " Configuring build..." )
-retval = os.system('./configure --prefix="%s" >> %s' % (sandbox_dir, jack_log))
-if retval:
-    print( """ )
+    print( " Configuring build..." )
+    if subprocess.check_output (('./configure', '--prefix="' + sandbox_dir + '"'),
+                                stdout=log):
+        print( """ )
 Failed to configure the jack build. Most likely this is due to uninstalled dependencies.
 Check %s for details.
 """ % jack_log
-    exit(-1)
+        exit(-1)
 
-# build and install jack
-print( " Compiling..." )
-retval = os.system('make >> %s' % (jack_log))
-if retval:
-    print( "Failed to build jack. Check %s for details." % jack_log )
-    exit(-1)
+    # build and install jack
+    print( " Compiling..." )
+    if subprocess.check_output (('make',), stdout=log):
+        print( "Failed to build jack. Check %s for details." % jack_log )
+        exit(-1)
 
-print( " Installing into %s..." % sandbox_dir )
-retval = os.system('make install >> %s' % (jack_log))
-if retval:
-    print( "Failed to install jack. Check %s for details." % jack_log )
-    exit(-1)
+    print( " Installing into %s..." % sandbox_dir )
+    if subprocess.check_output (('make', 'install'), stdout=log):
+        print( "Failed to install jack. Check %s for details." % jack_log )
+        exit(-1)
 
 # write the bashrc file
 sandbox_bashrc = """
