@@ -104,27 +104,28 @@ if __name__== '__main__':
     check_libraries ()
 
     print (" Prerequisites (static at compile-time)...")
-    f = open( "$PYTHONDIR/static_info.txt", "r" )
-    for line in f:
+    with open( "$PYTHONDIR/static_info.txt", "r" ) as f:
+      for line in f:
         line = line[:-1]
         if line is not "\n" and line.startswith("  "):
             print (line)
-    f.close()
 
     # libraw
 
     print (" uname -a...")
-    print ("   " + run_command("uname -a"))
+    print ("   " + run_command (('uname', '-a')))
 
     print (" Hardware...")
     # check host controller
     print ("   Host controllers:")
     list_host_controllers()
     print ("   CPU info:")
-    if len(run_command("which lscpu")) > 0:
-        print (run_command("lscpu"))
+    if get_command_path('lscpu'):
+        print (run_command(('lscpu',)))
     else:
-        print (run_command("cat /proc/cpuinfo"))
+        with open ('/proc/cpuinfo') as f:
+            for l in f:
+                print (l.rstrip ())
 
     print (" Configuration...")
     # check RT settings

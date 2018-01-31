@@ -18,18 +18,11 @@
 # Test for common FFADO problems
 #
 
+import glob
 import sys
-
 import os
-import re
 import logging
-
-# Allow for the movement of getstatusoutput from the "commands" module (in
-# python2) to the "subprocess" module in python3.
-try:
-    from subprocess import getstatusoutput
-except ImportError:
-    from commands import getstatusoutput
+import subprocess
 
 ## logging setup
 logging.basicConfig()
@@ -39,28 +32,22 @@ log = logging.getLogger('diag')
 
 # kernel
 def get_kernel_version():
-    return run_command('uname -r')
+    return run_command (('uname', '-r')).rstrip ()
 
 def get_kernel_rt_patched():
-    l = run_command('uname -v')
-    if l.find("PREEMPT RT") > -1:
-        return True
-    return False
+    l = run_command (('uname', '-v'))
+    return "PREEMPT RT" in l
 
 def get_kernel_preempt():
-    l = run_command('uname -v')
-    if l.find(" PREEMPT ") > -1 and l.find(" RT ") == -1:
-        return True
-    return False
+    l = run_command (('uname', '-v'))
+    return (" PREEMPT " in l) and (not " RT " in l)
 
 # modules
 def check_for_module_loaded(modulename, procfile):
     log.info("Checking if module '%s' is present in %s... " % (modulename, procfile))
-    f = open(procfile)
-    lines = f.readlines()
-    f.close()
-    for l in lines:
-        if l.find(modulename) > -1 or l.find(modulename.replace('-', '_')) > -1:
+    with open (procfile) as f:
+      for l in f:
+        if modulename in l or modulename.replace('-', '_') in l:
             log.info(" found")
             return True
     log.info(" not found")
@@ -69,10 +56,8 @@ def check_for_module_loaded(modulename, procfile):
 def check_for_module_present(modulename):
     log.info("Checking if module '%s' is present... " % modulename)
     kver = get_kernel_version()
-    (exitstatus, outtext) = getstatusoutput("find \"/lib/modules/%s/\" -name '%s.ko' | grep '%s'" % \
-                                            (kver, modulename, modulename) )
-    log.debug("find outputs: %s" % outtext)
-    if outtext == "":
+    outtext = run_command (('find', '/lib/modules/' + kver, '-name', modulename + '.ko'))
+    if not modulename in outtext:
         log.info(" not found")
         return False
     else:
@@ -87,18 +72,16 @@ def check_1394oldstack_linked():
            os.access('/sys/module/raw1394',  os.F_OK)
 
 def check_1394oldstack_loaded():
-    retval = True
     for modulename in ('ieee1394', 'ohci1394', 'raw1394'):
         if not check_for_module_loaded(modulename, '/proc/modules'):
-            retval = False
-    return retval
+            return False
+    return True
 
 def check_1394oldstack_present():
-    retval = True
     for modulename in ('ieee1394', 'ohci1394', 'raw1394'):
         if not check_for_module_present(modulename):
-            retval = False
-    return retval
+            return False
+    return True
 
 def check_1394newstack_active():
     return check_for_module_loaded('firewire_ohci', '/proc/interrupts')
@@ -107,50 +90,50 @@ def check_1394newstack_linked():
     return os.access('/sys/module/firewire_ohci', os.F_OK)
 
 def check_1394newstack_loaded():
-    retval = True
     for modulename in ('firewire_core', 'firewire_ohci'):
         if not check_for_module_loaded(modulename, '/proc/modules'):
-            retval = False
-    return retval
+            return False
+    return True
 
 def check_1394newstack_present():
-    retval = True
     for modulename in ('firewire-core', 'firewire-ohci'):
         if not check_for_module_present(modulename):
-            retval = False
-    return retval
+            return False
+    return True
 
 def check_1394oldstack_devnode_present():
     return os.path.exists('/dev/raw1394')
 
 def check_1394oldstack_devnode_permissions():
-    f = open('/dev/raw1394','w')
-    if f:
-        f.close()
-        return True
-    else:
+    try:
+        with open('/dev/raw1394', 'w'):
+            return True
+    except:
         return False
 
 def run_command(cmd):
-    (exitstatus, outtext) = getstatusoutput(cmd)
-    log.debug("%s outputs: %s" % (cmd, outtext))
+    try:
+        outtext = subprocess.check_output (cmd).decode ()
+    except:
+        return ""
+    log.debug("%s outputs: %s" % (str (cmd), outtext))
     return outtext
 
 # package versions
 def get_package_version(name):
-    cmd = "pkg-config --modversion %s" % name
+    cmd = ('pkg-config', '--modversion', name)
     return run_command(cmd)
 
 def get_package_flags(name):
-    cmd = "pkg-config --cflags --libs %s" % name
+    cmd = ('pkg-config', '--cflags', '--libs', name)
     return run_command(cmd)
 
 def get_command_path(name):
-    cmd = "which %s 2> /dev/null" % name
+    cmd = ('which', name)
     return run_command(cmd)
 
-def get_version_first_line(cmd, ver_arg):
-    ver = run_command(cmd + ' ' + ver_arg).split("\n")
+def get_version_first_line(cmd):
+    ver = run_command(cmd).split("\n")
     if len(ver) == 0:
         ver = ["None"]
     if "sh: " in ver[0]:
@@ -161,21 +144,19 @@ def list_host_controllers():
     lspci_cmd = get_command_path("lspci")
     if lspci_cmd == "":
         lspci_cmd = "/sbin/lspci"
-    cmd = lspci_cmd + " | grep 1394"
-    controllers = run_command(cmd).split("\n")
-    log.debug(lspci_cmd + " | grep 1394: %s" % controllers)
-    for c in controllers:
+    outtext = run_command ((lspci_cmd,))
+    for c in outtext.split("\n"):
+      if '1394' in c:
         tmp = c.split()
         if len(tmp) > 0:
-            tmp
-            cmd = lspci_cmd + " -vv -nn -s %s" % tmp[0]
+            cmd = (lspci_cmd, '-vv', '-nn', '-s', tmp[0])
             print( run_command(cmd) )
 
 def get_juju_permissions():
-    return run_command('ls -lh /dev/fw*')
+    return run_command(('ls', '-lh') + tuple(glob.glob ('/dev/fw*')))
 
 def get_user_ids():
-    return run_command('id');
+    return run_command(('id',));
 
 def usage ():
     print ("")
@@ -196,11 +177,11 @@ def parse_command_line ():
             log.setLevel(logging.DEBUG)
 
 def check_libraries ():
-    print("   gcc ............... %s" % get_version_first_line('gcc', '--version'))
-    print("   g++ ............... %s" % get_version_first_line('g++', '--version'))
-    print("   PyQt4 (by pyuic4) . %s" % get_version_first_line('pyuic4', '--version'))
-    print("   PyQt5 (by pyuic5) . %s" % get_version_first_line('pyuic5', '--version'))
-    print("   jackd ............. %s" % get_version_first_line('jackd', '--version'))
+    print("   gcc ............... %s" % get_version_first_line(('gcc', '--version')))
+    print("   g++ ............... %s" % get_version_first_line(('g++', '--version')))
+    print("   PyQt4 (by pyuic4) . %s" % get_version_first_line(('pyuic4', '--version')))
+    print("   PyQt5 (by pyuic5) . %s" % get_version_first_line(('pyuic5', '--version')))
+    print("   jackd ............. %s" % get_version_first_line(('jackd', '--version')))
     print("     path ............ %s" % get_command_path('jackd'))
     print("     flags ........... %s" % get_package_flags("jack"))
     print("   libraw1394 ........ %s" % get_package_version("libraw1394"))

@@ -22,7 +22,14 @@
 # system installation.
 #
 
-import os
+import os.path
+import shutil
+import subprocess
+
+try:
+    raw_input                   # Error in python3.
+except:
+    raw_input = input
 
 FFADOSBI_VERSION = '0.1'
 LATEST_FFADO_RELEASE_URL = 'http://www.ffado.org/files/libffado-2.0-beta7.tar.gz'
@@ -64,20 +71,21 @@ def ask_for_dir(descr, suggestion):
                     else:
                         continue
                 else:
-                    os.system('rm -Rf "%s"' % ret_dir)
+                    shutil.rmtree (ret_dir)
                     os.makedirs(ret_dir)
                     break
     return ret_dir
 
 def fetch_source(build_dir, source_descriptor, target):
-    logfile = "%s/%s.log" % (build_dir, target)
-    os.system('echo "" > %s' % logfile)
+  logfile = "%s/%s.log" % (build_dir, target)
+  with open (logfile, 'w') as log:
 
     if source_descriptor[1] == 'svn':
         print( " Checking out SVN repository: %s" % source_descriptor[2] )
         cwd = os.getcwd()
         os.chdir(build_dir)
-        retval = os.system('svn co "%s" "%s" >> %s' % (source_descriptor[2], target, logfile))
+        retval = subprocess.call (('svn', 'co', source_descriptor[2], target),
+                                  stdout=log)
         os.chdir(cwd)
         if retval:
             print( "  Failed to checkout the SVN repository. Inspect %s for details. (is subversion installed?)" % logfile )
@@ -95,14 +103,15 @@ def fetch_source(build_dir, source_descriptor, target):
         cwd = os.getcwd()
         os.chdir(build_dir)
         print( " extracting tarball..." )
-        retval = os.system('tar -zxf "%s" > %s' % (tmp_file, logfile))
+        retval = subprocess.call (('tar', '-zxf', tmp_file), stdout=log)
         if retval:
             print( "  Failed to extract the source tarball. Inspect %s for details." % logfile )
             os.chdir(cwd)
             return False
         if source_descriptor[3]:
-            retval = os.system('mv "%s" "%s"' % (source_descriptor[3], target))
-            if retval:
+            try:
+                os.rename (source_descriptor[3], target)
+            except:
                 print( "  Failed to move the extracted tarball" )
                 os.chdir(cwd)
                 return False
@@ -214,7 +223,7 @@ print( ffado_versions_msg )
 while True:
     ffado_version = raw_input("Please select a FFADO version: ")
     try:
-        ffado_version_int = eval(ffado_version)
+        ffado_version_int = int (ffado_version)
         if ffado_version_int not in [0, 1, 2]:
             raise
     except:
@@ -244,7 +253,7 @@ print( jack_versions_msg )
 while True:
     jack_version = raw_input("Please select a jack version: ")
     try:
-        jack_version_int = eval(jack_version)
+        jack_version_int = int (jack_version)
         if jack_version_int not in [0, 1, 2]:
             raise
     except:
@@ -287,7 +296,7 @@ print( " Successfully fetched jack source" )
 cwd = os.getcwd()
 
 ffado_log = "%s/ffadobuild.log" % build_dir
-ffado_scons_options = "-j2" # TODO: interactive config of the build
+ffado_scons_options = ("-j2") # TODO: interactive config of the build
 os.system('echo "" > %s' % ffado_log)
 
 # configure FFADO
@@ -364,9 +373,8 @@ export PATH
 print( "Writing shell configuration file..." )
 sandbox_rc_file = "%s/ffado.rc" % sandbox_dir
 try:
-    fid = open(sandbox_rc_file, "w")
+  with open (sandbox_rc_file, "w") as fid:
     fid.write(sandbox_bashrc)
-    fid.close()
 except:
     print( "Could not write the sandbox rc file." )
     exit(-1)
