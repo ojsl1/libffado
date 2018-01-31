@@ -27,7 +27,7 @@ import sys
 # Add the path of the installed dependent files
 sys.path.insert(0, "$PYTHONDIR" )
 
-from listirqinfo import IRQ,SoftIRQ,IRQInfo
+import listirqinfo
 import helpstrings
 from ffado_diag_helpers import *
 
@@ -163,10 +163,9 @@ if __name__== '__main__':
 
     # check IRQ settings
     print "  IRQ information"
-    info = IRQInfo()
-
+    info = listirqinfo.IRQInfo()
     info.load()
-    print str(info)
+    info.display()
 
     print ""
     print "=== REPORT ==="
