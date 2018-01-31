@@ -28,7 +28,7 @@ import sys
 sys.path.insert(0, "$PYTHONDIR" )
 
 from listirqinfo import IRQ,SoftIRQ,IRQInfo
-from helpstrings import HelpStrings
+import helpstrings
 from ffado_diag_helpers import *
 
 ## message strings
@@ -171,34 +171,32 @@ if __name__== '__main__':
     print ""
     print "=== REPORT ==="
 
-    help = HelpStrings()
-
     # do the interpretation of the tests
     print "FireWire kernel drivers:"
     if (oldstack_loaded or oldstack_statically_linked) and \
        (newstack_loaded or newstack_statically_linked):
-        help.show('MODULES_BOTH_STACKS_LOADED')
+        print (helpstrings.MODULES_BOTH_STACKS_LOADED)
         sys.exit(-1)
     elif newstack_loaded or newstack_statically_linked:
-        help.show('MODULES_NEW_STACK_LOADED')
+        print (helpstrings.MODULES_NEW_STACK_LOADED)
         sys.exit(-1)
     elif oldstack_statically_linked:
         print "[PASS] Kernel drivers statically linked into the kernel."
     elif not oldstack_present:
-        help.show('MODULES_OLD_STACK_NOT_INSTALLED')
+        print (helpstrings.MODULES_OLD_STACK_NOT_INSTALLED)
         sys.exit(-1)
     elif not oldstack_loaded:
-        help.show('MODULES_OLD_STACK_NOT_LOADED')
+        print (helpstrings.MODULES_OLD_STACK_NOT_LOADED)
         sys.exit(-1)
     else:
         print "[PASS] Kernel modules present and correctly loaded."
 
     if not devnode_present:
-        help.show('DEVNODE_OLD_STACK_NOT_PRESENT')
+        print (helpstrings.DEVNODE_OLD_STACK_NOT_PRESENT)
         sys.exit(-1)
     else:
         if not devnode_permissions:
-            help.show('DEVNODE_OLD_STACK_NO_PERMISSION')
+            print (helpstrings.DEVNODE_OLD_STACK_NO_PERMISSION)
             sys.exit(-1)
         else:
             print "[PASS] /dev/raw1394 node present and accessible."
