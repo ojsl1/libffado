@@ -22,6 +22,7 @@
 # Test for common FFADO problems
 #
 
+from __future__ import print_function
 import sys
 
 # Add the path of the installed dependent files
@@ -107,28 +108,28 @@ if __name__== '__main__':
     try:
         with open( "$PYTHONDIR/static_info.txt", "r" ) as f:
             for line in f:
-                line = line[:-1]
-                if line is not "\n" and line.startswith("  "):
-                    print (line)
+                if line.startswith("  "):
+                    print (line, end='')
     except:
         print ("Failed to read $PYTHONDIR/static_info.txt.")
 
     # libraw
 
     print (" uname -a...")
-    print ("   " + run_command (('uname', '-a')))
+    print ("   " + run_command_string (('uname', '-a')))
 
     print (" Hardware...")
     # check host controller
     print ("   Host controllers:")
     list_host_controllers()
     print ("   CPU info:")
-    if get_command_path('lscpu'):
-        print (run_command(('lscpu',)))
-    else:
+    try:
+        lscpu_path = run_command (('which', 'lscpu')).rstrip ()
+        print (run_command_string ((lscpu_path,)))
+    except subprocess.CalledProcessError:
         with open ('/proc/cpuinfo') as f:
             for l in f:
-                print (l.rstrip ())
+                print (l, end='')
 
     print (" Configuration...")
     # check RT settings

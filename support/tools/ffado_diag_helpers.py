@@ -18,9 +18,11 @@
 # Test for common FFADO problems
 #
 
+from __future__ import print_function
 import glob
 import sys
 import os
+import errno
 import logging
 import subprocess
 
@@ -111,38 +113,49 @@ def check_1394oldstack_devnode_permissions():
     except:
         return False
 
-def run_command(cmd):
-    try:
-        outtext = subprocess.check_output (cmd).decode ()
-    except:
-        return ""
+# Raise an exception for any problem.
+def run_command (cmd):
+    outtext = subprocess.check_output (cmd)
+    outtext = outtext.decode ('utf8')
     log.debug("%s outputs: %s" % (str (cmd), outtext))
     return outtext
 
+# Wrapper intercepting common exceptions and returning a string nevertheless.
+def run_command_string (cmd):
+    try:
+        return run_command (cmd)
+    except OSError, ( errorcode, emsg ):
+        if (errorcode == errno.ENOENT):
+            msg = "Not found"
+        else:
+            msg = "Failed to execute %s" % str (cmd)
+            log.warning (msg)
+        return msg
+    # Other errors are raised.
+    except subprocess.CalledProcessError:
+        msg = "Command %s returned a non-zero exit status" % str (cmd)
+        log.warning (msg)
+        return msg
+
 # package versions
 def get_package_version(name):
-    cmd = ('pkg-config', '--modversion', name)
-    return run_command(cmd)
+    return run_command_string (('pkg-config', '--modversion', name))
 
 def get_package_flags(name):
-    cmd = ('pkg-config', '--cflags', '--libs', name)
-    return run_command(cmd)
-
-def get_command_path(name):
-    cmd = ('which', name)
-    return run_command(cmd)
+    return run_command_string (('pkg-config', '--cflags', '--libs', name))
 
 def get_version_first_line(cmd):
-    ver = run_command(cmd).split("\n")
-    if len(ver) == 0:
-        ver = ["None"]
-    if "sh: " in ver[0]:
-        ver = ["Not found"]
-    return ver[0]
+    outtext = run_command_string (cmd)
+    i = outtext.find ("\n")
+    if i == -1:
+        return outtext
+    else:
+        return outtext [:i]
 
 def list_host_controllers():
-    lspci_cmd = get_command_path("lspci")
-    if lspci_cmd == "":
+    try:
+        lspci_cmd = run_command (('which', 'lspci')).rstrip ()
+    except subprocess.CalledProcessError:
         lspci_cmd = "/sbin/lspci"
     outtext = run_command ((lspci_cmd,))
     for c in outtext.split("\n"):
@@ -153,10 +166,10 @@ def list_host_controllers():
                 print( run_command(cmd) )
 
 def get_juju_permissions():
-    return run_command(('ls', '-lh') + tuple(glob.glob ('/dev/fw*')))
+    return run_command_string (['ls', '-lh'] + glob.glob ('/dev/fw*'))
 
 def get_user_ids():
-    return run_command(('id',));
+    return run_command_string (('id',));
 
 def usage ():
     print ("")
@@ -182,7 +195,7 @@ def check_libraries ():
     print("   PyQt4 (by pyuic4) . %s" % get_version_first_line(('pyuic4', '--version')))
     print("   PyQt5 (by pyuic5) . %s" % get_version_first_line(('pyuic5', '--version')))
     print("   jackd ............. %s" % get_version_first_line(('jackd', '--version')))
-    print("     path ............ %s" % get_command_path('jackd'))
+    print("     path ............ %s" % run_command_string (('which', 'jackd')), end='')
     print("     flags ........... %s" % get_package_flags("jack"))
     print("   libraw1394 ........ %s" % get_package_version("libraw1394"))
     print("     flags ........... %s" % get_package_flags("libraw1394"))

@@ -54,7 +54,7 @@ class IRQInfo:
 
     def load(self):
         # get PID info
-        outtext = subprocess.check_output (('ps', '-eLo', 'pid,cmd,class,rtprio')).decode ()
+        outtext = subprocess.check_output (('ps', '-eLo', 'pid,cmd,class,rtprio')).decode ('utf8')
         rawstr = r"""([0-9]+) +\[IRQ-([0-9]+)\] +([A-Z]{2}) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
         IRQs = {}
@@ -71,7 +71,7 @@ class IRQInfo:
                     irq.scheduling_priority = None
                 IRQs[irq.number] = irq
 
-        outtext = subprocess.check_output (('ps', '-eLo', 'pid,cmd,class,rtprio')).decode ()
+        outtext = subprocess.check_output (('ps', '-eLo', 'pid,cmd,class,rtprio')).decode ('utf8')
         rawstr = r"""([0-9]+) +\[softirq-(.*)\] +([A-Z]+) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
         softIRQs = {}
