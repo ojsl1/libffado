@@ -19,10 +19,6 @@ import subprocess
 
 LISTIRQINFO_VERSION="0.3"
 
-def sortedDictValues(adict):
-    items = sorted(adict.items())
-    return [value for key, value in items]
-
 class IRQ:
     def __init__(self):
         self.number = None
@@ -133,12 +129,12 @@ class IRQInfo:
     def display (self):
         print ("Hardware Interrupts:")
         print ("--------------------")
-        for irq in sortedDictValues(self.IRQs):
+        for _, irq in sorted (self.IRQs.items ()):
             print (irq.description ())
         print ("")
         print ("Software Interrupts:")
         print ("--------------------")
-        for irq in sortedDictValues(self.softIRQs):
+        for _, irq in sorted (self.softIRQs.items ()):
             print (irq.description ())
 
 if __name__== '__main__':
