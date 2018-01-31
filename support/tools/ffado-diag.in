@@ -69,7 +69,7 @@ if __name__== '__main__':
 
     print "=== CHECK ==="
     print " Base system..."
-    
+
     # check kernel
     kernel_version = get_kernel_version()
     print "  kernel version............ " + str(kernel_version)
@@ -88,14 +88,14 @@ if __name__== '__main__':
     newstack_loaded = check_1394newstack_loaded()
     newstack_active = check_1394newstack_active()
     newstack_statically_linked = not check_1394newstack_loaded() and check_1394newstack_linked()
-    
+
     print "  old 1394 stack present.... " + str(oldstack_present)
     print "  old 1394 stack loaded..... " + str(oldstack_loaded)
     print "  old 1394 stack active..... " + str(oldstack_active)
     print "  new 1394 stack present.... " + str(newstack_present)
     print "  new 1394 stack loaded..... " + str(newstack_loaded)
     print "  new 1394 stack active..... " + str(newstack_active)
-    
+
     # check /dev/raw1394 node presence
     devnode_present = check_1394oldstack_devnode_present()
     print "  /dev/raw1394 node present. " + str(devnode_present)
@@ -145,9 +145,9 @@ if __name__== '__main__':
 
     # libraw
 
-    print " uname -a..." 
+    print " uname -a..."
     print "   " + run_command("uname -a")
-    
+
     print " Hardware..."
     # check host controller
     print "   Host controllers:"
@@ -160,8 +160,8 @@ if __name__== '__main__':
 
     print " Configuration..."
     # check RT settings
-    
-    # check IRQ settings 
+
+    # check IRQ settings
     print "  IRQ information"
     info = IRQInfo()
 
@@ -170,9 +170,9 @@ if __name__== '__main__':
 
     print ""
     print "=== REPORT ==="
-    
+
     help = HelpStrings()
-    
+
     # do the interpretation of the tests
     print "FireWire kernel drivers:"
     if (oldstack_loaded or oldstack_statically_linked) and \
@@ -202,6 +202,3 @@ if __name__== '__main__':
             sys.exit(-1)
         else:
             print "[PASS] /dev/raw1394 node present and accessible."
-    
-    
-    

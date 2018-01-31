@@ -18,9 +18,10 @@
 #
 
 #
-# A script to install FFADO in a 'sandbox', i.e. without changing the 
+# A script to install FFADO in a 'sandbox', i.e. without changing the
 # system installation.
 #
+
 import os
 
 FFADOSBI_VERSION = '0.1'
@@ -145,7 +146,7 @@ sandbox_dir_msg = """
 SANDBOX DIRECTORY
 =================
 
-The sandbox directory is the directory where all built files are 
+The sandbox directory is the directory where all built files are
 installed into. It should be writable by your user, and will
 contain the evaluation binaries if this tool is successful. If
 it doesn't exist, it will be created.
@@ -287,7 +288,7 @@ cwd = os.getcwd()
 
 ffado_log = "%s/ffadobuild.log" % build_dir
 ffado_scons_options = "-j2" # TODO: interactive config of the build
-os.system('echo "" > %s' % ffado_log) 
+os.system('echo "" > %s' % ffado_log)
 
 # configure FFADO
 os.chdir("%s/libffado/" % build_dir)
@@ -311,7 +312,7 @@ if retval:
 # configure JACK
 os.chdir("%s/jack/" % build_dir)
 jack_log = "%s/jackbuild.log" % build_dir
-os.system('echo "" > %s' % jack_log) 
+os.system('echo "" > %s' % jack_log)
 
 print( "Building Jack..." )
 if use_jack_version[1] == 'svn':

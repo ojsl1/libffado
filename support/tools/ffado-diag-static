@@ -88,4 +88,3 @@ if __name__== '__main__':
     print("     flags ........... %s" % get_package_flags("libxml++-2.6"))
     print("   dbus-1 ............ %s" % get_package_version("dbus-1"))
     print("     flags ........... %s" % get_package_flags("dbus-1"))
-

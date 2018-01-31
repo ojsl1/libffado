@@ -22,29 +22,29 @@ class HelpStrings:
     def __init__(self):
         strings = {}
         strings['MODULES_OLD_STACK_NOT_INSTALLED']="""
-FireWire kernel stack not present. Please compile the kernel with 
+FireWire kernel stack not present. Please compile the kernel with
 FireWire support.
 """
         strings['MODULES_BOTH_STACKS_LOADED']="""
-Both old and new FireWire kernel modules are loaded, your system 
+Both old and new FireWire kernel modules are loaded, your system
 configuration is bogus.
 """
         strings['MODULES_NEW_STACK_LOADED']="""
-The new FireWire kernel stack is loaded. 
-If running a kernel earlier than 2.6.37 and problems are experienced, either 
-try with the old Firewire kernel stack or upgrade to a newer kernel 
+The new FireWire kernel stack is loaded.
+If running a kernel earlier than 2.6.37 and problems are experienced, either
+try with the old Firewire kernel stack or upgrade to a newer kernel
 (preferrably 2.6.37 or later).
 """
         strings['MODULES_OLD_STACK_NOT_LOADED']="""
-FireWire kernel module(s) not found. 
+FireWire kernel module(s) not found.
 Please ensure that the raw1394 module is loaded.
 """
         strings['DEVNODE_OLD_STACK_NOT_PRESENT']="""
-/dev/raw1394 device node not present. 
+/dev/raw1394 device node not present.
 Please fix your udev configuration or add it as a static node.
 """
         strings['DEVNODE_OLD_STACK_NO_PERMISSION']="""
-Not enough permissions to access /dev/raw1394 device. 
+Not enough permissions to access /dev/raw1394 device.
 Please fix your udev configuration, the node permissions or
 the user/group permissions.
 """
@@ -56,4 +56,3 @@ the user/group permissions.
 
     def show(self, sid):
         print( self.get(sid) )
-    

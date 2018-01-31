@@ -66,10 +66,10 @@ class IRQInfo:
     def load(self):
         # get PID info
         (exitstatus, outtext) = getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep IRQ')
-        
+
         rawstr = r"""([0-9]+) +\[IRQ-([0-9]+)\] +([A-Z]{2}) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
-        
+
         IRQs = {}
         for line in outtext.splitlines():
             match_obj = compile_obj.search(line)
@@ -83,12 +83,12 @@ class IRQInfo:
                 else:
                     irq.scheduling_priority = None
                 IRQs[irq.number] = irq
-        
+
         (exitstatus, outtext) = getstatusoutput('ps -eLo pid,cmd,class,rtprio | grep softirq')
-        
+
         rawstr = r"""([0-9]+) +\[softirq-(.*)\] +([A-Z]+) +([-0-9]+)"""
         compile_obj = re.compile(rawstr)
-        
+
         softIRQs = {}
         for line in outtext.splitlines():
             match_obj = compile_obj.search(line)
@@ -103,7 +103,7 @@ class IRQInfo:
                 else:
                     irq.scheduling_priority = None
                 softIRQs[irq.name] = irq
-        
+
         # get irq info
         (exitstatus, outtext) = getstatusoutput('cat /proc/interrupts')
         lines = outtext.splitlines()
@@ -111,13 +111,13 @@ class IRQInfo:
         str0 = "([0-9]+): +";
         str_cpu = "([0-9]+) +"
         str1="([\w\-]+) +([\w\-, :]+)"
-        
+
         rawstr = str0;
         for i in range(nb_cpus):
             rawstr += str_cpu
         rawstr += str1
         compile_obj = re.compile(rawstr)
-        
+
         for line in outtext.splitlines():
             match_obj = compile_obj.search(line)
             if match_obj:
@@ -125,7 +125,7 @@ class IRQInfo:
                 if not irq_number in IRQs.keys():
                     IRQs[irq_number] = IRQ()
                     IRQs[irq_number].number = irq_number
-                
+
                 irq = IRQs[irq_number]
                 cpu_counts = []
                 for i in range(nb_cpus):
@@ -135,7 +135,7 @@ class IRQInfo:
                 drivers = match_obj.group(nb_cpus + 3).split(',')
                 for driver in drivers:
                     irq.drivers.append(driver.strip())
-        
+
                 IRQs[irq.number] = irq
 
         self.softIRQs = softIRQs
@@ -164,10 +164,10 @@ if __name__== '__main__':
     print( "==========================" )
     print( "(C) 2008 Pieter Palmers" )
     print( "" )
-    
+
     info = IRQInfo()
 
     info.load()
     print( str(info) )
-    
+
     print( "" )

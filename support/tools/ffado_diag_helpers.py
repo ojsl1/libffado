@@ -157,7 +157,6 @@ def get_version_first_line(cmd):
         ver = ["Not found"]
     return ver[0]
 
-
 def list_host_controllers():
     lspci_cmd = get_command_path("lspci")
     if lspci_cmd == "":
