@@ -398,10 +398,12 @@ results above get rechecked.
 
 # PyQT checks
 if env['BUILD_MIXER'] != 'false':
-    have_dbus = ((conf.CheckForApp( 'which pyuic4' ) and conf.CheckForPyModule( 'dbus.mainloop.qt' )) or (conf.CheckForApp( 'which pyuic5' ) and conf.CheckForPyModule( 'dbus.mainloop.pyqt5' )))
-    have_pyqt4 = (conf.CheckForApp( 'which pyuic4' ) and conf.CheckForPyModule( 'PyQt4' ))
-    have_pyqt5 = (conf.CheckForApp( 'which pyuic5' ) and conf.CheckForPyModule( 'PyQt5' ))
-    if ((have_pyqt4 or have_pyqt5) and have_dbus):
+    if  (    conf.CheckForApp( 'which pyuic4' ) \
+         and conf.CheckForPyModule( 'PyQt4' ) \
+         and conf.CheckForPyModule( 'dbus.mainloop.qt' )) \
+     or (    conf.CheckForApp( 'which pyuic5' ) \
+         and conf.CheckForPyModule( 'PyQt5' ) \
+         and conf.CheckForPyModule( 'dbus.mainloop.pyqt5' )):
         env['BUILD_MIXER'] = 'true'
     elif not env.GetOption('clean'):
         if env['BUILD_MIXER'] == 'auto':
