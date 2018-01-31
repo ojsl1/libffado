@@ -46,21 +46,21 @@ FFADO diagnostic utility """ + FFADODIAG_VERSION + """
 ## main program
 if __name__== '__main__':
 
-    print welcome_msg
+    print (welcome_msg)
 
     parse_command_line ()
 
-    print "=== CHECK ==="
-    print " Base system..."
+    print ("=== CHECK ===")
+    print (" Base system...")
 
     # check kernel
     kernel_version = get_kernel_version()
-    print "  kernel version............ " + str(kernel_version)
+    print ("  kernel version............ " + str(kernel_version))
     kernel_is_preempt = get_kernel_preempt()
-    print "    Preempt (low latency)... " + str(kernel_is_preempt)
+    print ("    Preempt (low latency)... " + str(kernel_is_preempt))
     # Hint: The main parts of the rt patches are in mainline-kernels nowadays. Performance with stock kernels is sufficient...
     kernel_is_rt_patched = get_kernel_rt_patched()
-    print "    RT patched.............. " + str(kernel_is_rt_patched)
+    print ("    RT patched.............. " + str(kernel_is_rt_patched))
 
     # check modules
     oldstack_present = check_1394oldstack_present()
@@ -72,74 +72,74 @@ if __name__== '__main__':
     newstack_active = check_1394newstack_active()
     newstack_statically_linked = not check_1394newstack_loaded() and check_1394newstack_linked()
 
-    print "  old 1394 stack present.... " + str(oldstack_present)
-    print "  old 1394 stack loaded..... " + str(oldstack_loaded)
-    print "  old 1394 stack active..... " + str(oldstack_active)
-    print "  new 1394 stack present.... " + str(newstack_present)
-    print "  new 1394 stack loaded..... " + str(newstack_loaded)
-    print "  new 1394 stack active..... " + str(newstack_active)
+    print ("  old 1394 stack present.... " + str(oldstack_present))
+    print ("  old 1394 stack loaded..... " + str(oldstack_loaded))
+    print ("  old 1394 stack active..... " + str(oldstack_active))
+    print ("  new 1394 stack present.... " + str(newstack_present))
+    print ("  new 1394 stack loaded..... " + str(newstack_loaded))
+    print ("  new 1394 stack active..... " + str(newstack_active))
 
     # check /dev/raw1394 node presence
     devnode_present = check_1394oldstack_devnode_present()
-    print "  /dev/raw1394 node present. " + str(devnode_present)
+    print ("  /dev/raw1394 node present. " + str(devnode_present))
     if devnode_present:
         # check /dev/raw1394 access permissions
         devnode_permissions = check_1394oldstack_devnode_permissions()
-        print "  /dev/raw1394 permissions.. " + str(devnode_permissions)
+        print ("  /dev/raw1394 permissions.. " + str(devnode_permissions))
     else:
         devnode_permissions = None
 
     if newstack_active:
         # check permissions
         newstack_permissions = get_juju_permissions()
-        print "  /dev/fw* permissions:"
-        print newstack_permissions
+        print ("  /dev/fw* permissions:")
+        print (newstack_permissions)
 
-    print "  User IDs:"
-    print get_user_ids()
+    print ("  User IDs:")
+    print (get_user_ids())
 
 
     # check libraries
     print(" Prerequisites (dynamic at run-time)...")
     check_libraries ()
 
-    print " Prerequisites (static at compile-time)..."
+    print (" Prerequisites (static at compile-time)...")
     f = open( "$PYTHONDIR/static_info.txt", "r" )
     for line in f:
         line = line[:-1]
         if line is not "\n" and line.startswith("  "):
-            print line
+            print (line)
     f.close()
 
     # libraw
 
-    print " uname -a..."
-    print "   " + run_command("uname -a")
+    print (" uname -a...")
+    print ("   " + run_command("uname -a"))
 
-    print " Hardware..."
+    print (" Hardware...")
     # check host controller
-    print "   Host controllers:"
+    print ("   Host controllers:")
     list_host_controllers()
-    print "   CPU info:"
+    print ("   CPU info:")
     if len(run_command("which lscpu")) > 0:
-        print run_command("lscpu")
+        print (run_command("lscpu"))
     else:
-        print run_command("cat /proc/cpuinfo")
+        print (run_command("cat /proc/cpuinfo"))
 
-    print " Configuration..."
+    print (" Configuration...")
     # check RT settings
 
     # check IRQ settings
-    print "  IRQ information"
+    print ("  IRQ information")
     info = listirqinfo.IRQInfo()
     info.load()
     info.display()
 
-    print ""
-    print "=== REPORT ==="
+    print ("")
+    print ("=== REPORT ===")
 
     # do the interpretation of the tests
-    print "FireWire kernel drivers:"
+    print ("FireWire kernel drivers:")
     if (oldstack_loaded or oldstack_statically_linked) and \
        (newstack_loaded or newstack_statically_linked):
         print (helpstrings.MODULES_BOTH_STACKS_LOADED)
@@ -148,7 +148,7 @@ if __name__== '__main__':
         print (helpstrings.MODULES_NEW_STACK_LOADED)
         sys.exit(-1)
     elif oldstack_statically_linked:
-        print "[PASS] Kernel drivers statically linked into the kernel."
+        print ("[PASS] Kernel drivers statically linked into the kernel.")
     elif not oldstack_present:
         print (helpstrings.MODULES_OLD_STACK_NOT_INSTALLED)
         sys.exit(-1)
@@ -156,7 +156,7 @@ if __name__== '__main__':
         print (helpstrings.MODULES_OLD_STACK_NOT_LOADED)
         sys.exit(-1)
     else:
-        print "[PASS] Kernel modules present and correctly loaded."
+        print ("[PASS] Kernel modules present and correctly loaded.")
 
     if not devnode_present:
         print (helpstrings.DEVNODE_OLD_STACK_NOT_PRESENT)
@@ -166,4 +166,4 @@ if __name__== '__main__':
             print (helpstrings.DEVNODE_OLD_STACK_NO_PERMISSION)
             sys.exit(-1)
         else:
-            print "[PASS] /dev/raw1394 node present and accessible."
+            print ("[PASS] /dev/raw1394 node present and accessible.")
