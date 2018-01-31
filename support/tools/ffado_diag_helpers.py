@@ -18,7 +18,9 @@
 # Test for common FFADO problems
 #
 
+# Make "print(..., end='')" functionality available under Python2
 from __future__ import print_function
+
 import glob
 import sys
 import os
