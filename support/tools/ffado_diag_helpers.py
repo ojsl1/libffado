@@ -149,8 +149,8 @@ def get_command_path(name):
     cmd = "which %s 2> /dev/null" % name
     return run_command(cmd)
 
-def get_version_first_line(cmd):
-    ver = run_command(cmd).split("\n")
+def get_version_first_line(cmd, ver_arg):
+    ver = run_command(cmd + ' ' + ver_arg).split("\n")
     if len(ver) == 0:
         ver = ["None"]
     if "sh: " in ver[0]:
@@ -176,3 +176,40 @@ def get_juju_permissions():
 
 def get_user_ids():
     return run_command('id');
+
+def usage ():
+    print ("")
+    print ("Usage: %s [verboselevel]" % sys.argv [0])
+    print ("  verboselevel : verbosity level.")
+    print ("")
+    sys.exit (0)
+
+def parse_command_line ():
+    num_args = len(sys.argv)
+    if num_args > 2:
+        usage ()
+    elif num_args == 2:
+        loglevel = int (sys.argv [1])
+        if loglevel == 1:
+            log.setLevel(logging.INFO)
+        elif loglevel == 2:
+            log.setLevel(logging.DEBUG)
+
+def check_libraries ():
+    print("   gcc ............... %s" % get_version_first_line('gcc', '--version'))
+    print("   g++ ............... %s" % get_version_first_line('g++', '--version'))
+    print("   PyQt4 (by pyuic4) . %s" % get_version_first_line('pyuic4', '--version'))
+    print("   PyQt5 (by pyuic5) . %s" % get_version_first_line('pyuic5', '--version'))
+    print("   jackd ............. %s" % get_version_first_line('jackd', '--version'))
+    print("     path ............ %s" % get_command_path('jackd'))
+    print("     flags ........... %s" % get_package_flags("jack"))
+    print("   libraw1394 ........ %s" % get_package_version("libraw1394"))
+    print("     flags ........... %s" % get_package_flags("libraw1394"))
+    print("   libavc1394 ........ %s" % get_package_version("libavc1394"))
+    print("     flags ........... %s" % get_package_flags("libavc1394"))
+    print("   libiec61883 ....... %s" % get_package_version("libiec61883"))
+    print("     flags ........... %s" % get_package_flags("libiec61883"))
+    print("   libxml++-2.6 ...... %s" % get_package_version("libxml++-2.6"))
+    print("     flags ........... %s" % get_package_flags("libxml++-2.6"))
+    print("   dbus-1 ............ %s" % get_package_version("dbus-1"))
+    print("     flags ........... %s" % get_package_flags("dbus-1"))
