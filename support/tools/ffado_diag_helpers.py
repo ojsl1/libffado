@@ -46,10 +46,10 @@ def get_kernel_preempt():
 def check_for_module_loaded(modulename, procfile):
     log.info("Checking if module '%s' is present in %s... " % (modulename, procfile))
     with open (procfile) as f:
-      for l in f:
-        if modulename in l or modulename.replace('-', '_') in l:
-            log.info(" found")
-            return True
+        for l in f:
+            if modulename in l or modulename.replace('-', '_') in l:
+                log.info(" found")
+                return True
     log.info(" not found")
     return False
 
@@ -146,11 +146,11 @@ def list_host_controllers():
         lspci_cmd = "/sbin/lspci"
     outtext = run_command ((lspci_cmd,))
     for c in outtext.split("\n"):
-      if '1394' in c:
-        tmp = c.split()
-        if len(tmp) > 0:
-            cmd = (lspci_cmd, '-vv', '-nn', '-s', tmp[0])
-            print( run_command(cmd) )
+        if '1394' in c:
+            tmp = c.split()
+            if len(tmp) > 0:
+                cmd = (lspci_cmd, '-vv', '-nn', '-s', tmp[0])
+                print( run_command(cmd) )
 
 def get_juju_permissions():
     return run_command(('ls', '-lh') + tuple(glob.glob ('/dev/fw*')))

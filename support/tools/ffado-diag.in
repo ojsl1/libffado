@@ -105,11 +105,11 @@ if __name__== '__main__':
 
     print (" Prerequisites (static at compile-time)...")
     try:
-     with open( "$PYTHONDIR/static_info.txt", "r" ) as f:
-      for line in f:
-        line = line[:-1]
-        if line is not "\n" and line.startswith("  "):
-            print (line)
+        with open( "$PYTHONDIR/static_info.txt", "r" ) as f:
+            for line in f:
+                line = line[:-1]
+                if line is not "\n" and line.startswith("  "):
+                    print (line)
     except:
         print ("Failed to read $PYTHONDIR/static_info.txt.")
 
