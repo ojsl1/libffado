@@ -861,6 +861,10 @@ env['REVISION'] = os.popen('svnversion .').read()[:-1]
 # We'll just use the last bit.
 env['REVISION'] = env['REVISION'].split(':')[-1]
 
+# Assume an unversioned directory indicates a release.
+if env['REVISION'][0:11] == 'Unversioned':
+    env['REVISION'] = ''
+
 # try to circumvent localized versions
 if len(env['REVISION']) >= 5 and env['REVISION'][0:6] == 'export':
     env['REVISION'] = ''
