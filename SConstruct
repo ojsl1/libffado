@@ -534,6 +534,7 @@ env['mandir'] = Template( env.destdir + env['MANDIR'] ).safe_substitute( env )
 env['pypkgdir'] = Template( env.destdir + env['PYPKGDIR'] ).safe_substitute( env )
 env['udevdir'] = Template( env.destdir + env['UDEVDIR'] ).safe_substitute( env )
 env['PYPKGDIR'] = Template( env['PYPKGDIR'] ).safe_substitute( env )
+env['metainfodir'] = Template( env.destdir + "/usr/share/metainfo" ).safe_substitute( env )
 
 env.Command( target=env['sharedir'], source="", action=Mkdir( env['sharedir'] ) )
 
@@ -545,6 +546,7 @@ env.Alias( "install", env['bindir'] )
 env.Alias( "install", env['mandir'] )
 if env['BUILD_MIXER'] == 'true':
     env.Alias( "install", env['pypkgdir'] )
+    env.Alias( "install", env['metainfodir'] )
 
 #
 # shamelessly copied from the Ardour scons file
@@ -932,6 +934,8 @@ if not env.GetOption('clean'):
         Default( 'tests' )
     if env['BUILD_DOC'] != 'none':
         Default( 'doc' )
+
+env.Install( env['metainfodir'], "support/xdg/ffado.org-ffadomixer.appdata.xml" )
 
 #
 # Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
