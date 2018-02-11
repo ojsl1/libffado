@@ -935,7 +935,7 @@ if not env.GetOption('clean'):
     if env['BUILD_DOC'] != 'none':
         Default( 'doc' )
 
-env.Install( env['metainfodir'], "support/xdg/ffado.org-ffadomixer.appdata.xml" )
+env.Install( env['metainfodir'], "support/xdg/ffado-mixer.appdata.xml" )
 
 #
 # Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
