@@ -146,8 +146,8 @@ if not lspci and os.path.exists ("/sbin/lspci"):
     lspci = "/sbin/lspci"
 show_pair ("lspci", lspci)
 if lspci:
-    for m in re.findall ("^\([^ ]*\).*1394.*", stdout (lspci), re.MULTILINE):
-        indent (stdout (lspci, "-vv", "-nn", "-s", m.group (1)))
+    for m in re.findall ("^([^ ]*).*1394.*", stdout (lspci), re.MULTILINE):
+        indent (stdout (lspci, "-vv", "-nn", "-s", m))
 
 lscpu = which ("lscpu")
 show_pair ("lscpu", lscpu)
