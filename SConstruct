@@ -22,16 +22,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from __future__ import print_function
 
 FFADO_API_VERSION = "9"
 FFADO_VERSION="2.4.9999"
 
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, check_output
 import os
 import re
 import sys
 from string import Template
-import imp
 import distutils.sysconfig
 
 if not os.path.isdir( "cache" ):
@@ -156,7 +156,7 @@ opts.Save( 'cache/options.cache', env )
 
 def ConfigGuess( context ):
     context.Message( "Trying to find the system triple: " )
-    ret = os.popen( "/bin/sh admin/config.guess" ).read()[:-1]
+    ret = check_output(("/bin/sh", "admin/config.guess")).rstrip()
     context.Result( ret )
     return ret
 
@@ -219,26 +219,29 @@ conf = Configure( env,
 
 version_re = re.compile(r'^(\d+)\.(\d+)\.(\d+)')
 
-def VersionInt(vers):
-    match = version_re.match(vers)
-    if not match:
-        return -1
-    (maj, min, patch) = match.group(1, 2, 3)
-    # For now allow "min" to run up to 65535.  "maj" and "patch" are
-    # restricted to 0-255.
-    return (int(maj) << 24) | (int(min) << 8) | int(patch)
-
 def CheckJackdVer():
-    # Suppress newline in python 2 and 3
-    sys.stdout.write('Checking jackd version...')
-    sys.stdout.flush()
-    ret = Popen("which jackd >/dev/null 2>&1 && jackd --version | tail -n 1 | cut -d ' ' -f 3", shell=True, stdout=PIPE).stdout.read()[:-1].decode()
-    if (ret == ""):
+    print('Checking jackd version...', end='')
+    popen = Popen(("which", 'jackd'), stdout=PIPE, stderr=PIPE)
+    stdout, stderr = popen.communicate()
+    assert popen.returncode in (0, 1), "which returned a unexpected status"
+    if popen.returncode == 1:
         print("not installed")
-        return -1
-    else:
-        print(ret)
-    return VersionInt(ret)
+        return None
+    jackd = stdout.decode ().rstrip ()
+    ret = check_output ((jackd, '--version')).decode() .rstrip ()
+    ret = ret.split ('\n') [-1]; # Last line.
+    ret = ret.split () [2];      # Third field.
+    if not version_re.match (ret):
+        print("failed to parse version")
+        return None
+    print (ret)
+
+    # Trim off any "rc" (release candidate) components from the end of the
+    # version string
+    ret = ret.split ('rc')[0]
+    ret = ret.split ('.')
+    ret = map (int, ret)
+    return tuple (ret)
 
 if env['SERIALIZE_USE_EXPAT']:
     env['SERIALIZE_USE_EXPAT']=1
@@ -296,14 +299,14 @@ if not env.GetOption('clean'):
         good_jack2 = conf.CheckPKG('jack >= 1.9.9')
     else:
         jackd_ver = CheckJackdVer()
-        if (jackd_ver != -1):
+        if jackd_ver:
             # If jackd is unknown to pkg-config but is never-the-less
             # runnable, use the version number reported by it.  This means
             # users don't have to have jack development files present on
             # their system for this to work.
-            have_jack = (jackd_ver >= VersionInt('0.0.0'))
-            good_jack1 = (jackd_ver < VersionInt('1.9.0')) and (jackd_ver >= VersionInt('0.121.4'))
-            good_jack2 = (jackd_ver >= VersionInt('1.9.9'))
+            have_jack = jackd_ver >= (0, 0, 0)
+            good_jack1 = jackd_ver < (1, 9, 0) and jackd_ver >= (0, 121, 4)
+            good_jack2 = jackd_ver >= (1, 9, 9)
 
     if env['ENABLE_SETBUFFERSIZE_API_VER'] == 'auto':
         if not(have_jack):
@@ -566,24 +569,16 @@ config = config_guess.split ("-")
 needs_fPIC = False
 
 #=== Begin Revised CXXFLAGS =========================================
-def outputof(*cmd):
-    """Run a command without running a shell, return cmd's stdout
-    """
-    p = Popen(cmd, stdout=PIPE)
-    return p.communicate()[0]
-
 def cpuinfo_kv():
     """generator which reads lines from Linux /proc/cpuinfo and splits them
     into key:value tokens and yields (key, value) tuple.
     """
-    f = open('/proc/cpuinfo', 'r')
-    for line in f:
+    with open('/proc/cpuinfo', 'r') as f:
+      for line in f:
         line = line.strip()
         if line:
             k,v = line.split(':', 1)
             yield (k.strip(), v.strip())
-    f.close()
-
 
 class CpuInfo (object):
     """Collects information about the CPU, mainly from /proc/cpuinfo
@@ -717,7 +712,7 @@ def is_userspace_32bit(cpuinfo):
             real_exe = exe
         # presumably if a person is running this script, they should have
         # a gcc toolchain installed...
-        x = outputof('objdump', '-Wi', real_exe)
+        x = check_output(('objdump', '-Wi', real_exe))
         # should emit a line that looks like this:
         # /bin/mount:     file format elf32-i386
         # or like this:
@@ -858,17 +853,17 @@ if env['ENABLE_OPTIMIZATIONS']:
     env.MergeFlags( opt_flags )
     print("Doing an optimized build...")
 
-env['REVISION'] = os.popen('svnversion .').read()[:-1]
+env['REVISION'] = check_output(('svnversion', '.',)).rstrip()
 # This may be as simple as '89' or as complex as '4123:4184M'.
 # We'll just use the last bit.
 env['REVISION'] = env['REVISION'].split(':')[-1]
 
 # Assume an unversioned directory indicates a release.
-if env['REVISION'][0:11] == 'Unversioned':
+if env['REVISION'].startswith ('Unversioned'):
     env['REVISION'] = ''
 
 # try to circumvent localized versions
-if len(env['REVISION']) >= 5 and env['REVISION'][0:6] == 'export':
+if env['REVISION'].startswith ('export'):
     env['REVISION'] = ''
 
 # avoid the 1.999.41- type of version for exported versions

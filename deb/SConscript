@@ -22,7 +22,8 @@
 #
 
 # from: http://www.qandr.org/quentin/writings/debscons.html
-import os, shutil, sys
+import os
+
 Import('env') # exported by parent SConstruct
 
 # Here's the core info for the package
@@ -123,9 +124,8 @@ def make_control(target=None, source=None, env=None):
     control_info = CONTROL_TEMPLATE % (
         DEBNAME, installed_size, DEBMAINT, DEBARCH, DEBVERSION,
         DEBDEPENDS, DEBDESC)
-    f = open(str(target[0]), 'w')
-    f.write(control_info)
-    f.close()
+    with open(str(target[0]), 'w') as f:
+        f.write(control_info)
 
 # We can generate the control file by calling make_control
 env.Command(DEBCONTROLFILE, None, make_control)
