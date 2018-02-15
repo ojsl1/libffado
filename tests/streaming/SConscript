@@ -31,12 +31,11 @@ env.PrependUnique( LIBS=["ffado"] )
 
 
 apps = {
-	"ffado-test-streaming" : "teststreaming3.cpp",
-	"ffado-test-streaming-ipc" : "teststreaming-ipc.cpp",
-	"ffado-test-streaming-ipcclient" : "test-ipcclient.cpp",
+        "ffado-test-streaming" : "teststreaming3.cpp",
+        "ffado-test-streaming-ipc" : "teststreaming-ipc.cpp",
+        "ffado-test-streaming-ipcclient" : "test-ipcclient.cpp",
 }
 
 for app in apps.keys():
-	env.Program( target=app, source = env.Split( apps[app] ) )
-	env.Install( "$bindir", app )
-
+    env.Program( target=app, source = env.Split( apps[app] ) )
+    env.Install( "$bindir", app )

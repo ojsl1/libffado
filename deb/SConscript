@@ -41,7 +41,7 @@ DEBDESC = "FFADO: FireWire audio for Linux (Development build SVN r%s)" % env['R
 DEBFILES = [
     # Now we specify the files to be included in the .deb
     # Where they should go, and where they should be copied from.
-    # If you have a lot of files, you may wish to generate this 
+    # If you have a lot of files, you may wish to generate this
     # list in some other way.
     ("usr/lib/libffado.so",             "#src/libffado.so"),
     ("usr/lib/pkgconfig/libffado.pc",             "#/libffado.pc"),
@@ -132,4 +132,4 @@ env.Command(DEBCONTROLFILE, None, make_control)
 
 # And we can generate the .deb file by calling dpkg-deb
 env.Command(debpkg, DEBCONTROLFILE,
-	"dpkg-deb -b %s %s" % ("deb/%s" % DEBNAME, "$TARGET"))
+            "dpkg-deb -b %s %s" % ("deb/%s" % DEBNAME, "$TARGET"))

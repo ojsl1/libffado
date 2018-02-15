@@ -32,13 +32,13 @@ e = env.Clone()
 # Needed to build ffado-set-nickname
 e.MergeFlags( "-I#/ -I#/src -L%ssrc -lffado" % env['build_base'] )
 if not e.GetOption( "clean" ):
-        if not env['SERIALIZE_USE_EXPAT']:
-            if 'LIBXML30_FLAGS' in env :
-		e.MergeFlags( env['LIBXML30_FLAGS'].decode() )
-            if not('LIBXML30_FLAGS' in env) :
-                e.MergeFlags( env['LIBXML26_FLAGS'].decode() )
-        else:
-                e.PrependUnique( LIBS=["expat"] )
+    if not env['SERIALIZE_USE_EXPAT']:
+        if 'LIBXML30_FLAGS' in env :
+            e.MergeFlags( env['LIBXML30_FLAGS'].decode() )
+        if not('LIBXML30_FLAGS' in env) :
+            e.MergeFlags( env['LIBXML26_FLAGS'].decode() )
+    else:
+        e.PrependUnique( LIBS=["expat"] )
 
 e.Command( "static_info.txt", "ffado-diag", "support/tools/ffado-diag --static > $TARGET" )
 
@@ -48,8 +48,8 @@ e.Install( "$bindir", "ffado-diag" )
 e.Install( "$libdatadir", "static_info.txt" )
 
 if env['ENABLE_DICE']:
-        e.Program( target = "ffado-set-nickname", source = "ffado-set-nickname.cpp" )
-        e.Install( "$bindir", "ffado-set-nickname" )
+    e.Program( target = "ffado-set-nickname", source = "ffado-set-nickname.cpp" )
+    e.Install( "$bindir", "ffado-set-nickname" )
 
 # Install manpages in section 1
 dest = os.path.join("$mandir", "man1", "ffado-diag.1")

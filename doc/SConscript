@@ -14,4 +14,3 @@ env["DOXYGEN_INPUT"] = " ".join(doxygen_dir_list)
 env.ScanReplace( "reference.doxygen.in" )
 
 env.Doxygen( "reference.doxygen" )
-

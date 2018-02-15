@@ -35,7 +35,7 @@ import imp
 import distutils.sysconfig
 
 if not os.path.isdir( "cache" ):
-	os.makedirs( "cache" )
+    os.makedirs( "cache" )
 
 opts = Variables( "cache/options.cache" )
 
@@ -146,7 +146,7 @@ Help( opts.GenerateHelpText( env ) )
 
 # make sure the necessary dirs exist
 if not os.path.isdir( "cache" ):
-	os.makedirs( "cache" )
+    os.makedirs( "cache" )
 if not os.path.isdir( 'cache/objects' ):
     os.makedirs( 'cache/objects' )
 
@@ -224,7 +224,7 @@ def VersionInt(vers):
     if not match:
         return -1
     (maj, min, patch) = match.group(1, 2, 3)
-    # For now allow "min" to run up to 65535.  "maj" and "patch" are 
+    # For now allow "min" to run up to 65535.  "maj" and "patch" are
     # restricted to 0-255.
     return (int(maj) << 24) | (int(min) << 8) | int(patch)
 
@@ -287,7 +287,7 @@ if not env.GetOption('clean'):
         if not('libxml++-3.0' in pkgs):
             pkgs['libxml++-2.6'] = '2.13.0'
 
-    # Provide a way for users to compile newer libffado which will work 
+    # Provide a way for users to compile newer libffado which will work
     # against older jack installations which will not accept the new API
     # version reported at runtime.
     have_jack = conf.CheckPKG('jack')
@@ -308,15 +308,15 @@ if not env.GetOption('clean'):
     if env['ENABLE_SETBUFFERSIZE_API_VER'] == 'auto':
         if not(have_jack):
             print("""
-No Jack Audio Connection Kit (JACK) installed: assuming a FFADO 
+No Jack Audio Connection Kit (JACK) installed: assuming a FFADO
 setbuffersize-compatible version will be used.
 """)
         elif not(good_jack1 or good_jack2):
             FFADO_API_VERSION="8"
             print("""
-Installed Jack Audio Connection Kit (JACK) jack does not support FFADO 
-setbuffersize API: will report earlier API version at runtime.  Consider 
-upgrading to jack1 >=0.122.0 or jack2 >=1.9.9 at some point, and then 
+Installed Jack Audio Connection Kit (JACK) jack does not support FFADO
+setbuffersize API: will report earlier API version at runtime.  Consider
+upgrading to jack1 >=0.122.0 or jack2 >=1.9.9 at some point, and then
 recompile ffado to gain access to this added feature.
 """)
         else:
@@ -324,13 +324,13 @@ recompile ffado to gain access to this added feature.
     elif env['ENABLE_SETBUFFERSIZE_API_VER'] == 'true':
         if (have_jack and not(good_jack1) and not(good_jack2)):
             print("""
-SetBufferSize API version is enabled but no suitable version of Jack Audio 
-Connection Kit (JACK) has been found.  The resulting FFADO would cause your 
-jackd to abort with "incompatible FFADO version".  Please upgrade to 
+SetBufferSize API version is enabled but no suitable version of Jack Audio
+Connection Kit (JACK) has been found.  The resulting FFADO would cause your
+jackd to abort with "incompatible FFADO version".  Please upgrade to
 jack1 >=0.122.0 or jack2 >=1.9.9, or set ENABLE_SETBUFFERSIZE_API_VER to "auto"
 or "false".
 """)
-            # Although it's not strictly an error, in almost every case that 
+            # Although it's not strictly an error, in almost every case that
             # this occurs the user will want to know about it and fix the
             # problem, so we exit so they're guaranteed of seeing the above
             # message.
@@ -361,7 +361,7 @@ results above get rechecked.
 """)
         Exit( 1 )
 
-    # libxml++-2.6 requires a c++11 compiler as of version 2.39.1.  The 
+    # libxml++-2.6 requires a c++11 compiler as of version 2.39.1.  The
     # gnu++11 standard seems to work both with these later libxml++ versions
     # and ffado itself, although a significant number of warnings are
     # produced.  Add the necessary option to CXXFLAGS if required.
@@ -410,13 +410,13 @@ if env['BUILD_MIXER'] != 'false':
         if env['BUILD_MIXER'] == 'auto':
             env['BUILD_MIXER'] = 'false'
             print("""
-The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
-'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
+The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and
+'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to
 build the mixer were not found. Therefore the qt mixer will not be installed.""")
         else: # env['BUILD_MIXER'] == 'true'
             print("""
-The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and 
-'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to 
+The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and
+'PyQt4'/'PyQt5', the packages could be named like dbus-python and PyQt) to
 build the mixer were not found, but BUILD_MIXER was requested.""")
             Exit( 1 )
 
@@ -565,7 +565,7 @@ config = config_guess.split ("-")
 
 needs_fPIC = False
 
-#=== Begin Revised CXXFLAGS ========================================= 
+#=== Begin Revised CXXFLAGS =========================================
 def outputof(*cmd):
     """Run a command without running a shell, return cmd's stdout
     """
@@ -700,7 +700,7 @@ def is_userspace_32bit(cpuinfo):
     # run a completely 32-bit system on a 64-bit capable CPU.
     answer = None
 
-    # If setting DIST_TARGET to i686 on a 64-bit CPU to facilitate 
+    # If setting DIST_TARGET to i686 on a 64-bit CPU to facilitate
     # compilation of a multilib environment, force 32-bit.
     if env['DIST_TARGET'] == 'i686':
         return True
@@ -873,9 +873,9 @@ if len(env['REVISION']) >= 5 and env['REVISION'][0:6] == 'export':
 
 # avoid the 1.999.41- type of version for exported versions
 if env['REVISION'] != '':
-	env['REVISIONSTRING'] = '-' + env['REVISION']
+    env['REVISIONSTRING'] = '-' + env['REVISION']
 else:
-	env['REVISIONSTRING'] = ''
+    env['REVISIONSTRING'] = ''
 
 env['FFADO_API_VERSION'] = FFADO_API_VERSION
 
