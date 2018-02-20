@@ -156,7 +156,7 @@ opts.Save( 'cache/options.cache', env )
 
 def ConfigGuess( context ):
     context.Message( "Trying to find the system triple: " )
-    ret = check_output(("/bin/sh", "admin/config.guess")).rstrip()
+    ret = check_output(("/bin/sh", "admin/config.guess")).decode().rstrip()
     context.Result( ret )
     return ret
 
@@ -712,7 +712,7 @@ def is_userspace_32bit(cpuinfo):
             real_exe = exe
         # presumably if a person is running this script, they should have
         # a gcc toolchain installed...
-        x = check_output(('objdump', '-Wi', real_exe))
+        x = check_output(('objdump', '-Wi', real_exe)).decode()
         # should emit a line that looks like this:
         # /bin/mount:     file format elf32-i386
         # or like this:
@@ -854,7 +854,7 @@ if env['ENABLE_OPTIMIZATIONS']:
     print("Doing an optimized build...")
 
 try:
-    env['REVISION'] = check_output(('svnversion', '.',)).rstrip()
+    env['REVISION'] = check_output(('svnversion', '.',)).decode().rstrip()
 except:
     env['REVISION'] = ''
 
