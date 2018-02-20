@@ -853,7 +853,11 @@ if env['ENABLE_OPTIMIZATIONS']:
     env.MergeFlags( opt_flags )
     print("Doing an optimized build...")
 
-env['REVISION'] = check_output(('svnversion', '.',)).rstrip()
+try:
+    env['REVISION'] = check_output(('svnversion', '.',)).rstrip()
+except:
+    env['REVISION'] = ''
+
 # This may be as simple as '89' or as complex as '4123:4184M'.
 # We'll just use the last bit.
 env['REVISION'] = env['REVISION'].split(':')[-1]
