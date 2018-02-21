@@ -156,9 +156,9 @@ opts.Save( 'cache/options.cache', env )
 
 def ConfigGuess( context ):
     context.Message( "Trying to find the system triple: " )
-    ret = check_output(("/bin/sh", "admin/config.guess")).decode().rstrip()
+    ret = check_output(("/bin/sh", "admin/config.guess")).rstrip()
     context.Result( ret )
-    return ret
+    return ret.decode()
 
 def CheckForApp( context, app ):
     context.Message( "Checking whether '" + app + "' executes " )
