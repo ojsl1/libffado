@@ -609,9 +609,10 @@ class CpuInfo (object):
                         (self.is_powerpc and \
                             ('970' in self.ppc_type or 'power8' in self.ppc_type.lower()))
 
-        # Hardware virtualization capable: vmx (Intel), svm (AMD)
+        # Hardware virtualization capable: vmx (Intel), svm (AMD, Hygon)
         self.has_hwvirt = self.is_x86 and (
-                            (self.is_amd and 'svm' in self.x86_flags) or
+                            ((self.is_amd or self.is_hygon) and 
+                                'svm' in self.x86_flags) or
                             (self.is_intel and 'vmx' in self.x86_flags))
 
         # Physical Address Extensions (support for more than 4GB of RAM)
@@ -627,9 +628,10 @@ class CpuInfo (object):
                     # assume all CPUs are identical features, no need to
                     # parse all of them
                     continue
-            elif k == 'vendor_id': # AuthenticAMD, GenuineIntel
+            elif k == 'vendor_id': # AuthenticAMD, HygonGenuine, GenuineIntel
                 self.vendor_id = v
                 self.is_amd = v == 'AuthenticAMD'
+                self.is_hygon = v == 'HygonGenuine'
                 self.is_intel = v == 'GenuineIntel'
             elif k == 'flags':
                 self.x86_flags = v.split()
