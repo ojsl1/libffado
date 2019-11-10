@@ -106,7 +106,7 @@ class Profire2626(Generic_Dice_EAP):
             l.widget.toggled.connect(l.Interface.select)
 
     def getDisplayTitle(self):
-        return "M-Audio Profire 2626 Mixer"
+        return "M-Audio Profire 2626 and 610 Mixer"
 
 #
 # vim: et ts=4 sw=4

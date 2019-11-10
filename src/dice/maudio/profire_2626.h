@@ -98,6 +98,22 @@ public:
         };
     };
 
+    class Profire610EAP : public Profire2626EAP
+    {
+    public:
+        Profire610EAP(Dice::Device& dev);
+
+        void setupSources_low() override;
+        void setupDestinations_low() override;
+        void setupSources_mid() override;
+        void setupDestinations_mid() override;
+        void setupSources_high() override;
+        void setupDestinations_high() override;
+        void setupDefaultRouterConfig_low() override;
+        void setupDefaultRouterConfig_mid() override;
+        void setupDefaultRouterConfig_high() override;
+    };
+
 private:
     Dice::EAP* createEAP();
 };

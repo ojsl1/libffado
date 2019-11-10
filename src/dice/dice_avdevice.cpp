@@ -147,7 +147,8 @@ Device::createDevice( DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
             }
         case FW_VENDORID_MAUDIO:
             switch(modelId) {
-                case 0x00000010:
+                case 0x00000010:    // ProFire 2626
+                case 0x00000011:    // ProFire 610
                     return new Maudio::Profire2626(d, configRom);
                 default: // return a plain Dice device
                     return new Device(d, configRom);

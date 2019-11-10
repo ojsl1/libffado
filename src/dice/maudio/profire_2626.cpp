@@ -359,6 +359,131 @@ Profire2626::Profire2626EAP::SettingsSection::SettingsSection(
     }
 }
 
+Profire2626::Profire610EAP::Profire610EAP(Dice::Device & dev)
+    : Profire2626EAP(dev)
+{
+}
+
+//
+// Profire 610 has
+//  - 4 mic/line inputs
+//  - 2 coaxial SPDIF inputs
+//  - 32 ieee1394 inputs
+//  - 18 mixer inputs
+//  - 1 MIDI input
+//
+//  - 8 line outputs (first two pairs are also routed to 2 headphone jacks)
+//  - 2 coaxial SPDIF outputs
+//  - 32 ieee1394 outputs
+//  - 16 mixer outputs
+//  - 1 MIDI output
+//
+void Profire2626::Profire610EAP::setupSources_low()
+{
+    addSource("Mic/Line/In", 0, 4, eRS_InS0, 1);
+    addSource("SPDIF/In", 0, 2, eRS_AES, 1);
+    addSource("Mixer/Out", 0, 16, eRS_Mixer, 1);
+    addSource("1394/In", 0, 16, eRS_ARX0, 1);
+    addSource("1394/In", 0, 16, eRS_ARX1, 17);
+    addSource("Mute", 0, 1, eRS_Muted);
+}
+
+void Profire2626::Profire610EAP::setupDestinations_low()
+{
+    addDestination("Line/Out", 0, 8, eRD_InS0, 1);
+    addDestination("SPDIF/Out", 0, 2, eRD_AES, 1);
+    addDestination("Mixer/In", 0, 16, eRD_Mixer0, 1);
+    addDestination("Mixer/In", 0, 2, eRD_Mixer1, 17);
+    addDestination("1394/Out", 0, 16, eRD_ATX0, 1);
+    addDestination("1394/Out", 0, 16, eRD_ATX1, 17);
+    addDestination("Mute", 0, 1, eRD_Muted);
+}
+
+void Profire2626::Profire610EAP::setupSources_mid()
+{
+    setupSources_low();
+}
+
+void Profire2626::Profire610EAP::setupDestinations_mid()
+{
+    setupDestinations_low();
+}
+
+void Profire2626::Profire610EAP::setupSources_high()
+{
+    setupSources_low();
+}
+
+void Profire2626::Profire610EAP::setupDestinations_high()
+{
+    setupDestinations_low();
+}
+
+void Profire2626::Profire610EAP::setupDefaultRouterConfig_low()
+{
+    unsigned int i;
+
+    // ======== the 1394 stream receivers
+
+    // LINE IN
+    for (i=0; i<4; i++) {
+        addRoute(eRS_InS0, i, eRD_ATX0, i);
+    }
+
+    // SPDIF IN
+    for (i=0; i<2; i++) {
+        addRoute(eRS_AES, i, eRD_ATX0, i+4);
+    }
+
+
+    // ======== Mixer inputs
+
+    // LINE IN
+    for (i=0; i<4; i++) {
+        addRoute(eRS_InS0, i, eRD_Mixer0, i);
+    }
+
+    // SPDIF IN
+    for (i=0; i<2; i++) {
+        addRoute(eRS_AES, i, eRD_Mixer0, i+4);
+    }
+
+    // IEEE1394 channels
+    for (i=0; i<10; i++) {
+        addRoute(eRS_ARX0, i, eRD_Mixer0, i+6);
+    }
+    for (i=0; i<2; i++) {
+        addRoute(eRS_ARX0, i+10, eRD_Mixer1, i);
+    }
+
+    // ======== Outputs
+
+    // LINE OUT
+    for (i=0; i<8; i++) {
+        addRoute(eRS_ARX0, i, eRD_InS0, i);
+    }
+
+    // SPDIF OUT
+    for (i=0; i<2; i++) {
+        addRoute(eRS_ARX0, i+8, eRD_AES, i);
+    }
+
+    // Mixer is muted
+    for (i=0; i<16; i++) {
+        addRoute(eRS_Mixer, i, eRD_Muted, 0);
+    }
+}
+
+void Profire2626::Profire610EAP::setupDefaultRouterConfig_mid()
+{
+    setupDefaultRouterConfig_low();
+}
+
+void Profire2626::Profire610EAP::setupDefaultRouterConfig_high()
+{
+    setupDefaultRouterConfig_low();
+}
+
 /**
   Device
 */
@@ -396,7 +521,10 @@ void Profire2626::showDevice()
 
 Dice::EAP* Profire2626::createEAP()
 {
-    return new Profire2626EAP(*this);
+    if (getConfigRom().getModelId() == 0x00000011)
+        return new Profire610EAP(*this);
+    else
+        return new Profire2626EAP(*this);
 }
 
 }
