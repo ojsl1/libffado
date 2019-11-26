@@ -21,6 +21,7 @@
 #
 
 import os
+import dbus
 
 import shlex
 
@@ -53,6 +54,11 @@ class DeviceList:
                 self.addDevice( dev )
 
     def getDeviceById( self, vendor, model ):
+        if isinstance(vendor, dbus.Int32):
+            vendor = str(int(vendor))
+        if isinstance(model, dbus.Int32):
+            model = str(int(model))
+
         log.debug("DeviceList::getDeviceById( %s, %s )" % (vendor, model ))
         for dev in self.devices:
             if int("%s" % dev['vendorid'], 0) == int("%s" % vendor, 0) and \
