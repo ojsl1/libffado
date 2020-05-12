@@ -160,7 +160,7 @@ class FFADOWindow(QMainWindow):
         except dbus.DBusException as ex:
             if hasattr(self, "retry"):
                 self.retry.setEnabled(False)
-            subprocess.Popen(['ffado-dbus-server', '-v3']).pid
+            subprocess.Popen(['ffado-dbus-server', '-v3'], close_fds=True).pid
             QTimer.singleShot(5000, self.connectToDBUS)
 
     def setupDeviceManager(self):
