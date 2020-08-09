@@ -245,10 +245,16 @@ class PanelManager(QWidget):
 
         # check whether this has already been registered at ffado.org
         if not ffado.config.bypassdbus:
-            reg = ffado_registration(FFADO_VERSION, int(guid, 16),
-                                         vendorId, modelId,
-                                         vendorName, modelName)
-            reg.check_for_registration()
+            # As of June 2020, don't offer the registration option as the
+            # statistics are no longer useful.  Coincidently, a move to
+            # different website infrastructure June 2020 would necessitate
+            # some work to reimplement the interfaces used by the
+            # registration process, which doesn't seem worthwhile.
+            #
+            # reg = ffado_registration(FFADO_VERSION, int(guid, 16),
+            #                              vendorId, modelId,
+            #                              vendorName, modelName)
+            # reg.check_for_registration()
 
             # The MOTU devices use unitVersion to differentiate models.  For
             # the moment though we don't need to know precisely which model
