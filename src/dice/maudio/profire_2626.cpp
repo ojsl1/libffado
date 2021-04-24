@@ -25,6 +25,8 @@
 
 #include "profire_2626.h"
 
+#include <sstream>
+
 namespace Dice {
 namespace Maudio {
 

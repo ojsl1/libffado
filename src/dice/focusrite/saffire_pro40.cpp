@@ -27,6 +27,8 @@
 
 #include "libutil/ByteSwap.h"
 
+#include <sstream>
+
 namespace Dice {
 namespace Focusrite {
 
