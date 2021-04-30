@@ -179,7 +179,7 @@ class FFADOWindow(QMainWindow):
 
 <p>FFADO is the new approach to have firewire audio on linux.</p>
 
-        <p>&copy; 2006-2018 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
+        <p>&copy; 2006-2021 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
 
 <p>FFADO developers are:<ul>
 <li>Pieter Palmers

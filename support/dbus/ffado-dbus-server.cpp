@@ -238,7 +238,7 @@ main( int argc, char **argv )
     printf("FFADO Control DBUS service\n");
     printf("Part of the FFADO project -- www.ffado.org\n");
     printf("Version: %s\n", PACKAGE_VERSION);
-    printf("(C) 2008, Pieter Palmers\n");
+    printf("(C) 2008-2021, Pieter Palmers and others\n");
     printf("This program comes with ABSOLUTELY NO WARRANTY.\n");
     printf("-----------------------------------------------\n\n");
 
