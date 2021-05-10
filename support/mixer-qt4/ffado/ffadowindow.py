@@ -173,11 +173,11 @@ class FFADOWindow(QMainWindow):
 
     def aboutFFADO(self):
         QMessageBox.about( self, "About FFADO", """
-<h1>ffado.org</h1>
+<h1><a href="http://ffado.org">ffado.org</a></h1>
 
 <p>{ffado_version}</p>
 
-<p>FFADO is the new approach to have firewire audio on linux.</p>
+<p><a href="http://ffado.org">FFADO</a> is the new approach to have firewire audio on linux.</p>
 
         <p>&copy; 2006-2021 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
 
