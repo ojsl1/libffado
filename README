@@ -10,7 +10,7 @@ is AC3/DTS passthrough support, which is unsupported at the moment.
 
 This package provides the libffado shared library that provides a unified
 programming interface to configure and use all supported devices.  Currently
-this library is used by the 'firewire' backends of the jack audio connection
+this library is used by the "firewire" backends of the jack audio connection
 kit sound server (jackaudio.org).  This backend provides audio and midi
 support, and is available both in jackd and its multiprocessor variant
 jackdmp.  At present there is no support for ALSA or pulseaudio, although
@@ -36,7 +36,7 @@ Features
 Device Support
 --------------
 
-The 'officially supported' label is only given to devices that fulfil the
+The "officially supported" label is only given to devices that fulfil the
 following:
  * at least one of the developers has the device
  * the vendor provides development support (access to information)
@@ -121,7 +121,7 @@ compatible with both scons 2 and 3.  Testing and bug reports when using
 scons 3 are welcomed.
 
 To build libffado you need several libraries. For all libraries a
-version is provided which is a 'known good' version.  The first few
+version is provided which is a "known good" version.  The first few
 libraries it seems it is not necessary that the version must
 match. The chances that it works also with an older versions are good:
 
@@ -192,7 +192,7 @@ Running jackd
 The easiest way to run this is using qjackctl. There are only minor 
 differences with the other backends, however you should change some
 of the default values:
-- It is recommended to change the 'periods/buffer' field to 3, especially
+- It is recommended to change the "periods/buffer" field to 3, especially
   if you use low period sizes (=< 128)
 - It is recommended to raise the RT priority to 70.
 
