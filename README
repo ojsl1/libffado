@@ -93,7 +93,7 @@ MOTU devices reported to work with FFADO are:
  * MOTU Traveler
  * MOTU 828mkII, MOTU Ultralite, MOTU 896HD, MOTU 8pre, MOTU 4pre
  * Audio only: MOTU Ultralite mk3, MOTU Traveler mk3, MOTU 896mk3, MOTU 828mk3
- * Audio only, firewire interface only: MOTU Ultralite mk3 hybrid
+ * Audio only, Firewire interface only: MOTU Ultralite mk3 hybrid
 
 "Audio only" means that FFADO can be used to stream audio to and from the
 device, control sample rate and clock source.  Control of the mixer and DSP
@@ -101,7 +101,7 @@ functions is not presently supported.  It is planned but no ETA is available
 at this stage.
 
 Devices for which work is in progress.  These are not yet usable:
- * RME UFX and UCX firewire devices
+ * RME UFX and UCX Firewire devices
 
 Usupported devices:
  * Presonus FireStation
@@ -245,7 +245,7 @@ First of all, check whether your problem is a known issue, and whether
 it is a FFADO problem.  Use your chosen web search engine for this.
 
 Many distributor kernels now include the alternative ALSA audio streaming
-drivers for selected firewire audio interfaces (snd-bebob, snd-dice, etc). 
+drivers for selected Firewire audio interfaces (snd-bebob, snd-dice, etc). 
 These are developed independently of FFADO.  If these kernel modules are
 loaded then FFADO's streaming engine cannot be used: using jackd's
 "firewire" driver will fail because the kernel drivers have ownership of the

@@ -9,7 +9,7 @@
   <translation/>
   <description>
     <p>
-      ffado-mixer presents a graphical application allowing a firewire audio interface to be controlled.
+      ffado-mixer presents a graphical application allowing a Firewire audio interface to be controlled.
       The extent of the control is determined by the level of support for the
       device in FFADO and in ffado-dbus-server.
       Typical controls offered by ffado-mixer include faders for the on-board mixer,
