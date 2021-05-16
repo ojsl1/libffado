@@ -1,12 +1,12 @@
 FFADO v2.4
 ==========
 
-The FFADO project aims to provide a free driver implemenation for FireWire
+The FFADO project aims to provide a free driver implementation for FireWire
 (IEEE1394, iLink) based audio interfaces.  The focus of the project are on
 audio/music production rather than consumer audio.  This means that although
 we intend to supported all features at some point, consumer features are
 considered less important.  The most obvious example of a consumer feature
-is AC3/DTS passthrough support, which is unsupported at the moment.
+is AC3/DTS pass-through support, which is unsupported at the moment.
 
 This package provides the libffado shared library that provides a unified
 programming interface to configure and use all supported devices.  Currently
@@ -24,9 +24,10 @@ parameters.
 
 Features
 --------
+
 * 24-bit audio input/output (number of channels only limited by interface
   hardware)
-* supports for all samplerates a device supports
+* supports for all sample rates a device supports
 * MIDI input/output (unlimited number of channels)
 * Support for S/PDIF and ADAT/SMUX I/O
 * Internal mixer and device control support for all officially supported 
@@ -73,7 +74,7 @@ functions.
  * M-Audio 1814 and ProjectMix (mixer only, audio streaming not supported. and
    Firewire 1814 needs startup workaround above)
  * Focusrite Saffire Pro24
- * Focusrite Saffire Pro24DSP (audio streaming only, DSP control not available)
+ * Focusrite Saffire Pro24 DSP (audio streaming only, DSP control not available)
  * Yamaha GO44 and GO46
 
 Devices that have been reported to (partially) work with the generic support:
@@ -314,7 +315,7 @@ Be sure to include the following information:
 * the log file(s) (zipped/tar.gz'ed and attached)
 * the device you're trying to use
 * a description of what went wrong and how to reproduce it. You
-  preferrably try to figure out a sequence of steps that can reliably
+  preferably try to figure out a sequence of steps that can reliably
   reproduce the issue on your system. A one-time failure is very difficult
   to diagnose and/or fix.
 * the distribution and its version
