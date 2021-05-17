@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -48,7 +48,7 @@ DECLARE_GLOBAL_DEBUG_MODULE;
 
 // Program documentation.
 // Program documentation.
-static char doc[] = "FFADO -- a driver for Firewire Audio devices (streaming test application)\n\n"
+static char doc[] = "FFADO -- a driver for FireWire Audio devices (streaming test application)\n\n"
                     ;
 
 // A description of the arguments we accept.

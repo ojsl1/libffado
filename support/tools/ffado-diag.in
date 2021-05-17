@@ -278,7 +278,7 @@ configuration is bogus.""")
 elif newstack.loaded or newstack.statically_linked:
     indent ("""The new FireWire kernel stack is loaded.
 If running a kernel earlier than 2.6.37 and problems are experienced, either
-try with the old Firewire kernel stack or upgrade to a newer kernel
+try with the old FireWire kernel stack or upgrade to a newer kernel
 (preferrably 2.6.37 or later).""")
     sys.exit (1)
 elif oldstack.statically_linked:

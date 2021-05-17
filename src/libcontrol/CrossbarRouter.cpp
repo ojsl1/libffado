@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2009 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB
  *

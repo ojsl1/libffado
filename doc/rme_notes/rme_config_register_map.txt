@@ -28,7 +28,7 @@ byte.
 In order to retain consistency with device documentation, the FFADO RME
 driver currently sends async packet data in the little endian format which
 the RME device expects.  Although this is technically wrong (in so far as
-the Firewire standard is concerned), at this stage it is considered that
+the FireWire standard is concerned), at this stage it is considered that
 introducing an endianness difference between the FFADO driver and the
 documentation is likely to result in maintenance issues down the track.
 

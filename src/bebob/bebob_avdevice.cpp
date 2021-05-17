@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2008 by Daniel Wagner
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -186,7 +186,7 @@ Device::createDevice(DeviceManager& d, ffado_smartptr<ConfigRom>( configRom ))
         case 0x00010060: // Audiophile
         case 0x00010062: // Solo
             return new MAudio::Normal::Device(d, configRom, modelId);
-        case 0x00010071: // Firewire 1814
+        case 0x00010071: // FireWire 1814
         case 0x00010091: // ProjectMix I/O
             return new MAudio::Special::Device(d, configRom);
         default:

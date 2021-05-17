@@ -4,7 +4,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -32,7 +32,7 @@
 #include "bebob/maudio/special_mixer.h"
 
 /*
- * Firewire 1814 and ProjectMix I/O uses special firmware. It will be freezed
+ * FireWire 1814 and ProjectMix I/O uses special firmware. It will be freezed
  * if receiving any commands which the firmware can't understand. These devices
  * utilize completely different system to control. It is read/write transaction
  * directly into a certain address.

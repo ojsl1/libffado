@@ -2,7 +2,7 @@
  * Parts Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB
  *
@@ -26,7 +26,7 @@
  * This test stalls on certain controllers from a packet size = 225 on
  *
  * Controllers affected:
- *  O2 Micro, Inc. Firewire (IEEE 1394) (rev 02)
+ *  O2 Micro, Inc. FireWire (IEEE 1394) (rev 02)
  *  Texas Instruments XIO2200(A) IEEE-1394a-2000 Controller (PHY/Link) (rev 01)
  * not affected:
  *  NEC Corporation uPD72874 IEEE1394 OHCI 1.1 3-port PHY-Link Ctrlr (rev 01)

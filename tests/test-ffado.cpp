@@ -3,7 +3,7 @@
  * Copyright (C) 2005-2008 by Pieter Palmers
  *
  * This file is part of FFADO
- * FFADO = Free Firewire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -61,7 +61,7 @@ const char *argp_program_version = PACKAGE_STRING;
 const char *argp_program_bug_address = PACKAGE_BUGREPORT;
 
 // Program documentation.
-static char doc[] = "FFADO -- a driver for Firewire Audio devices (test application)\n\n"
+static char doc[] = "FFADO -- a driver for FireWire Audio devices (test application)\n\n"
                     "OPERATION: Discover\n"
                     "           SetSamplerate samplerate\n"
                     "           SetClockSource [id]\n"

@@ -3,7 +3,7 @@
 # Copyright (C) 2013 Takashi Sakamoto <o-takashi@sakamocchi.jp>
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for linux
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
