@@ -4,7 +4,7 @@
  * Copyright (C) 2012 Bent Bisballe Nyeng
  *
  * This file is part of FFADO
- * FFADO = Free FireWire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB
  *

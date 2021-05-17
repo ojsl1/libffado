@@ -2,7 +2,7 @@
  * Copyright (C) 2009 by Jonathan Woithe
  *
  * This file is part of FFADO
- * FFADO = Free FireWire (pro-)audio drivers for linux
+ * FFADO = Free FireWire (pro-)audio drivers for Linux
  *
  * FFADO is based upon FreeBoB.
  *
@@ -547,7 +547,7 @@ Device::set_hardware_params(FF_software_settings_t *use_settings)
 
     if (m_rme_model==RME_MODEL_FIREFACE400 && !provide_midi) {
         // If libffado is not providing MIDI, configure the register to
-        // allow snd-fireface (linux kernel >= 4.12) - or any other driver
+        // allow snd-fireface (Linux kernel >= 4.12) - or any other driver
         // for the FF400 which might appear in future - to do so if desired. 
         // The choice of tx address 1 matches that which is coded in
         // snd-fireface as of kernel 4.12.

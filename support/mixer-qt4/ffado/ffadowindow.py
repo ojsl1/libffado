@@ -2,7 +2,7 @@
 #               2007-2009 by Arnold Krille
 #
 # This file is part of FFADO
-# FFADO = Free FireWire (pro-)audio drivers for linux
+# FFADO = Free FireWire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
@@ -177,7 +177,7 @@ class FFADOWindow(QMainWindow):
 
 <p>{ffado_version}</p>
 
-<p><a href="http://ffado.org">FFADO</a> is the new approach to have firewire audio on linux.</p>
+<p><a href="http://ffado.org">FFADO</a> is the new approach to have firewire audio on Linux.</p>
 
         <p>&copy; 2006-2021 by the FFADO developers<br />ffado is licensed under the GPLv3, for the full license text see <a href="http://www.gnu.org/licenses/">www.gnu.org/licenses</a> or the LICENSE.* files shipped with ffado.</p>
 

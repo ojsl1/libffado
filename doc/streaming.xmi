@@ -109,7 +109,7 @@
       </UML:Package>
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
@@ -958,7 +958,7 @@
       </UML:Class>
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
@@ -1034,7 +1034,7 @@
       <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="13000" isRoot="false" isAbstract="false" name="enum E_Formats" />
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
@@ -1723,7 +1723,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
       <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="14008" isRoot="false" isAbstract="false" name="FFADORunnableInterface" />
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
@@ -2554,7 +2554,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
       </UML:Class>
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
@@ -3701,7 +3701,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
       <UML:Class stereotype="13989" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="15166" isRoot="false" isAbstract="false" name="ffado_ringbuffer_t" />
       <UML:Class comment="Id$ *//*
   FFADO Streaming API
-  FFADO = FireWire (pro-)audio for linux
+  FFADO = FireWire (pro-)audio for Linux
 
   http://ffado.sf.net
 
