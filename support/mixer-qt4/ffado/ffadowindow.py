@@ -63,6 +63,8 @@ class FFADOWindow(QMainWindow):
         self.statuslogger = QStatusLogger(self, self.statusBar(), 20)
         logging.getLogger('').addHandler(self.statuslogger)
 
+        self.settings = QtCore.QSettings(self)
+
         self.manager = PanelManager(self)
         self.manager.connectionLost.connect(self.connectToDBUS)
 
@@ -98,6 +100,23 @@ class FFADOWindow(QMainWindow):
                 self.menuTheme[theme].setChecked(True)
             self.menuTheme[theme].triggered.connect(self.switchTheme )
             self.thememenu.addAction( self.menuTheme[theme] )
+
+        conftheme = self.settings.value("window/theme", "ukui-dark")
+        contains = False
+        for theme in self.menuTheme:
+            if theme.__str__() == conftheme:
+                contains = True
+                break
+        if contains:
+            for theme in self.menuTheme:
+                if theme.__str__() != conftheme:
+                    self.menuTheme[theme].setChecked(False)
+                    self.menuTheme[theme].setDisabled(False)
+            for theme in self.menuTheme:
+                if theme.__str__() == conftheme:
+                    self.menuTheme[theme].setDisabled(True)
+                    QApplication.setStyle(QStyleFactory.create(theme))
+                    self.settings.setValue("window/theme", theme.__str__())
 
         self.updateaction = QAction(QIcon.fromTheme("view-refresh"),"&Update Mixer Panels", self)
         self.updateaction.setEnabled(False)
@@ -135,6 +154,7 @@ class FFADOWindow(QMainWindow):
             if self.menuTheme[theme].isChecked() :
                 self.menuTheme[theme].setDisabled(True)
                 QApplication.setStyle(QStyleFactory.create(theme))
+                self.settings.setValue("window/theme", theme.__str__())
 
     def closeEvent(self, event):
         log.info("closeEvent()")
@@ -193,6 +213,7 @@ with contributions from:<ul>
 <li>Adrian Knoth
 <li>Stefan Richter
 <li>Jano Svitok
+<li>Pander Musubi
 </ul>
         """.format(ffado_version=get_ffado_version(), thisyear=datetime.datetime.now().year))
 
