@@ -47,7 +47,7 @@
         <item>
          <widget class="QLabel" name="GlobalSetLabel">
           <property name="text">
-           <string>Dim level</string>
+           <string>Dim Level</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -643,7 +643,7 @@
           <bool>true</bool>
          </property>
          <property name="title">
-          <string>Line/In switches</string>
+          <string>Line/In Switches</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">

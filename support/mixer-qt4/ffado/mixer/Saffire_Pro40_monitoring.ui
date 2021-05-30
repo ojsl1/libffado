@@ -47,7 +47,7 @@
         <item>
          <widget class="QLabel" name="GlobalSetLabel">
           <property name="text">
-           <string>Dim level</string>
+           <string>Dim Level</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
