@@ -33,6 +33,9 @@
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
          <widget class="QPushButton" name="HWSwitch">
+          <property name="toolTip">
+            <string>Hardware</string>
+          </property>
           <property name="text">
            <string>H/W</string>
           </property>
@@ -301,6 +304,9 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -311,6 +317,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_1">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -321,6 +330,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_1">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -331,6 +343,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_1">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
@@ -390,6 +405,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineUnActivate_2">
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -400,6 +418,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_2">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -410,6 +431,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_2">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -420,6 +444,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_2">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
@@ -479,6 +506,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineUnActivate_3">
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -489,6 +519,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_3">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -499,6 +532,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_3">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -509,6 +545,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_3">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
@@ -568,6 +607,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineUnActivate_4">
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -578,6 +620,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_4">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -588,6 +633,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_4">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -598,6 +646,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_4">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
@@ -657,6 +708,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineUnActivate_5">
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -667,6 +721,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_5">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -677,6 +734,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_5">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -687,6 +747,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_5">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
@@ -746,6 +809,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineUnActivate_6">
+                 <property name="toolTip">
+                  <string>UnActivate</string>
+                 </property>
                  <property name="text">
                   <string>UA</string>
                  </property>
@@ -756,6 +822,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineMute_6">
+                 <property name="toolTip">
+                  <string>Mute</string>
+                 </property>
                  <property name="text">
                   <string>Mu</string>
                  </property>
@@ -766,6 +835,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGDim_6">
+                 <property name="toolTip">
+                  <string>Group Dim</string>
+                 </property>
                  <property name="text">
                   <string>GD</string>
                  </property>
@@ -776,6 +848,9 @@
                </item>
                <item>
                 <widget class="QPushButton" name="LineGMute_6">
+                 <property name="toolTip">
+                  <string>Group Mute</string>
+                 </property>
                  <property name="text">
                   <string>GM</string>
                  </property>
