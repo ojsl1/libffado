@@ -5,7 +5,7 @@
 # Copyright (C) 2008, 2012 Jonathan Woithe
 #
 # This file is part of FFADO
-# FFADO = Free Firewire (pro-)audio drivers for linux
+# FFADO = Free Firewire (pro-)audio drivers for Linux
 #
 # FFADO is based upon FreeBoB.
 #
