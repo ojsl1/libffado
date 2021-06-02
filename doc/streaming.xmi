@@ -2577,7 +2577,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
 //*!
-\brief The Base Class for ISO streams" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="14509" isRoot="false" isAbstract="false" name="IsoStream" >
+\brief The Base Class for iso streams" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="14509" isRoot="false" isAbstract="false" name="IsoStream" >
        <UML:Classifier.feature>
         <UML:Attribute isSpecification="false" visibility="protected" xmi.id="15239" type="15201" name="m_type" />
         <UML:Attribute isSpecification="false" visibility="protected" xmi.id="15240" type="12705" name="m_channel" />
@@ -4529,10 +4529,10 @@ isochronous packet.
         </UML:Operation>
        </UML:Classifier.feature>
       </UML:Class>
-      <UML:Class comment="\brief The Base Class for ISO Handlers
-These classes perform the actual ISO communication through libraw1394.
+      <UML:Class comment="\brief The Base Class for iso handlers
+These classes perform the actual iso communication through libraw1394.
 They are different from IsoStreams because one handler can provide multiple
-streams with packets in case of ISO multichannel receive." isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22867" isRoot="false" isAbstract="false" name="IsoHandler" >
+streams with packets in case of iso multichannel receive." isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22867" isRoot="false" isAbstract="false" name="IsoHandler" >
        <UML:Classifier.feature>
         <UML:Attribute isSpecification="false" visibility="protected" xmi.id="22906" type="22905" name="m_handle" />
         <UML:Attribute isSpecification="false" visibility="protected" xmi.id="22907" type="12705" name="m_port" />
@@ -4684,7 +4684,7 @@ streams with packets in case of ISO multichannel receive." isSpecification="fals
        </UML:Namespace.ownedElement>
       </UML:Class>
       <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22905" isRoot="false" isAbstract="false" name="raw1394handle_t" />
-      <UML:Class comment="\brief ISO receive handler class" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22919" isRoot="false" isAbstract="false" name="IsoRecvHandler" >
+      <UML:Class comment="\brief iso receive handler class" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22919" isRoot="false" isAbstract="false" name="IsoRecvHandler" >
        <UML:GeneralizableElement.generalization>
         <UML:Generalization xmi.idref="22920" />
         <UML:Generalization xmi.idref="22920" />
@@ -4860,7 +4860,7 @@ streams with packets in case of ISO multichannel receive." isSpecification="fals
        </UML:Classifier.feature>
       </UML:Class>
       <UML:Class isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22933" isRoot="false" isAbstract="false" name="enum EHandlerType" />
-      <UML:Class comment="\brief ISO transmit handler class" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22959" isRoot="false" isAbstract="false" name="IsoXmitHandler" >
+      <UML:Class comment="\brief iso transmit handler class" isSpecification="false" isLeaf="false" visibility="public" namespace="1" xmi.id="22959" isRoot="false" isAbstract="false" name="IsoXmitHandler" >
        <UML:GeneralizableElement.generalization>
         <UML:Generalization xmi.idref="22960" />
         <UML:Generalization xmi.idref="22960" />

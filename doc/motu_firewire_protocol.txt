@@ -713,7 +713,7 @@ Register details
 
 This register is primarily for the control of iso streaming.  It has been
 observed to be set to one of two values: 0x80810000 or 0xc0c10000.  The
-latter value appears to activate ISO streaming while the former turns it
+latter value appears to activate iso streaming while the former turns it
 off.  On readback bits 31 and 23 are zero no matter whether the previously
 written value was 0x80810000 or 0xc0c10000.  This suggests that these two
 bits are effectively "write enable" for iso receive/send configuration on

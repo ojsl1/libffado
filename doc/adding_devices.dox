@@ -25,15 +25,15 @@
  - When the streaming layer is started (e.g. by jackd), it will iterate over all IAvDevice's of
    the DeviceManager. For every device:
    The streaming layer will (most likely) set some config values (at this moment only the
-   samplerate). Then will then request the number of ISO streams the device provides using
+   samplerate). Then will then request the number of iso streams the device provides using
    getStreamCount(). Most likely this will be 2 streams, one transmit and one receive.
    The next step is that for every stream a StreamProcessor is requested using
    getStreamProcessorByIndex(i) (i starts at 0). This streamprocessor is responsible for
-   the translation between ISO stream and audio API. A streamprocessor is a class that is
+   the translation between iso stream and audio API. A streamprocessor is a class that is
    a subclass of StreamProcessor (see the documentation of that class for more info).
    
  - Once the streaming layer fetched all streamprocessors of all devices, it will proceed with
-   initializing them, and setting up all support stuff (threads, ISO handlers, etc...)
+   initializing them, and setting up all support stuff (threads, iso handlers, etc...)
  
  - After this initial setup, the streaming layer will ask the IAvDevice to start the streams
    on the hardware device, using startStreamByIndex(). When the streaming layer shuts down,
@@ -77,7 +77,7 @@ The StreamProcessorManager will take care of the actual 'streaming'. This incorp
 - handling all threading issues (creation/destruction, realtime behaviour, synchronisation, ...) 
 - ...
 
-It joins the ISO side with the Audio API side.
+It joins the iso side with the Audio API side.
 
 To accomplish this, it consists of two parts:
 - a collection of StreamProcessor 's
@@ -85,7 +85,7 @@ To accomplish this, it consists of two parts:
 
 Related classes: Streaming::StreamProcessorManager
 
-@subsection isoside The ISO side: 1394 isochronous traffic management
+@subsection isoside The iso side: 1394 isochronous traffic management
 The IsoHandlerManager is responsible for the management of IsoHandlers. This means creating/destroying the handlers when needed, starting & stopping them, etc...
 An IsoHandler in its turn will serve an IsoStream. This means that the getPacket or putPacket callback of an IsoStream will be called by the IsoHandler whenever this is nescessary.
 
@@ -120,7 +120,7 @@ The abstraction presented at the audio side is based upon Ports. A 'Port' is an 
 		- E_PacketSignalled: The port contents should be updated every time a packet arrives. This means that the read to/write from operation of the port is to be called for every packet that arrives (i.e. from within the packet handler callback). The most obvious use is for midi ports, as it can be a problem when midi bytes are quantized to period boundaries.
     	- E_PeriodSignalled: The port contents should be updated every time time one period of packets is ready. This is for audio data, as this allows the code responsible for reading/writing the Port buffers to buffer the sink/source events untill one period has arrived, and then encode/decode the events all at once from/to the Port buffer. This is a big performance boost due to locallity of data (cache) and the possibility of using SIMD instructions, especially for big buffers.
 
-	- Direction: A port is either a Playback or a Capture port. Playback ports are filled by the Audio API and packetized into the ISO stream, Capture ports are filled by the ISO stream and read out by the Audio API.
+	- Direction: A port is either a Playback or a Capture port. Playback ports are filled by the Audio API and packetized into the iso stream, Capture ports are filled by the iso stream and read out by the Audio API.
 
 \note maybe someday we'll allow any access type with any buffer type, but that doesn't seem to be nescessary now.
 \note there are some relations between the DataType and the PortType. These relations should be established in the derrivative classes of Port.
@@ -133,14 +133,14 @@ The idea is that we present a collection of ports to the Audio API side which fr
 
 Related classes: Streaming::Port, Streaming::PortManager
 
-@subsection connectingisoandaudio Connecting the ISO side with the Audio API side
-The connection between the ISO side and the Audio API side is done by the StreamProcessor class. This class inherits both from IsoStream and PortManager. It therefore can be registered to the IsoHandlerManager in order to receive/transmit an ISO stream. It can also contain a collection of Ports that serve as a destination/source for the events in the ISO stream.
+@subsection connectingisoandaudio Connecting the iso side with the Audio API side
+The connection between the iso side and the Audio API side is done by the StreamProcessor class. This class inherits both from IsoStream and PortManager. It therefore can be registered to the IsoHandlerManager in order to receive/transmit an iso stream. It can also contain a collection of Ports that serve as a destination/source for the events in the iso stream.
 
 The StreamProcessor class is an abstract class, it cannot be instantiated by itself. The classes that implement a StreamProcessor should derrive from either ReceiveStreamProcessor or TransmitStreamProcessor. These classes provide some extra code that differs between directions.
 
 A ReceiveStreamProcessor implements the putPacket callback, which is called every time a packet arrives. It is supposed to buffer the events (or the decoded frames). When one period of frames can be transmitted to the Audio API, it should signal this when its isOnePeriodReady() method is called. 
 
-For PeriodSignalled Ports, the actual transfer from the internal buffer(s) to the Port buffers should be done in the transfer() method. This is because it is not nescessarily so that the buffers of the StreamProcessor's Ports are valid. When the transfer() method is called, the buffers are guaranteed to be valid. The jackd backend for example sets the Port buffers to an internal address before calling transfer(). This allows for a near-zero-copy transfer of the audio: the ISO stream events are decoded directly into the jackd sample buffer.
+For PeriodSignalled Ports, the actual transfer from the internal buffer(s) to the Port buffers should be done in the transfer() method. This is because it is not nescessarily so that the buffers of the StreamProcessor's Ports are valid. When the transfer() method is called, the buffers are guaranteed to be valid. The jackd backend for example sets the Port buffers to an internal address before calling transfer(). This allows for a near-zero-copy transfer of the audio: the iso stream events are decoded directly into the jackd sample buffer.
 
 For PacketSignalled Ports, the StreamProcessor should decode & write the events when they arrive (in the packet callback).
 
@@ -158,7 +158,7 @@ A StreamProcessor also has the init(), prepare() and reset() calls, which are st
 Related classes: Streaming::StreamProcessor, Streaming::ReceiveStreamProcessor, Streaming::TransmitStreamProcessor, Streaming::PortManager
 
 @subsection mappingports Mapping Ports to IsoStreams
-The only thing not explained up till now is how the StreamProcessor knows which ISO substream to decode to which port. This is done by defining device specific subclasses of the Port class. These classes inherit both from the generic Port class and from a device specific class (e.g. PortInfo). This PortInfo class contains all information the StreamProcessor needs to map the Port onto the IsoStream, or vice versa. Due to the subclassing, these new device-specific ports can be used as if they were a normal Port. An example can be found in \ref amdtpdescription .
+The only thing not explained up till now is how the StreamProcessor knows which iso substream to decode to which port. This is done by defining device specific subclasses of the Port class. These classes inherit both from the generic Port class and from a device specific class (e.g. PortInfo). This PortInfo class contains all information the StreamProcessor needs to map the Port onto the IsoStream, or vice versa. Due to the subclassing, these new device-specific ports can be used as if they were a normal Port. An example can be found in \ref amdtpdescription .
 
 @subsection puttingtogether Putting it all together
 
@@ -166,11 +166,11 @@ The only thing not explained up till now is how the StreamProcessor knows which 
 
 The framework is completed by introducing the StreamProcessorManager. As indicated before, this class implements a 'collection of StreamProcessors' and an IsoHandlerManager. 
 
-First of all, the StreamProcessorManager is a collection of StreamProcessors, hence it implements the  registerStreamProcessor and unregisterStreamProcessor methods. It maintains the list of StreamProcessors under it's control. When StreamProcessors are (un)registered, they are automatically (un)registered to the IsoHandlerManager too, creating IsoHandlers to handle them. Remember that StreamProcessor is a descendant of IsoStream, and can therefore be registered to an IsoHandlerManager. This results in the fact that the ISO stream the StreamProcessor is supposed to handle, will be attached to an IsoHandler.
+First of all, the StreamProcessorManager is a collection of StreamProcessors, hence it implements the  registerStreamProcessor and unregisterStreamProcessor methods. It maintains the list of StreamProcessors under it's control. When StreamProcessors are (un)registered, they are automatically (un)registered to the IsoHandlerManager too, creating IsoHandlers to handle them. Remember that StreamProcessor is a descendant of IsoStream, and can therefore be registered to an IsoHandlerManager. This results in the fact that the iso stream the StreamProcessor is supposed to handle, will be attached to an IsoHandler.
 
 Furthermore StreamProcessorManager is a child of the Runnable interface, and can therefore be used as the worker class for a Thread. A complicated sentence to say that the StreamProcessorManager will start up a thread that calls its Execute() function, which in its turn calls the IsoHandlerManager Exectute() method (hence iterating the IsoHandlers managed by the IsoHandlerManager). This thread also performs the synchronisation as described in the next paragraph.
 
-The third function of the StreamProcessorManager is the synchronisation between the ISO side and the Audio API side. To implement this, the class provides a wait() method that waits on a synchronisation primitive. This primitive is signalled by the thread that iterates the IsoHandlerManager. This thread will signal the primitive when all StreamProcessors indicate that they have one period ready.
+The third function of the StreamProcessorManager is the synchronisation between the iso side and the Audio API side. To implement this, the class provides a wait() method that waits on a synchronisation primitive. This primitive is signalled by the thread that iterates the IsoHandlerManager. This thread will signal the primitive when all StreamProcessors indicate that they have one period ready.
 \note this condition is not perfect, but it will do for the moment
 
 The Audio API should call wait(), and when it returns, should call transfer() to transfer the internal buffer contents to the Port buffers. It can then proceed to reading out these Port buffers. The near-zero-copy approach would be to call wait(), then change the Port buffer address to the client's audio buffer for that channel, and then call transfer().

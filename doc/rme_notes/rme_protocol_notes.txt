@@ -396,14 +396,14 @@ ADAT2 1-8 (a total of 28 channels).
 
 Each sample is 32 bits, seemingly ordered least significant byte first.
 
-By default ISO channel 0 is for PC->Fireface800 data and channel 1 carries
+By default iso channel 0 is for PC->Fireface800 data and channel 1 carries
 Fireface800->PC audio data.
 
 In an example capture, packets carrying 6 frames were observed, reportedly
 at 44.1 kHz.  Packets of varying lengths were observed (0x230, 0x2a0 from
 the PC, a constant 0x310 from the Fireface800).  It is not known how the
 device maintains the correct flow of packets for the various odd-ball
-frequencies it supports.  It appears that in certain iso cycles an ISO
+frequencies it supports.  It appears that in certain iso cycles an iso
 packet is simply not sent in order to resync, but how either side knows when
 to do this is a mystery at present.
 
