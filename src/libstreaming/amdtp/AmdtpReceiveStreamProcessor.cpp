@@ -154,7 +154,7 @@ AmdtpReceiveStreamProcessor::processPacketData(unsigned char *data, unsigned int
     not reduce its channel count when it multiplexes the ADAT data,
     but the actual packet does contain a reduced set of channels.
 
-    The channels are referred to as Dimensions in the firewire parlance.
+    The channels are referred to as Dimensions in the FireWire parlance.
     With an Audiofire Pre8, we typically receive 17 channels of data at
     44100 and 48000, being 8 Analog, 8 Digital and 1 MIDI. When we switch
     to 88200 or 96000 the ADAT (Digital) channel count is reduced to four,

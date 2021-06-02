@@ -184,10 +184,10 @@ DeviceManager::initialize()
         return false;
     }
     if (nb_detected_ports == 0) {
-        debugFatal("No firewire adapters (ports) found.\n");
+        debugFatal("No FireWire adapters (ports) found.\n");
         return false;
     }
-    debugOutput( DEBUG_LEVEL_VERBOSE, "Found %d firewire adapters (ports)\n", nb_detected_ports);
+    debugOutput( DEBUG_LEVEL_VERBOSE, "Found %d FireWire adapters (ports)\n", nb_detected_ports);
     for (unsigned int port = 0; port < (unsigned int)nb_detected_ports; port++) {
         Ieee1394Service* tmp1394Service = new Ieee1394Service();
         if ( !tmp1394Service ) {

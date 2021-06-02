@@ -110,7 +110,7 @@ DigidesignTransmitStreamProcessor::generatePacketHeader (
     // identified that an empty packet should be sent then "length" will be
     // overriden in generateEmptyPacketHeader().
     //
-    // As per the firewire standards, only set "tag" if the Digidesign
+    // As per the FireWire standards, only set "tag" if the Digidesign
     // expects a CIP header in the first two bytes of "data".  Similarly,
     // remove the "+8" from the length calculation if no CIP header is to be
     // included.

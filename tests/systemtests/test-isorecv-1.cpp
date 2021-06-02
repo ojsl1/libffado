@@ -66,7 +66,7 @@ struct arguments
 // The options we understand.
 static struct argp_option options[] = {
     {"verbose",  'v', "level",    0,  "Verbose level" },
-    {"port",  'p', "port",  0,  "firewire port to use" },
+    {"port",  'p', "port",  0,  "FireWire port to use" },
     {"channel",  'c', "channel",  0,  "iso channel to use" },
     {"packetsize",  's', "packetsize",  0,  "packet size to use" },
     {"buffersize",  'b', "buffersize",  0,  "number of packets to buffer" },

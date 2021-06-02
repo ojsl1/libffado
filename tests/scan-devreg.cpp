@@ -209,7 +209,7 @@ main(int argc, char **argv)
       p1 = p2 = arguments.port;
       p2++;
     }
-    printf("Scanning %d firewire adapters (ports)\n", n_ports);
+    printf("Scanning %d FireWire adapters (ports)\n", n_ports);
     for (signed int i=p1; i<p2; i++) {
         Ieee1394Service *tmp1394 = new Ieee1394Service();
         if ( !tmp1394 ) {
@@ -249,7 +249,7 @@ main(int argc, char **argv)
         delete tmp1394;
     }
     if (node_id == -1) {
-        printf("Could not find a target audio device on the firewire bus\n");
+        printf("Could not find a target audio device on the FireWire bus\n");
         return false;
     }
     printf("Targetting device at port %d, node %d\n", port, node_id);

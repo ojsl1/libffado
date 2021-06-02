@@ -299,7 +299,7 @@ Device::read_device_flash_settings(FF_software_settings_t *dsettings)
     // unexpected values is currently unknown.  Note that limit_bandwidth is
     // unsigned, so there's no need to check for values less than 0.
     if (hw_settings.limit_bandwidth > FF_DEV_FLASH_BWLIMIT_ANALOG_ONLY) {
-        debugOutput(DEBUG_LEVEL_WARNING, "bogus firewire bandwidth limit flag 0x%08x reset to 0 (send all channels)\n",
+        debugOutput(DEBUG_LEVEL_WARNING, "bogus FireWire bandwidth limit flag 0x%08x reset to 0 (send all channels)\n",
           hw_settings.limit_bandwidth);
         hw_settings.limit_bandwidth = FF_DEV_FLASH_BWLIMIT_SEND_ALL_CHANNELS;
     }
@@ -391,7 +391,7 @@ Device::read_device_flash_settings(FF_software_settings_t *dsettings)
         debugOutput(DEBUG_LEVEL_VERBOSE, "  clock mode: %d\n", dsettings->clock_mode);
         debugOutput(DEBUG_LEVEL_VERBOSE, "  sync ref: %d\n", dsettings->sync_ref);
         debugOutput(DEBUG_LEVEL_VERBOSE, "  tms: %d\n", dsettings->tms);
-        debugOutput(DEBUG_LEVEL_VERBOSE, "  limit firewire bandwidth: %d\n", dsettings->limit_bandwidth);
+        debugOutput(DEBUG_LEVEL_VERBOSE, "  limit FireWire bandwidth: %d\n", dsettings->limit_bandwidth);
         debugOutput(DEBUG_LEVEL_VERBOSE, "  stop on dropout: %d\n", dsettings->stop_on_dropout);
         debugOutput(DEBUG_LEVEL_VERBOSE, "  input level: %d\n", dsettings->input_level);
         debugOutput(DEBUG_LEVEL_VERBOSE, "  output level: %d\n", dsettings->output_level);

@@ -148,7 +148,7 @@ typedef unsigned int ffado_nframes_t;
  *
  * The actual meaning of the device specification should be one of the following:
  * - Format 1: "hw:x[,y[,z]]"
- *     x = the firewire bus to use ('port' in raw1394 terminology)
+ *     x = the FireWire bus to use ('port' in raw1394 terminology)
  *         (mandatory)
  *     y = the node id the device currently has (bus resets might change that, but FFADO 
  *         will track these changes and keep using the device specified on startup)

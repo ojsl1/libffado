@@ -68,7 +68,7 @@ DigidesignReceiveStreamProcessor::getMaxPacketSize() {
 
 unsigned int
 DigidesignReceiveStreamProcessor::getNominalFramesPerPacket() {
-    // Return the number of frames per firewire iso packet.  A "frame" here is a collection
+    // Return the number of frames per FireWire iso packet.  A "frame" here is a collection
     // of a single audio sample from all active audio channels.  If this depends on the
     // sample rate, that can be obtained using something like this:
     //   int framerate = m_Parent.getDeviceManager().getStreamProcessorManager().getNominalRate();
@@ -96,7 +96,7 @@ DigidesignReceiveStreamProcessor::processPacketHeader(unsigned char *data, unsig
     // should check to ensure the packet contains valid data and (if it is)
     // extract a timestamp from it.  "data" points to the iso packet's
     // contents - no assumption is made about what constitutes a "header"
-    // because each device's protocol is different.  Note that the firewire
+    // because each device's protocol is different.  Note that the FireWire
     // ISO header is not included in "data".
     //
     // The return value should be one of the eCRV_* constants.  The two
@@ -108,7 +108,7 @@ DigidesignReceiveStreamProcessor::processPacketHeader(unsigned char *data, unsig
     // the format of the iso packets sent by the Digidesign hardware.
     //
     // Other parameters to this function contain selected information from
-    // the firewire ISO header which came with this packet:
+    // the FireWire ISO header which came with this packet:
     //   - length = length in bytes of the content pointed to by "data".
     //   - tag = the iso packet header's "tag" field.
     //   - sy = the sy field from the iso packet header.

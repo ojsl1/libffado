@@ -67,7 +67,7 @@ public:
     Util::Watchdog *getWatchdog() {return m_pWatchdog;};
 
    /**
-    * @brief get number of ports (firewire adapters) in this machine
+    * @brief get number of ports (FireWire adapters) in this machine
     *
     * @return the number of ports
     */

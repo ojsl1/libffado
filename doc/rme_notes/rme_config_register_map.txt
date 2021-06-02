@@ -246,7 +246,7 @@ Status register 1:
   bits 31-24: undefined
 
 Status register 2:
-  bits 31-0: (FF800 only) firewire iso channel used for data from FF800 to PC
+  bits 31-0: (FF800 only) FireWire iso channel used for data from FF800 to PC
 
 Status register 3:
   bits 31-0: unused
@@ -686,9 +686,9 @@ to 0x0000e000 (28 channels, PC transmits on iso channel 0).
 
 The third quadlet is mapped as follows.
   bits 10-0 = number of audio channels
-  bit 11    = speed flag; set to 1 if firewire bus is at 800 Mbps
+  bit 11    = speed flag; set to 1 if FireWire bus is at 800 Mbps
 In local tests with a FF800 the value of this register was always 0x0000001c
-(28 channels, 400 Mbps firewire bus).
+(28 channels, 400 Mbps FireWire bus).
 
 The forth and fifth quadlets (used only by the FF400) are zero.
 
@@ -701,7 +701,7 @@ The start of streaming differs between the FF400 and FF800 in more than just
 the address of the relevant register.  On the FF800 this register is mapped
 as follows:
   bits 10-0 = number of audio channels
-  bit 11    = bus speed flag; set to 1 if firewire bus is at 800 Mbps
+  bit 11    = bus speed flag; set to 1 if FireWire bus is at 800 Mbps
 On a FF400 the register is as follows:
   bits 4-0  = number of audio channels
   bits 9-5  = iso tx channel (PC to interface)
@@ -740,7 +740,7 @@ stream to the fireface is sent on iso channel 0 while data from the fireface
 is sent on iso channel 1.
 
 No CIP header is included in the iso data packet.  Fireface data follows
-immediately after the standard 2-quadlet firewire iso packet header.
+immediately after the standard 2-quadlet FireWire iso packet header.
 
 Each iso packet contains a number of samples across all 28 device channels
 (18 channels in the case of the ff400).  For 1x rates, 7 samples per channel

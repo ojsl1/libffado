@@ -278,7 +278,7 @@ Device::prepare() {
     // turning streaming on.  It is mostly used to configure ports which
     // will ultimately show up as JACK ports - one per audio channel.
 
-    // Store the number of frames per firewire packet.  Depending on the
+    // Store the number of frames per FireWire packet.  Depending on the
     // device protocol this may not need to be stored in a data field of 
     // the object, in which case frames_per_packet could be come a local
     // variable.
@@ -437,7 +437,7 @@ Device::stopStreamByIndex(int i) {
 
 signed int
 Device::getFramesPerPacket(void) {
-    // Return the number of frames transmitted in a single firewire packet.
+    // Return the number of frames transmitted in a single FireWire packet.
     // For some devices this is fixed, while for others it depends on the
     // current sampling rate.
     //

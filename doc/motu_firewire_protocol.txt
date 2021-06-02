@@ -1,4 +1,4 @@
-Notes on the firewire protocol used by MOTU audio devices
+Notes on the FireWire protocol used by MOTU audio devices
 =========================================================
 
 Author: Jonathan Woithe
@@ -14,7 +14,7 @@ interfaces.  The differences lie in the number of discrete audio channels
 sent and perhaps the order of some channels within a data block.
 
 Audio data is sent via iso packets.  With nothing else present on the
-firewire bus Iso channel 0 is used by the PC to send data to the MOTU while
+FireWire bus Iso channel 0 is used by the PC to send data to the MOTU while
 iso channel 1 is used by the MOTU to send data to the PC.  The channels
 used can be arbitarily chosen by software subject to availability as
 indicated by the Isochronous Resource Manager (IRM).
@@ -72,7 +72,7 @@ There are still 8 blocks per iso data packet at 1x rates, and 16 at 2x
 rates, giving total packet sizes (including the 8 byte CIP) of 424 bytes at
 1x rates and 840 at 2x rates.
 
-The Traveler usually becomes the IRM on the firewire bus it is plugged into;
+The Traveler usually becomes the IRM on the FireWire bus it is plugged into;
 when functioning as the IRM it also broadcasts "cycle start" packets on a
 regular basis as would be expected. These appear to be as per ieee1394-1995. 
 These broadcast a quadlet in the same form as the Traveler's cycle time
@@ -724,7 +724,7 @@ Experiments indicate that bits 29-24 give the iso channel number the Motu
 should expect data on (ie: the PC->Motu iso channel number) while bits 21-16
 specify the iso channel the Motu should send its data on (ie: the Motu->PC
 iso channel number).  This makes sense since there are 64 iso channels
-available on the firewire bus requiring 6 bits to specify.  If it is then
+available on the FireWire bus requiring 6 bits to specify.  If it is then
 assumed that bits 15-0 are reserved we have the following layout for
 this register.
 

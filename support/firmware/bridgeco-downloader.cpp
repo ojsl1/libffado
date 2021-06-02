@@ -159,7 +159,7 @@ main( int argc, char** argv )
             return -1;
         } else {
             cout << "Firmware download was successful" << endl;
-            cout << "Please reboot the device by removing the power and firewire connections." << endl;
+            cout << "Please reboot the device by removing the power and FireWire connections." << endl;
         }
     } else if ( strcmp( args->args[1], "cne" ) == 0 ) {
         if (!args->args[2] ) {
@@ -173,7 +173,7 @@ main( int argc, char** argv )
             return -1;
         } else {
             cout << "CnE download was successful" << endl;
-            cout << "Please reboot the device by removing the power and firewire connections." << endl;
+            cout << "Please reboot the device by removing the power and FireWire connections." << endl;
         }
     } else if ( strcmp( args->args[1], "display" ) == 0 ) {
         // nothing to do
