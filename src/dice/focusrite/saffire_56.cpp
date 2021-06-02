@@ -154,11 +154,11 @@ void Saffire56::Saffire56EAP::setupDestinations_mid() {
 // 192 kHz is not supported
 //
 void Saffire56::Saffire56EAP::setupSources_high() {
-    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 40\n");
+    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 56\n");
 }
 
 void Saffire56::Saffire56EAP::setupDestinations_high() {
-    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 40\n");
+    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 56\n");
 }
 
 /**
@@ -292,7 +292,7 @@ Saffire56::Saffire56EAP::setupDefaultRouterConfig_mid() {
  */
 void
 Saffire56::Saffire56EAP::setupDefaultRouterConfig_high() {
-    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 40\n");
+    printMessage("High (192 kHz) sample rate not supported by Saffire Pro 56\n");
 }
 
 /**
