@@ -37,6 +37,7 @@ else:
 DEBMAINT = "Pieter Palmers [pieter.palmers@ffado.org]"
 DEBARCH = "i386"
 DEBDEPENDS = "libraw1394-8 (>= 1.3.0), libiec61883-0 (>= 1.1.0), libavc1394-0 (>= 0.5.3), dbus (>= 1.1.0)" # what are we dependent on?
+DEBRECOMMENDS = "qt5-ukui-platformtheme (>= 1.0.0)"
 DEBDESC = "FFADO: FireWire audio for Linux (Development build SVN r%s)" % env['REVISION']
 
 DEBFILES = [
@@ -107,6 +108,7 @@ Maintainer: %s
 Architecture: %s
 Version: %s
 Depends: %s
+Recommends: %s
 Description: %s
 
 """
@@ -123,7 +125,7 @@ def make_control(target=None, source=None, env=None):
         installed_size += os.stat(str(env.File(i[1])))[6]
     control_info = CONTROL_TEMPLATE % (
         DEBNAME, installed_size, DEBMAINT, DEBARCH, DEBVERSION,
-        DEBDEPENDS, DEBDESC)
+        DEBDEPENDS, DEBRECOMMENDS, DEBDESC)
     with open(str(target[0]), 'w') as f:
         f.write(control_info)
 
