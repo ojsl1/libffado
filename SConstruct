@@ -471,7 +471,7 @@ else:
 
 config_guess = conf.ConfigGuess()
 
-env = conf.Finish()
+conf.Finish()
 
 if env['DEBUG']:
     print("Doing a debug build")
