@@ -69,9 +69,9 @@ class ControlInterface:
             dev = self.bus.get_object(self.servername, path)
             dev_cont = dbus.Interface(dev, dbus_interface='org.ffado.Control.Element.Continuous')
             if idx == None:
-                return dev_cont.getValue()
+                return int(dev_cont.getValue())
             else:
-                return dev_cont.getValueIdx(idx)
+                return int(dev_cont.getValueIdx(idx))
         except:
             log.error("Failed to get Continuous %s on server %s" % (path, self.servername))
             return 0
