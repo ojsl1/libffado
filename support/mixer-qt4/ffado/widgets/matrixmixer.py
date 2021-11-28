@@ -89,9 +89,9 @@ class ColorForNumber:
         lc = self.colors[low]
         hc = self.colors[high]
         return QColor(
-                (1-f)*lc.red()   + f*hc.red(),
-                (1-f)*lc.green() + f*hc.green(),
-                (1-f)*lc.blue()  + f*hc.blue() )
+                int((1-f)*lc.red()   + f*hc.red()),
+                int((1-f)*lc.green() + f*hc.green()),
+                int((1-f)*lc.blue()  + f*hc.blue()) )
 
 class BckgrdColorForNumber(ColorForNumber):
     def __init__(self):
@@ -127,7 +127,7 @@ class MixerNode(QAbstractSlider):
         if max == -1:
             max = pow(2, 16)-1
         self.setRange(0, max)
-        self.setValue(value)
+        self.setValue(int(value))
         self.valueChanged.connect(self.internalValueChanged)
 
         self.setSmall(False)
@@ -693,9 +693,9 @@ class VolumeSlider(QSlider):
         self.setTickPosition(QSlider.TicksBothSides)
         v_min = 10.0*toDBvalue(0)
         v_max = 10.0*toDBvalue(65536)
-        self.setTickInterval((v_max-v_min)/10)
-        self.setMinimum(v_min)
-        self.setMaximum(v_max)
+        self.setTickInterval(int((v_max-v_min)/10))
+        self.setMinimum(int(v_min))
+        self.setMaximum(int(v_max))
         self.setSingleStep(1)
         self.sliderSetValue(value)
         self.In = In
@@ -706,7 +706,7 @@ class VolumeSlider(QSlider):
         #log.debug("Volume slider value changed( %i )" % value)
         v = 10.0*toDBvalue(value)
         #log.debug("Volume slider value changed(dB: %g )" % (0.1*v))
-        self.setValue(v)
+        self.setValue(int(v))
 
     def sliderReadValue(self, value):
         return fromDBvalue(0.1*value)
