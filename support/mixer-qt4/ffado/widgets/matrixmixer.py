@@ -300,7 +300,7 @@ class MixerChannel(QWidget):
         self.lbl.setAlignment(Qt.AlignCenter)
         if (smallFont):
             font = self.lbl.font()
-            font.setPointSize(font.pointSize()/1.5)
+            font.setPointSize(int(font.pointSize()/1.5 + 0.5))
             self.lbl.setFont(font)
         layout.addWidget(self.lbl, 0, 0, 1, 2)
         self.hideChannel(False)
