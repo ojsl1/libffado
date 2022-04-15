@@ -210,7 +210,9 @@ class MixerNode(QAbstractSlider):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
-            self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+            )
             ev.accept()
 
     def mouseReleaseEvent(self, ev):
@@ -218,7 +220,9 @@ class MixerNode(QAbstractSlider):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
-            self.setValue( self.tmpvalue - math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+            )
             self.pos = QtCore.QPointF(0, 0)
             del self.tmpvalue
             ev.accept()
@@ -229,7 +233,9 @@ class MixerNode(QAbstractSlider):
         if (ev.modifiers() & Qt.ControlModifier):
             tmpvalue = self.value()
             change = ev.delta()/8
-            self.setValue( tmpvalue + math.copysign(pow(abs(change), 2), change) )
+            self.setValue(
+                int(tmpvalue + math.copysign(pow(abs(change), 2), change))
+            )
             ev.accept()
         else:
             ev.ignore()
