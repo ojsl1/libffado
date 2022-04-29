@@ -534,10 +534,10 @@ class MatrixControlView(QWidget):
             for y in range(len(self.items[x])):
                 val = self.interface.getValue(x,y)
                 if (self.transpose):
-                    self.items[y][x].setValue(val)
+                    self.items[y][x].setValue(int(val))
                     self.items[y][x].internalValueChanged(val)
                 else:
-                    self.items[x][y].setValue(val)
+                    self.items[x][y].setValue(int(val))
                     self.items[x][y].internalValueChanged(val)
 
     def saveSettings(self, indent):
@@ -768,7 +768,7 @@ class BalanceSlider(QSlider):
         v_min = -50
         v_max = 50
         self.setTickPosition(QSlider.TicksBothSides)
-        self.setTickInterval((v_max-v_min)/2)
+        self.setTickInterval(int((v_max-v_min)/2))
         self.setMinimum(v_min)
         self.setMaximum(v_max)
         self.setSingleStep(1)
