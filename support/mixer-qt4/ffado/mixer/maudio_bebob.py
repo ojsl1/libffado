@@ -587,7 +587,7 @@ class MAudio_BeBoB(QWidget):
             idx = params[1]
             curr = self.hw.getContignuous(path, idx)
             state = -(curr / 0x7FFE) * 50 + 50
-            ctl.setValue(state)
+            ctl.setValue(int(state))
             ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in list(self.Volumes.items()):
