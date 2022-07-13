@@ -598,7 +598,7 @@ class MAudio_BeBoB(QWidget):
 
             db = self.hw.getContignuous(path, idx)
             vol = self.db2vol(db)
-            ctl.setValue(vol)
+            ctl.setValue(int(vol))
             ctl.valueChanged.connect(self.updateVolume)
 
             # to activate link button, a pair is checked twice, sign...
