@@ -487,7 +487,7 @@ public:
     DeviceManager& getDeviceManager()
         {return m_pDeviceManager;};
 private:
-    ffado_smartptr<ConfigRom>( m_pConfigRom );
+    ffado_smartptr<ConfigRom> m_pConfigRom;
     DeviceManager& m_pDeviceManager;
     Control::Container* m_genericContainer;
 protected:
