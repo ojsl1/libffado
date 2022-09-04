@@ -53,7 +53,7 @@ class VuMeter(QFrame):
         p = QPainter(self)
         value = self.level/4096
         r = self.rect()
-        r.setHeight(r.height() * math.sqrt(value))
+        r.setHeight(int(r.height() * math.sqrt(value)))
         r.moveBottom(self.rect().height())
         p.fillRect(r, self.palette().highlight())
 
