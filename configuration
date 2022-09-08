@@ -80,6 +80,13 @@ device_definitions = (
     driver      = "BEBOB";
     xmit_max_cycles_early_transmit = 4;
 },
+{ # From Greg Dorian
+    vendorid    = 0x0003db;
+    modelid     = 0x01dddd;
+    vendorname  = "Apogee";
+    modelname   = "Duet";
+    driver      = "OXFORD";
+},
 {
     vendorid    = 0x0007f5;
     modelid     = 0x00010048;
