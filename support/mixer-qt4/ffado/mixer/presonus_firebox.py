@@ -232,7 +232,7 @@ class Presonus_Firebox(QWidget):
             idx  = params[1]
             db   = self.hw.getContignuous(path, idx)
             vol  = self.db2vol(db)
-            elm.setValue(vol)
+            elm.setValue(int(vol))
             elm.valueChanged.connect(self.updateVolume)
 
             if idx == 0:
@@ -268,7 +268,7 @@ class Presonus_Firebox(QWidget):
             idx  = params[1]
             pan = self.hw.getContignuous(path, idx)
             val = self.pan2val(pan)
-            elm.setValue(val)
+            elm.setValue(int(val))
             elm.valueChanged.connect(self.updateBalance)
 
     # helper functions
