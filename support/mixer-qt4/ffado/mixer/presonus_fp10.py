@@ -131,7 +131,7 @@ class Presonus_FP10(QWidget):
 
            db = self.hw.getContignuous(path, idx)
            vol = self.db2vol(db)
-           ctl.setValue(vol)
+           ctl.setValue(int(vol))
            ctl.valueChanged.connect(self.updateVolume)
 
            if vol == 0:
@@ -151,7 +151,7 @@ class Presonus_FP10(QWidget):
 
             val = self.hw.getContignuous(path, idx)
             state = -(val / 0x7FFE) * 50 + 50
-            ctl.setValue(state)
+            ctl.setValue(int(state))
             ctl.valueChanged.connect(self.updatePanning)
 
         for ctl, params in self.Mutes.items():

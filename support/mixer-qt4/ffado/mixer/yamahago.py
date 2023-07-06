@@ -142,7 +142,7 @@ class YamahaGo(QWidget):
 
             db = self.hw.getContignuous(path, idx)
             vol = self.db2vol(db)
-            ctl.setValue(vol)
+            ctl.setValue(int(vol))
 
             link = params[4]
 
