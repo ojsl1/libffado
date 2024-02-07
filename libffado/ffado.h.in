@@ -30,6 +30,7 @@
 
 #define FFADO_MAX_NAME_LEN 256
 
+#include <stdint.h>
 #include <stdlib.h>
 
 #define FFADO_STREAMING_MAX_URL_LENGTH 2048

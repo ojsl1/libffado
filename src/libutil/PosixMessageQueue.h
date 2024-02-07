@@ -115,7 +115,7 @@ public:
 
 private:
     bool doOpen(enum eDirection t, int, enum eBlocking);
-    static void notifyCallbackStatic(sigval_t t) {
+    static void notifyCallbackStatic(union sigval t) {
         PosixMessageQueue *obj;
         obj = static_cast<PosixMessageQueue *>(t.sival_ptr);
         obj->notifyCallback();
