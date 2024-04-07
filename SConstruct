@@ -92,7 +92,7 @@ Build the tests in their directory. As some contain quite some functionality,
 ## Load the builders in config
 buildenv=os.environ
 
-env = Environment( tools=['default','scanreplace','pyuic','pyuic4','pyuic5','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
+env = Environment( tools=['default','scanreplace','dbus','doxygen','pkgconfig'], toolpath=['admin'], ENV = buildenv, options=opts )
 
 custom_flags = False
 
@@ -209,8 +209,6 @@ tests = {
     "CheckPKG" : CheckPKG,
 }
 tests.update( env['PKGCONFIG_TESTS'] )
-tests.update( env['PYUIC_TESTS'] )
-tests.update( env['PYUIC4_TESTS'] )
 
 conf = Configure( env,
     custom_tests = tests,
