@@ -395,7 +395,7 @@ results above get rechecked.
     env.Replace(CFLAGS=oldcf)
 
     if not conf.CheckFunc('argp_parse'):
-        if not conf.CheckLib('argp-standalone', 'argp_parse'):
+        if not conf.CheckLib('argp', 'argp_parse'):
             print("""
 The argp_parse() function is not in the system's libc and the argp-standalone
 library cannot be found.
@@ -404,7 +404,7 @@ Suggestion: install the argp-standalone library.  Remove the cache with
 "rm -Rf .sconsign.dblite cache" before retying the build so the argp checks
 are retried.
 """)
-        Exit( 1 )
+            Exit( 1 )
 
 #
 # Optional checks follow:
