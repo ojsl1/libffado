@@ -49,9 +49,10 @@ checks in the code.""", True ),
     PathVariable( "BINDIR", "Overwrite the directory where apps are installed to.", "$PREFIX/bin", PathVariable.PathAccept ),
     PathVariable( "LIBDIR", "Overwrite the directory where libs are installed to.", "$PREFIX/lib", PathVariable.PathAccept ),
     PathVariable( "INCLUDEDIR", "Overwrite the directory where headers are installed to.", "$PREFIX/include", PathVariable.PathAccept ),
-    PathVariable( "SHAREDIR", "Overwrite the directory where misc shared files are installed to.", "$PREFIX/share/libffado", PathVariable.PathAccept ),
+    PathVariable( "DATADIR", "Overwrite the directory where platform-independent files are installed to.", "$PREFIX/share", PathVariable.PathAccept ),
+    PathVariable( "SHAREDIR", "Overwrite the directory where misc shared files are installed to.", "$DATADIR/libffado", PathVariable.PathAccept ),
     PathVariable( "LIBDATADIR", "Location for architecture-dependent data.", "$LIBDIR/libffado", PathVariable.PathAccept ),
-    PathVariable( "MANDIR", "Overwrite the directory where manpages are installed", "$PREFIX/man", PathVariable.PathAccept ),
+    PathVariable( "MANDIR", "Overwrite the directory where manpages are installed", "$DATADIR/man", PathVariable.PathAccept ),
     PathVariable( "PYPKGDIR", "The directory where the python modules get installed.",
         distutils.sysconfig.get_python_lib( prefix="$PREFIX" ), PathVariable.PathAccept ),
     PathVariable( "UDEVDIR", "Overwrite the directory where udev rules are installed to.", "/lib/udev/rules.d/", PathVariable.PathAccept ),
@@ -533,6 +534,7 @@ env.destdir = ARGUMENTS.get( 'DESTDIR', "" )
 env['BINDIR'] = Template( env['BINDIR'] ).safe_substitute( env )
 env['LIBDIR'] = Template( env['LIBDIR'] ).safe_substitute( env )
 env['INCLUDEDIR'] = Template( env['INCLUDEDIR'] ).safe_substitute( env )
+env['DATADIR'] = Template( env['DATADIR'] ).safe_substitute( env )
 env['SHAREDIR'] = Template( env['SHAREDIR'] ).safe_substitute( env )
 env['LIBDATADIR'] = Template( env['LIBDATADIR'] ).safe_substitute( env )
 env['UDEVDIR'] = Template( env['UDEVDIR'] ).safe_substitute( env )
@@ -541,18 +543,21 @@ env['prefix'] = Template( env.destdir + env['PREFIX'] ).safe_substitute( env )
 env['bindir'] = Template( env.destdir + env['BINDIR'] ).safe_substitute( env )
 env['libdir'] = Template( env.destdir + env['LIBDIR'] ).safe_substitute( env )
 env['includedir'] = Template( env.destdir + env['INCLUDEDIR'] ).safe_substitute( env )
+env['datadir'] = Template( env.destdir + env['DATADIR'] ).safe_substitute( env )
 env['sharedir'] = Template( env.destdir + env['SHAREDIR'] ).safe_substitute( env )
 env['libdatadir'] = Template( env.destdir + env['LIBDATADIR'] ).safe_substitute( env )
 env['mandir'] = Template( env.destdir + env['MANDIR'] ).safe_substitute( env )
 env['pypkgdir'] = Template( env.destdir + env['PYPKGDIR'] ).safe_substitute( env )
 env['udevdir'] = Template( env.destdir + env['UDEVDIR'] ).safe_substitute( env )
 env['PYPKGDIR'] = Template( env['PYPKGDIR'] ).safe_substitute( env )
-env['metainfodir'] = Template( env.destdir + "/usr/share/metainfo" ).safe_substitute( env )
+env['metainfodir'] = Template( env.destdir + env['DATADIR'] + "/metainfo" ).safe_substitute( env )
 
+env.Command( target=env['datadir'], source="", action=Mkdir( env['datadir'] ) )
 env.Command( target=env['sharedir'], source="", action=Mkdir( env['sharedir'] ) )
 
 env.Alias( "install", env['libdir'] )
 env.Alias( "install", env['includedir'] )
+env.Alias( "install", env['datadir'] )
 env.Alias( "install", env['sharedir'] )
 env.Alias( "install", env['libdatadir'] )
 env.Alias( "install", env['bindir'] )
