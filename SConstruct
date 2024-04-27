@@ -434,16 +434,6 @@ The prerequisites ('pyuic4'/'pyuic5' and the python-modules 'dbus' and
 build the mixer were not found, but BUILD_MIXER was requested.""")
             Exit( 1 )
 
-env['XDG_TOOLS'] = False
-if env['BUILD_MIXER'] == 'true':
-    if conf.CheckForApp( 'xdg-desktop-menu --help' ) and conf.CheckForApp( 'xdg-icon-resource --help' ):
-        env['XDG_TOOLS'] = True
-    else:
-        print("""
-I couldn't find the 'xdg-desktop-menu' and 'xdg-icon-resource' programs. These
-are needed to add the fancy entry for the mixer to your menu, but you can still
-start it by executing "ffado-mixer".""")
-
 #
 # Optional pkg-config
 #
@@ -551,6 +541,8 @@ env['pypkgdir'] = Template( env.destdir + env['PYPKGDIR'] ).safe_substitute( env
 env['udevdir'] = Template( env.destdir + env['UDEVDIR'] ).safe_substitute( env )
 env['PYPKGDIR'] = Template( env['PYPKGDIR'] ).safe_substitute( env )
 env['metainfodir'] = Template( env.destdir + env['DATADIR'] + "/metainfo" ).safe_substitute( env )
+env['desktopdir'] = Template( env.destdir + env['DATADIR'] + "/applications" ).safe_substitute( env )
+env['appicondir64'] = Template( env.destdir + env['DATADIR'] + "/icons/hicolor/64x64/apps" ).safe_substitute( env )
 
 env.Command( target=env['datadir'], source="", action=Mkdir( env['datadir'] ) )
 env.Command( target=env['sharedir'], source="", action=Mkdir( env['sharedir'] ) )
@@ -565,6 +557,8 @@ env.Alias( "install", env['mandir'] )
 if env['BUILD_MIXER'] == 'true':
     env.Alias( "install", env['pypkgdir'] )
     env.Alias( "install", env['metainfodir'] )
+    env.Alias('install', env['desktopdir'])
+    env.Alias('install', env['appicondir64'])
 
 #
 # shamelessly copied from the Ardour scons file
@@ -953,41 +947,8 @@ if not env.GetOption('clean'):
 
 if env['BUILD_MIXER'] == 'true':
     env.Install( env['metainfodir'], "support/xdg/org.ffado.FfadoMixer.metainfo.xml" )
-
-#
-# Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
-# xdg-tools can't deal with DESTDIR, so the packagers have to deal with this
-# their own :-/
-#
-if len(env.destdir) > 0:
-    if not len( ARGUMENTS.get( "WILL_DEAL_WITH_XDG_MYSELF", "" ) ) > 0:
-        print("""
-WARNING!
-You are using the (packagers) option DESTDIR to install this package to a
-different place than the real prefix. As the xdg-tools can't cope with
-that, the .desktop-files are not installed by this build, you have to
-deal with them your own.
-(And you have to look into the SConstruct to learn how to disable this
-message.)
-""")
-else:
-
-    def CleanAction( action ):
-        if env.GetOption( "clean" ):
-            env.Execute( action )
-
-    if env['BUILD_MIXER'] == 'true' and env['XDG_TOOLS']:
-        if not env.GetOption("clean"):
-            action = "install"
-        else:
-            action = "uninstall"
-        mixerdesktopaction = env.Action( "-xdg-desktop-menu %s support/xdg/org.ffado.FfadoMixer.desktop" % action )
-        mixericonaction = env.Action( "-xdg-icon-resource %s --size 64 --novendor --context apps support/xdg/hi64-apps-ffado.png ffado" % action )
-        env.Command( "__xdgstuff1", None, mixerdesktopaction )
-        env.Command( "__xdgstuff2", None, mixericonaction )
-        env.Alias( "install", ["__xdgstuff1", "__xdgstuff2" ] )
-        CleanAction( mixerdesktopaction )
-        CleanAction( mixericonaction )
+    env.Install( env['desktopdir'], 'support/xdg/org.ffado.FfadoMixer.desktop' )
+    env.Install( env['appicondir64'], 'support/xdg/hi64-apps-ffado.png' )
 
 #
 # Create a tags-file for easier emacs/vim-source-browsing
