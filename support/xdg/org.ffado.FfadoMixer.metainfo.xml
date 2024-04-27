@@ -17,12 +17,12 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>http://ffado.org/appdata/ffado-mixer-screenshot.png</image>
+      <image>https://ffado.org/appdata/ffado-mixer-screenshot.png</image>
       <caption>Example of main ffado-mixer window.</caption>
     </screenshot>
   </screenshots>
 
-  <url type="homepage">http://ffado.org/</url>
+  <url type="homepage">https://ffado.org/</url>
   <update_contact>ffado-devel@lists.sourceforge.net</update_contact>
   <content_rating type="oars-1.1" />
   <developer id="org.ffado">
