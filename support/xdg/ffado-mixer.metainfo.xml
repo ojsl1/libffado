@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (C) 2006-2018 FFADO development team -->
-<component type="desktop">
-  <id>ffado.org-ffadomixer.desktop</id>
+<component type="desktop-application">
+  <id>ffado.org-ffadomixer</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0 OR GPL-3.0</project_license>
+  <project_license>GPL-2.0-only OR GPL-3.0-only</project_license>
   <name>ffado-mixer</name>
   <summary>A graphical front-end for the FFADO mixer DBus controls exposed by ffado-dbus-server</summary>
-  <translation/>
   <description>
     <p>
       ffado-mixer presents a graphical application allowing a FireWire audio interface to be controlled.
@@ -25,4 +24,9 @@
 
   <url type="homepage">http://ffado.org/</url>
   <update_contact>ffado-devel@lists.sourceforge.net</update_contact>
+  <content_rating type="oars-1.1" />
+  <developer id="org.ffado">
+    <name>The FFADO Team</name>
+  </developer>
+  <launchable type="desktop-id">ffado.org-ffadomixer.desktop</launchable>
 </component>

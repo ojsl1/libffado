@@ -952,7 +952,7 @@ if not env.GetOption('clean'):
         Default( 'doc' )
 
 if env['BUILD_MIXER'] == 'true':
-    env.Install( env['metainfodir'], "support/xdg/ffado-mixer.appdata.xml" )
+    env.Install( env['metainfodir'], "support/xdg/ffado-mixer.metainfo.xml" )
 
 #
 # Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
