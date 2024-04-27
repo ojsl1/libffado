@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (C) 2006-2018 FFADO development team -->
 <component type="desktop-application">
-  <id>ffado.org-ffadomixer</id>
+  <id>org.ffado.FfadoMixer</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-only OR GPL-3.0-only</project_license>
   <name>ffado-mixer</name>
@@ -28,5 +28,8 @@
   <developer id="org.ffado">
     <name>The FFADO Team</name>
   </developer>
-  <launchable type="desktop-id">ffado.org-ffadomixer.desktop</launchable>
+  <launchable type="desktop-id">org.ffado.FfadoMixer.desktop</launchable>
+  <replaces>
+    <id>ffado.org-ffadomixer</id>
+  </replaces>
 </component>

@@ -952,7 +952,7 @@ if not env.GetOption('clean'):
         Default( 'doc' )
 
 if env['BUILD_MIXER'] == 'true':
-    env.Install( env['metainfodir'], "support/xdg/ffado-mixer.metainfo.xml" )
+    env.Install( env['metainfodir'], "support/xdg/org.ffado.FfadoMixer.metainfo.xml" )
 
 #
 # Deal with the DESTDIR vs. xdg-tools conflict (which is basicely that the
@@ -981,7 +981,7 @@ else:
             action = "install"
         else:
             action = "uninstall"
-        mixerdesktopaction = env.Action( "-xdg-desktop-menu %s support/xdg/ffado.org-ffadomixer.desktop" % action )
+        mixerdesktopaction = env.Action( "-xdg-desktop-menu %s support/xdg/org.ffado.FfadoMixer.desktop" % action )
         mixericonaction = env.Action( "-xdg-icon-resource %s --size 64 --novendor --context apps support/xdg/hi64-apps-ffado.png ffado" % action )
         env.Command( "__xdgstuff1", None, mixerdesktopaction )
         env.Command( "__xdgstuff2", None, mixericonaction )
