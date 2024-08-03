@@ -148,7 +148,7 @@ class MixerNode(QAbstractSlider):
         if value != 0:
             self.spinbox.setValue(toDBvalue(value))            
 
-        self.spinbox.valueChanged.connect(self.directValues)
+        self.spinbox.editingFinished.connect(self.spinBoxSetsValue)
         action = QWidgetAction(self)
         action.setDefaultWidget(self.spinbox)
         self.addAction(action)
@@ -185,6 +185,11 @@ class MixerNode(QAbstractSlider):
             self.inv_action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(self.inv_action, "Invert")
             self.addAction(self.inv_action)
+
+    def spinBoxSetsValue(self):
+        n = fromDBvalue(self.spinbox.value())
+        #log.debug("  linear value: %g" % n)
+        self.setValue(n)
 
     def directValues(self,text):
         #log.debug("MixerNode.directValues( '%s' )" % text)
