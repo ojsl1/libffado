@@ -210,30 +210,30 @@ class MixerNode(QAbstractSlider):
     def mousePressEvent(self, ev):
         if ev.buttons() & Qt.LeftButton:
             self.pos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
-            self.tmpvalue = self.value()
+            self.dBval = toDBvalue(self.value())
             ev.accept()
             #log.debug("MixerNode.mousePressEvent() %s" % str(self.pos))
 
     def mouseMoveEvent(self, ev):
-        if hasattr(self, "tmpvalue") and self.pos is not QtCore.QPointF(0, 0):
+        if hasattr(self, "dBval") and self.pos is not QtCore.QPointF(0, 0):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
-            #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
+            #log.debug("MixerNode.mouseMoveEvent() change %s" % (str(change)))
             self.setValue(
-                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+                int(fromDBvalue(self.dBval - change / 10.0))
             )
             ev.accept()
 
     def mouseReleaseEvent(self, ev):
-        if hasattr(self, "tmpvalue") and self.pos is not QtCore.QPointF(0, 0):
+        if hasattr(self, "dBval") and self.pos is not QtCore.QPointF(0, 0):
             newpos = ev.posF() if ffado_pyqt_version == 4 else ev.localPos()
             change = newpos.y() - self.pos.y()
             #log.debug("MixerNode.mouseReleaseEvent() change %s" % (str(change)))
             self.setValue(
-                int(self.tmpvalue - math.copysign(pow(abs(change), 2), change))
+                int(fromDBvalue(self.dBval - change / 10.0))
             )
             self.pos = QtCore.QPointF(0, 0)
-            del self.tmpvalue
+            del self.dBval
             ev.accept()
 
     # Wheel event is mainly for scrolling inside the mixer window
