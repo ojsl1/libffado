@@ -762,12 +762,24 @@ class VolumeSliderValueInfo(QLineEdit):
 
     def editDone(self):
         text = str(self.text()).split(" ")[0].replace(",",".")
-        value = fromDBvalue(float(text))
+        if text == "-\u221E":
+            value = 0
+        elif self.isFloat(text):
+            value = fromDBvalue(min(float(text), self.vol_max))
+        else:
+            value = 0
         #log.debug("VolumeSliderValueInfo  linear value: %g" % value)
         self.valueEdited.emit((self.In, self.Out, value))
         self.clearFocus()
         self.labelSetValue(value)
         self.update()
+
+    def isFloat(self, v):
+        try:
+            f=float(v)
+        except ValueError:
+            return False
+        return True
 
     def labelSetMinimalDim(self):
         fontmetrics = self.fontMetrics()
