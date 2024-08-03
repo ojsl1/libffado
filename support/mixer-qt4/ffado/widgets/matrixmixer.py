@@ -749,17 +749,17 @@ class VolumeSliderValueInfo(QLineEdit):
         self.setAutoFillBackground(True)
         self.setFrame(False)
 
-        self.sliderSetMinimalDim()
+        self.labelSetMinimalDim()
 
         self.bgcolors = BckgrdColorForNumber()
 
-        self.sliderSetValue(value)
+        self.labelSetValue(value)
 
-    def sliderSetMinimalDim(self):
+    def labelSetMinimalDim(self):
         fontmetrics = self.fontMetrics()
         self.setMinimumSize(fontmetrics.boundingRect("-00.0 dB").size()*1.1)
         
-    def sliderSetValue(self, value):
+    def labelSetValue(self, value):
         color = self.bgcolors.getColor(value)
         palette = self.palette()
         palette.setColor(QPalette.Active, QPalette.Base, color)
@@ -983,7 +983,7 @@ class SliderControlView(QWidget):
                 self.volumeDisconnect(self.out[i].volume[n_0])
                 self.balanceDisconnect(self.out[i].balance[n_0])
                 self.out[i].volume[n_0].sliderSetValue(v)
-                self.out[i].svl[n_0].sliderSetValue(v)
+                self.out[i].svl[n_0].labelSetValue(v)
                 b = self.getBalanceValue(n_0, i)       
                 # log.debug("update Value (%d %d %d %f)" % (n_0, i, v, b))
                 self.out[i].balance[n_0].sliderSetValue(b)
@@ -994,7 +994,7 @@ class SliderControlView(QWidget):
                 # log.debug("update Value (%d %d %d)" % (n_0, i, v))
                 self.volumeDisconnect(self.out[i].volume[n_0])
                 self.out[i].volume[n_0].sliderSetValue(v)
-                self.out[i].svl[n_0].sliderSetValue(v)
+                self.out[i].svl[n_0].labelSetValue(v)
                 self.volumeConnect(self.out[i].volume[n_0])
         
     def valueChangedVolume(self, n):
@@ -1014,7 +1014,7 @@ class SliderControlView(QWidget):
             self.setValue(n[0], n1, v)
             n_t = (n[0], n1, v)
             self.valueChanged.emit(n_t)
-        self.out[n[1]].svl[n[0]].sliderSetValue(v)
+        self.out[n[1]].svl[n[0]].labelSetValue(v)
 
     def valueChangedBalance(self, n):
         #log.debug("BalanceSlider.valueChanged( %s )" % str(n))
@@ -1094,7 +1094,7 @@ class SliderControlView(QWidget):
                 if (self.out[i].is_stereo):
                     self.volumeDisconnect(self.out[i].volume[n_in])
                     self.out[i].volume[n_in].sliderSetValue(v)
-                    self.out[i].svl[n_in].sliderSetValue(v)
+                    self.out[i].svl[n_in].labelSetValue(v)
                     b = self.getBalanceValue(n_in, i)       
                     # log.debug("update Value (%d %d %d %f)" % (n_0, i, v, b))
                     self.out[i].balance[n_in].sliderSetValue(b)
@@ -1102,7 +1102,7 @@ class SliderControlView(QWidget):
                 else:
                     # log.debug("update Value (%d %d %d)" % (n_0, i, v))
                     self.out[i].volume[n_in].sliderSetValue(v)
-                    self.out[i].svl[n_in].sliderSetValue(v)
+                    self.out[i].svl[n_in].labelSetValue(v)
 
     def saveSettings(self, indent):
         if ffado.config.bypassdbus:
@@ -1384,7 +1384,7 @@ class MatrixMixer(QWidget):
 
         for i in range(self.perOut.nbOut):
             for j in range(self.perOut.nbIn):
-                self.perOut.out[i].svl[j].sliderSetMinimalDim()
+                self.perOut.out[i].svl[j].labelSetMinimalDim()
 
     # Allows long name for Mixer/Out and /In to be hidden 
     def shortChannelNames(self):
