@@ -162,7 +162,7 @@ class MixerNode(QAbstractSlider):
         # Only show the mute menu item if a value has been supplied
         self.mute_action = None
         if (muted != None):
-            action = QAction(text, self)
+            action = QAction(None, self)
             action.setSeparator(True)
             self.addAction(action)
             self.mute_action = QAction("Mute", self)
