@@ -738,13 +738,15 @@ class VolumeSlider(QSlider):
 
 
 class VolumeSliderValueInfo(QLineEdit):
+    valueEdited = pyqtSignal(tuple)
     def __init__(self, In, Out, value, parent):
         QLineEdit.__init__(self, parent)
 
         self.vol_min = -60.0
         self.vol_max = 6.0
 
-        self.setReadOnly(True)
+        self.setReadOnly(False)
+        self.editingFinished.connect(self.editDone)
         self.setAlignment(Qt.AlignCenter)
         self.setAutoFillBackground(True)
         self.setFrame(False)
@@ -753,7 +755,19 @@ class VolumeSliderValueInfo(QLineEdit):
 
         self.bgcolors = BckgrdColorForNumber()
 
+        self.In = In
+        self.Out = Out
+
         self.labelSetValue(value)
+
+    def editDone(self):
+        text = str(self.text()).split(" ")[0].replace(",",".")
+        value = fromDBvalue(float(text))
+        #log.debug("VolumeSliderValueInfo  linear value: %g" % value)
+        self.valueEdited.emit((self.In, self.Out, value))
+        self.clearFocus()
+        self.labelSetValue(value)
+        self.update()
 
     def labelSetMinimalDim(self):
         fontmetrics = self.fontMetrics()
@@ -894,6 +908,7 @@ class SliderControlView(QWidget):
                 svl = VolumeSliderValueInfo(j, i, self.getVolumeValue(j,i), h_v_layout_wid)
                 h_v_layout.addWidget(svl)
                 self.out[i].svl.append(svl)
+                self.volumeLabelConnect(svl)
 
                 # Balance fader
                 if self.out[i].is_stereo:
@@ -910,6 +925,12 @@ class SliderControlView(QWidget):
 
     def volumeDisconnect(self, volume):
         volume.sliderChanged.disconnect(self.valueChangedVolume)
+
+    def volumeLabelConnect(self, svl):
+        svl.valueEdited.connect(self.valueChangedVolume)
+
+    def volumeLabelDisconnect(self, svl):
+        svl.valueEdited.disconnect(self.valueChangedVolume)
 
     def balanceConnect(self, balance):
         balance.sliderChanged.connect(self.valueChangedBalance)
@@ -981,6 +1002,7 @@ class SliderControlView(QWidget):
             if (self.out[i].is_stereo):
                 v = self.getVolumeValue(n_0, i)
                 self.volumeDisconnect(self.out[i].volume[n_0])
+                self.volumeLabelDisconnect(self.out[i].svl[n_0])
                 self.balanceDisconnect(self.out[i].balance[n_0])
                 self.out[i].volume[n_0].sliderSetValue(v)
                 self.out[i].svl[n_0].labelSetValue(v)
@@ -988,14 +1010,17 @@ class SliderControlView(QWidget):
                 # log.debug("update Value (%d %d %d %f)" % (n_0, i, v, b))
                 self.out[i].balance[n_0].sliderSetValue(b)
                 self.volumeConnect(self.out[i].volume[n_0])
+                self.volumeLabelConnect(self.out[i].svl[n_0])
                 self.balanceConnect(self.out[i].balance[n_0])
             else:
                 v = n_2
                 # log.debug("update Value (%d %d %d)" % (n_0, i, v))
                 self.volumeDisconnect(self.out[i].volume[n_0])
+                self.volumeLabelDisconnect(self.out[i].svl[n_0])
                 self.out[i].volume[n_0].sliderSetValue(v)
                 self.out[i].svl[n_0].labelSetValue(v)
                 self.volumeConnect(self.out[i].volume[n_0])
+                self.volumeLabelConnect(self.out[i].svl[n_0])
         
     def valueChangedVolume(self, n):
         #log.debug("VolumeSlider.valueChanged( %s )" % str(n))
@@ -1015,6 +1040,7 @@ class SliderControlView(QWidget):
             n_t = (n[0], n1, v)
             self.valueChanged.emit(n_t)
         self.out[n[1]].svl[n[0]].labelSetValue(v)
+        self.out[n[1]].volume[n[0]].sliderSetValue(v)
 
     def valueChangedBalance(self, n):
         #log.debug("BalanceSlider.valueChanged( %s )" % str(n))
@@ -1093,12 +1119,14 @@ class SliderControlView(QWidget):
                 v = self.getVolumeValue(n_in, i)
                 if (self.out[i].is_stereo):
                     self.volumeDisconnect(self.out[i].volume[n_in])
+                    self.volumeLabelDisconnect(self.out[i].svl[n_in])
                     self.out[i].volume[n_in].sliderSetValue(v)
                     self.out[i].svl[n_in].labelSetValue(v)
                     b = self.getBalanceValue(n_in, i)       
                     # log.debug("update Value (%d %d %d %f)" % (n_0, i, v, b))
                     self.out[i].balance[n_in].sliderSetValue(b)
                     self.volumeConnect(self.out[i].volume[n_in])
+                    self.volumeLabelConnect(self.out[i].svl[n_in])
                 else:
                     # log.debug("update Value (%d %d %d)" % (n_0, i, v))
                     self.out[i].volume[n_in].sliderSetValue(v)
