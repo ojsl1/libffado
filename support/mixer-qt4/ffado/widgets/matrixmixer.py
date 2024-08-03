@@ -39,15 +39,15 @@ log = logging.getLogger("matrixmixer")
 def toDBvalue(value):
     n = int(value)
     c2p14 = 16384.0
-    if n > 164:
+    if n > 16:
         return round(20.0*math.log10(float(n)/c2p14), 2)
     else:
-        return -40.0
+        return -60.0
 
 def fromDBvalue(value):
     v = float(value)
     c2p14 = 16384.0
-    if (v > -40):
+    if (v > -60.0):
         return int(round(math.pow(10.0, (value/20.0))*c2p14, 0))
     else:
         return 0
@@ -114,6 +114,9 @@ class MixerNode(QAbstractSlider):
         QAbstractSlider.__init__(self, parent)
         #log.debug("MixerNode.__init__( %i, %i, %i, %i, %s )" % (input, output, value, max, str(parent)) )
 
+        self.vol_min = -60.0
+        self.vol_max = 6.0
+
         # Store a direct link back to the underlying matrix object so the mute
         # and invert interfaces can be easily found.  By the time the matrix 
         # has been set into the full widget hierarchy, its parent is unlikely
@@ -139,7 +142,7 @@ class MixerNode(QAbstractSlider):
         self.mapper.mapped['QString'].connect(self.directValues)
 
         self.spinbox = QDoubleSpinBox(self)
-        self.spinbox.setRange(-40, 12)
+        self.spinbox.setRange(self.vol_min, self.vol_max)
         self.spinbox.setSuffix(" dB")
         if value != 0:
             self.spinbox.setValue(toDBvalue(value))            
@@ -696,10 +699,12 @@ class VolumeSlider(QSlider):
     def __init__(self, In, Out, value, parent):
         QSlider.__init__(self, QtCore.Qt.Vertical, parent)
 
+        self.vol_min = -60.0
+        self.vol_max = 6.0
         self.setTickPosition(QSlider.TicksBothSides)
-        v_min = 10.0*toDBvalue(0)
-        v_max = 10.0*toDBvalue(65536)
-        self.setTickInterval(int((v_max-v_min)/10))
+        v_min = 10.0*self.vol_min
+        v_max = 10.0*self.vol_max
+        self.setTickInterval(int((self.vol_max-self.vol_min)/10))
         self.setMinimum(int(v_min))
         self.setMaximum(int(v_max))
         self.setSingleStep(1)
@@ -729,6 +734,9 @@ class VolumeSliderValueInfo(QLineEdit):
     def __init__(self, In, Out, value, parent):
         QLineEdit.__init__(self, parent)
 
+        self.vol_min = -60.0
+        self.vol_max = 6.0
+
         self.setReadOnly(True)
         self.setAlignment(Qt.AlignCenter)
         self.setAutoFillBackground(True)
@@ -752,7 +760,7 @@ class VolumeSliderValueInfo(QLineEdit):
         self.setPalette(palette)
 
         v = round(toDBvalue(value),1)
-        if (v > -40):
+        if (v > self.vol_min):
             text = "%.1f dB" % v
         else:
             symb_inf = u"\u221E"
