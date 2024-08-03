@@ -153,7 +153,7 @@ class MixerNode(QAbstractSlider):
         action.setDefaultWidget(self.spinbox)
         self.addAction(action)
 
-        for text in ["3 dB", "0 dB", "-3 dB", "-20 dB", "-inf dB"]:
+        for text in ["3 dB", "0 dB", "-3 dB", "-10 dB", "-15 dB", "-20 dB", "-25 dB", "-30 dB", "-35 dB", "-40 dB", "-45 dB", "-50 dB", "-55 dB", "-inf dB"]:
             action = QAction(text, self)
             action.triggered.connect(self.mapper.map)
             self.mapper.setMapping(action, text)
