@@ -143,6 +143,7 @@ class MixerNode(QAbstractSlider):
 
         self.spinbox = QDoubleSpinBox(self)
         self.spinbox.setRange(self.vol_min, self.vol_max)
+        self.spinbox.setDecimals(1)
         self.spinbox.setSuffix(" dB")
         if value != 0:
             self.spinbox.setValue(toDBvalue(value))            
@@ -262,7 +263,7 @@ class MixerNode(QAbstractSlider):
         if v != 0:
             lv = toDBvalue(v)
             #log.debug("new value is %g dB" % lv)
-        text = "%.2g dB" % lv
+        text = "%.1f dB" % lv
         if v == 0:
             symb_inf = u"\u221E"
             text = "-" + symb_inf + " dB"
