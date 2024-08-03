@@ -302,7 +302,7 @@ class MixerNode(QAbstractSlider):
             self.setMinimumSize(10, 10)
         else:
             fontmetrics = self.fontMetrics()
-            self.setMinimumSize(fontmetrics.boundingRect("-0.0 dB").size()*1.1)
+            self.setMinimumSize(fontmetrics.boundingRect("-44.4 dB").size()*1.2)
         self.update()
 
 class MixerChannel(QWidget):
@@ -757,7 +757,7 @@ class VolumeSliderValueInfo(QLineEdit):
 
     def labelSetMinimalDim(self):
         fontmetrics = self.fontMetrics()
-        self.setMinimumSize(fontmetrics.boundingRect("-00.0 dB").size()*1.1)
+        self.setMinimumSize(fontmetrics.boundingRect("-44.4 dB").size()*1.2)
         
     def labelSetValue(self, value):
         color = self.bgcolors.getColor(value)
