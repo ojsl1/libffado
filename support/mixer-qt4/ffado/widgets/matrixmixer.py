@@ -1253,7 +1253,7 @@ class MatrixMixer(QWidget):
         font_switch.setToolTip("Labels font size")
         font = font_switch.font()
         for i in range(10):
-            font_switch.addItem(" %d " % (font.pointSize()+4-i))
+            font_switch.addItem(" %d " % (6 + i))
         font_switch.setCurrentIndex(font_switch.findText(" %d " % font.pointSize()))
         mxv_set.addWidget(font_switch)
         mxv_set.addSeparator()
@@ -1366,6 +1366,8 @@ class MatrixMixer(QWidget):
 
     # Font size for channel names
     def changeFontSize(self, size):
+        size = size + 6
+
         font = self.mxv_set.font()
         font.setPointSize(int(size))
         self.mxv_set.setFont(font)
