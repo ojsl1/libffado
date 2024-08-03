@@ -240,10 +240,11 @@ class MixerNode(QAbstractSlider):
     #   Additionnaly press Control key for wheel controling the values
     def wheelEvent (self, ev):
         if (ev.modifiers() & Qt.ControlModifier):
-            tmpvalue = self.value()
-            change = ev.delta()/8
+            self.dBvalW = toDBvalue(self.value())
+            change = ev.angleDelta().y() / 120
+            #log.debug("MixerNode.wheelEvent() change %s" % (str(change)))
             self.setValue(
-                int(tmpvalue + math.copysign(pow(abs(change), 2), change))
+                int(fromDBvalue(self.dBvalW + change))
             )
             ev.accept()
         else:
