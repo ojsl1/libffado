@@ -248,11 +248,19 @@ class CrossbarRouter(QWidget):
                 for s in routerReadString[idxb+1:idxe]:
                     destination = s.split()[0]
                     if str(self.destinations).find(destination) != -1:
-                        source = s.split()[1]
-                        if sources.find(source) != -1:                        
+                        source = s.split()
+                        if len(source) > 1:
+                            source = source[1]
+                        else:
+                            source = ""
+
+                        if source != "" and sources.find(source) != -1:
                             idx = self.switchers[destination].combo.findText(source)
                             self.switchers[destination].combo.setCurrentIndex(idx)
                             self.switchers[destination].comboCurrentChanged(source)
+                        else:
+                            self.switchers[destination].combo.setCurrentIndex(0)
+                            self.switchers[destination].comboCurrentChanged(0)
         return True
 #
 # vim: sw=4 ts=4 et
