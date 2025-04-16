@@ -207,6 +207,16 @@ ConfigRom::initialize()
     m_guid = ((u_int64_t)CSR1212_BE32_TO_CPU(m_csr->bus_info_data[3]) << 32)
              | CSR1212_BE32_TO_CPU(m_csr->bus_info_data[4]);
 
+    // Workaround: every MAudio ProFire 2626 has the same GUID.  Try to make
+    // them unique by adding the node ID so FFADO can handle multiple ProFire
+    // 2626s if connected.
+    if (m_guid == 0x000d6c0404000002) {
+        debugOutput(DEBUG_LEVEL_INFO,
+                    "Making ProFire 2626 GUID unique: adding bus node ID (%d)",
+                    m_nodeId);
+        m_guid += m_nodeId;
+    }
+
     if ( m_vendorNameKv ) {
         csr1212_release_keyval( m_vendorNameKv );
         m_vendorNameKv = 0;
