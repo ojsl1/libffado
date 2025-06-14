@@ -223,7 +223,7 @@ def get_ffado_version():
         lib = ctypes.cdll.LoadLibrary('libffado.so')
         func = ctypes.CFUNCTYPE(ctypes.c_char_p)
         ffado_get_version = func(('ffado_get_version', lib))
-        return ffado_get_version()
+        return str(ffado_get_version())
     except:
         return "libffado"
 
