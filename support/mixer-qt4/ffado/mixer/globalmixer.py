@@ -96,8 +96,8 @@ class GlobalMixer(QWidget):
     @pyqtSlot()
     def on_txtNickname_returnPressed( self ):
         if self.nickname.canChangeValue():
-            asciiData = self.txtNickname.text().toAscii()
-            self.nickname.setText( asciiData.data() )
+            asciiData = ascii(self.txtNickname.text())
+            self.nickname.setText( asciiData )
         else:
             self.txtNickname.setText( self.nickname.text() )
 
