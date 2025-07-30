@@ -1588,7 +1588,7 @@ class MatrixMixer(QWidget):
                     log.debug("No <channels> tag found")
                     return False
                 for s in readMixerString[idx+5:idx+5+n]:
-                    i = (int(s.split()[0]) - 1)/2
+                    i = int((int(s.split()[0]) - 1)/2)
                     self.stereo_switch[i].setChecked(True);
                     self.switchStereoChannel(i, True)
         return True
