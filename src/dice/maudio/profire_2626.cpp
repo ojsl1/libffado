@@ -55,7 +55,7 @@ void Profire2626::Profire2626EAP::setupSources_low()
 {
     addSource("Mic/Line/In", 0, 8, eRS_InS1, 1);
     addSource("ADAT A/In", 0, 8, eRS_ADAT, 1);
-    addSource("ADAT B/In", 9, 8, eRS_ADAT, 1);
+    addSource("ADAT B/In", 8, 8, eRS_ADAT, 1);
     addSource("SPDIF/In", 14, 2, eRS_AES, 1);
     addSource("Mixer/Out", 0, 16, eRS_Mixer, 1);
     addSource("1394/In", 0, 10, eRS_ARX0, 1);
