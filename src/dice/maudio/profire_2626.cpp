@@ -54,8 +54,8 @@ Profire2626::Profire2626EAP::Profire2626EAP(Dice::Device & dev)
 void Profire2626::Profire2626EAP::setupSources_low()
 {
     addSource("Mic/Line/In", 0, 8, eRS_InS1, 1);
-    addSource("ADAT A/In", 0, 8, eRS_ADAT, 1);
-    addSource("ADAT B/In", 8, 8, eRS_ADAT, 1);
+    addSource("ADAT-A/In", 0, 8, eRS_ADAT, 1);
+    addSource("ADAT-B/In", 8, 8, eRS_ADAT, 1);
     addSource("SPDIF/In", 14, 2, eRS_AES, 1);
     addSource("Mixer/Out", 0, 16, eRS_Mixer, 1);
     addSource("1394/In", 0, 10, eRS_ARX0, 1);
@@ -66,8 +66,8 @@ void Profire2626::Profire2626EAP::setupSources_low()
 void Profire2626::Profire2626EAP::setupDestinations_low()
 {
     addDestination("Line/Out", 0, 8, eRD_InS1, 1);
-    addDestination("ADAT A/Out", 0, 8, eRD_ADAT, 1);
-    addDestination("ADAT B/Out", 8, 8, eRD_ADAT, 1);
+    addDestination("ADAT-A/Out", 0, 8, eRD_ADAT, 1);
+    addDestination("ADAT-B/Out", 8, 8, eRD_ADAT, 1);
     addDestination("SPDIF/Out", 0, 2, eRD_AES, 1);
     addDestination("Mixer/In", 0, 16, eRD_Mixer0, 1);
     addDestination("Mixer/In", 0, 2, eRD_Mixer1, 17);
@@ -79,8 +79,8 @@ void Profire2626::Profire2626EAP::setupDestinations_low()
 void Profire2626::Profire2626EAP::setupSources_mid()
 {
     addSource("Mic/Line/In", 0, 8, eRS_InS1, 1);
-    addSource("ADAT A/In", 0, 4, eRS_ADAT, 1);
-    addSource("ADAT B/In", 4, 4, eRS_ADAT, 1);
+    addSource("ADAT-A/In", 0, 4, eRS_ADAT, 1);
+    addSource("ADAT-B/In", 4, 4, eRS_ADAT, 1);
     addSource("SPDIF/In", 14, 2, eRS_AES, 1);
     addSource("Mixer/Out", 0, 16, eRS_Mixer, 1);
     addSource("1394/In", 0, 10, eRS_ARX0, 1);
@@ -91,8 +91,8 @@ void Profire2626::Profire2626EAP::setupSources_mid()
 void Profire2626::Profire2626EAP::setupDestinations_mid()
 {
     addDestination("Line/Out", 0, 8, eRD_InS1, 1);
-    addDestination("ADAT A/Out", 0, 4, eRD_ADAT, 1);
-    addDestination("ADAT B/Out", 4, 4, eRD_ADAT, 1);
+    addDestination("ADAT-A/Out", 0, 4, eRD_ADAT, 1);
+    addDestination("ADAT-B/Out", 4, 4, eRD_ADAT, 1);
     addDestination("SPDIF/Out", 0, 2, eRD_AES, 1);
     addDestination("Mixer/In", 0, 16, eRD_Mixer0, 1);
     addDestination("Mixer/In", 0, 2, eRD_Mixer1, 17);
@@ -104,8 +104,8 @@ void Profire2626::Profire2626EAP::setupDestinations_mid()
 void Profire2626::Profire2626EAP::setupSources_high()
 {
     addSource("Mic/Line/In", 0, 8, eRS_InS1, 1);
-    addSource("ADAT A/In", 0, 2, eRS_ADAT, 1);
-    addSource("ADAT B/In", 2, 2, eRS_ADAT, 1);
+    addSource("ADAT-A/In", 0, 2, eRS_ADAT, 1);
+    addSource("ADAT-B/In", 2, 2, eRS_ADAT, 1);
     addSource("SPDIF/In", 14, 2, eRS_AES, 1);
     addSource("Mixer/Out", 0, 16, eRS_Mixer, 1);
     addSource("1394/In", 0, 8, eRS_ARX0, 1);
@@ -116,8 +116,8 @@ void Profire2626::Profire2626EAP::setupSources_high()
 void Profire2626::Profire2626EAP::setupDestinations_high()
 {
     addDestination("Line/Out", 0, 8, eRD_InS1, 1);
-    addDestination("ADAT A/Out", 0, 2, eRD_ADAT, 1);
-    addDestination("ADAT B/Out", 2, 2, eRD_ADAT, 1);
+    addDestination("ADAT-A/Out", 0, 2, eRD_ADAT, 1);
+    addDestination("ADAT-B/Out", 2, 2, eRD_ADAT, 1);
     addDestination("SPDIF/Out", 0, 2, eRD_AES, 1);
     addDestination("Mixer/In", 0, 16, eRD_Mixer0, 1);
     addDestination("Mixer/In", 0, 2, eRD_Mixer1, 17);
