@@ -608,7 +608,7 @@ class PanelManager(QWidget):
               log.debug("Device %s not present; settings ignored" % guid)
 
           del stringDev[:]
-          del readString[idxb:idxe]
+          del readString[idxb:idxe+1]
           nd -= 1
    
 # vim: et
