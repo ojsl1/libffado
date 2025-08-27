@@ -123,7 +123,7 @@ class GlobalMixer(QWidget):
     @pyqtSlot()
     def on_txtNickname_returnPressed( self ):
         if self.nickname.canChangeValue():
-            asciiData = ascii(self.txtNickname.text())
+            asciiData = str(self.txtNickname.text())
             self.nickname.setText( asciiData )
         else:
             self.txtNickname.setText( self.nickname.text() )
