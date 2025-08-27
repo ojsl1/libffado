@@ -65,6 +65,14 @@ class FFADOWindow(QMainWindow):
 
         self.settings = QtCore.QSettings(self)
 
+        # Restore window geometry and position
+        geometry = self.settings.value("window/geometry")
+        if geometry is not None:
+            self.restoreGeometry(geometry)
+        window_state = self.settings.value("window/state")
+        if window_state is not None:
+            self.restoreState(window_state)
+
         self.manager = PanelManager(self)
         self.manager.connectionLost.connect(self.connectToDBUS)
 
@@ -157,6 +165,9 @@ class FFADOWindow(QMainWindow):
                 self.settings.setValue("window/theme", theme.__str__())
 
     def closeEvent(self, event):
+        # Save window geometry and state
+        self.settings.setValue("window/geometry", self.saveGeometry())
+        self.settings.setValue("window/state", self.saveState())        
         log.info("closeEvent()")
         event.accept()
 
