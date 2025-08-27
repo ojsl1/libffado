@@ -45,24 +45,38 @@ class GlobalMixer(QWidget):
 
     @pyqtSlot(int)
     def on_clocksource_activated( self, clock ):
-        #log.debug("updateClockSource( " + str(clock) + " )")
-        if self.clockselect.canChangeValue():
-            self.clockselect.select( clock )
-        else:
+        log.debug("on_clocksource_activated( " + str(clock) + " )")
+        # get current value from device
+        selected = self.clockselect.selected()
+
+        # is streaming active?
+        canChange = self.clockselect.canChangeValue()
+        
+        # only throw message and return if streaming is active and the
+        # current clock is not the same as the new setting
+        if not canChange and clock != selected:
             msg = QMessageBox()
             msg.question( msg, "Error", \
                 "<qt>Clock source change not permitted. Is streaming active?</qt>", \
                 QMessageBox.Ok )
             self.clocksource.setEnabled(False)
             return
-
-        selected = self.clockselect.selected()
-        if selected != clock:
-            clockname = self.clockselect.getEnumLabel( clock )
-            msg = QMessageBox()
-            msg.question( msg, "Failed to select clock source", \
-                "<qt>Could not select %s as clock source.</qt>" % clockname, \
-                QMessageBox.Ok )
+        
+        # only update if the current clock is different
+        if clock != selected:
+            self.clockselect.select(clock)
+            selected = self.clockselect.selected()
+        
+            # show error in case clock was not updated for some reason
+            if selected != clock:
+                clockname = self.clockselect.getEnumLabel( clock )
+                msg = QMessageBox()
+                msg.question( msg, "Failed to select clock source", \
+                    "<qt>Could not select %s as clock source.</qt>" % clockname, \
+                    QMessageBox.Ok )
+                return
+                
+            # finally only update GUI
             self.clocksource.setCurrentIndex( selected )
 
     @pyqtSlot(int)
@@ -71,26 +85,39 @@ class GlobalMixer(QWidget):
         # If there's no clock, don't bother trying to set the sample rate
         if (self.no_clock == 1):
             return
-        if self.samplerateselect.canChangeValue():
-            self.samplerateselect.select( sr )
-            if 'onSamplerateChange' in dir(self):
-                self.onSamplerateChange()
-                log.debug("Mixer configuration updated")
-        else:
+        
+        # get current value from device
+        selected = self.samplerateselect.selected()
+
+        # is streaming active?
+        canChange = self.samplerateselect.canChangeValue()
+
+        # only throw message and return if streaming is active and current
+        # samplerate is different from the new setting
+        if not canChange and sr != selected:
             msg = QMessageBox()
             msg.question( msg, "Error", \
                 "<qt>Sample rate change not permitted. Is streaming active?</qt>", \
                 QMessageBox.Ok )
             self.samplerate.setEnabled(False)
             return
+        
+        # only update if the actual samplerate is different
+        if sr != selected:
+            self.samplerateselect.select(sr)
+            selected = self.samplerateselect.selected()
 
-        selected = self.samplerateselect.selected()
-        if selected != sr:
-            srname = self.samplerateselect.getEnumLabel( sr )
-            msg = QMessageBox()
-            msg.question( msg, "Failed to select sample rate", \
-                "<qt>Could not select %s as samplerate.</qt>" % srname, \
-                QMessageBox.Ok )
+            # show error in case samplerate was not updated for some reason
+            if selected != sr:
+                srname = self.samplerateselect.getEnumLabel( sr )
+                log.debug("Failed to select sample rate %s" % srname)
+                msg = QMessageBox()
+                msg.question( msg, "Failed to select sample rate", \
+                    "<qt>Could not select %s as samplerate.</qt>" % srname, \
+                    QMessageBox.Ok )
+                return
+
+            # finally only update GUI
             self.samplerate.setCurrentIndex( selected )
 
     @pyqtSlot()
@@ -230,7 +257,6 @@ class GlobalMixer(QWidget):
                 idxclock = -1
             if idxclock >= 0:
                 self.on_clocksource_activated(idxclock)           
-                self.clocksource.setCurrentIndex(self.clockselect.selected())
                 log.debug("Clock set to index %d (%s)" % (idxclock, clock))
             del clockLabel
         # Samplerate
@@ -252,7 +278,6 @@ class GlobalMixer(QWidget):
                 idxsrate = -1
             if idxsrate >= 0:
                 self.on_samplerate_activated(idxsrate)    
-                self.samplerate.setCurrentIndex(self.samplerateselect.selected())
                 log.debug("Samplerate set to index %d (%s)" % (idxsrate, samplerate))
          
 # vim: et
