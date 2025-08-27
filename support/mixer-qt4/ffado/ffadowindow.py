@@ -49,21 +49,57 @@ class StartDialog(QWidget):
         self.layout.setContentsMargins( 50, 10, 50, 10 )
         self.layout.addWidget(self.label, 0, 0, Qt.AlignHCenter|Qt.AlignBottom)
         self.layout.addWidget(self.button, 1, 0, Qt.AlignHCenter|Qt.AlignTop)
+ 
+class PreferencesDialog(QDialog):
+    def __init__(self, parent=None):
+        super(PreferencesDialog, self).__init__(parent)
+        self.setWindowTitle("Preferences")
+        self.settings = QtCore.QSettings(parent)
+        self.parent_window = parent
+        layout = QVBoxLayout(self)
+
+        # Show log window checkbox
+        self.log_checkbox = QCheckBox("Show log window", self)
+        show_log = self.settings.value("window/show_log", True, type=bool)
+        self.log_checkbox.setChecked(show_log)
+        layout.addWidget(self.log_checkbox)
+        self.log_checkbox.toggled.connect(self.on_log_checkbox_toggled)
+
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, self)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+        layout.addWidget(buttonBox)
+
+    def get_log_checkbox_state(self):
+        return self.log_checkbox.isChecked()
+
+    def on_log_checkbox_toggled(self, checked):
+        # Update dock visibility immediately
+        if self.parent_window is not None:
+            self.parent_window.logger_dock.setVisible(checked)
+    
+    def accept(self):
+        self.settings.setValue("window/show_log", self.log_checkbox.isChecked())
+        super(PreferencesDialog, self).accept()
 
 class FFADOWindow(QMainWindow):
     def __init__(self, parent):
         QMainWindow.__init__(self, parent)
 
         self.textlogger = QTextLogger(self)
-        dock = QDockWidget("Log Messages",self)
-        dock.setWidget(self.textlogger.textedit)
+        self.logger_dock = QDockWidget("Log Messages",self)
+        self.logger_dock.setWidget(self.textlogger.textedit)
         logging.getLogger('').addHandler(self.textlogger)
-        self.addDockWidget(Qt.BottomDockWidgetArea, dock)
+        self.addDockWidget(Qt.BottomDockWidgetArea, self.logger_dock)
 
         self.statuslogger = QStatusLogger(self, self.statusBar(), 20)
         logging.getLogger('').addHandler(self.statuslogger)
 
         self.settings = QtCore.QSettings(self)
+ 
+        # Show/hide log dock based on settings
+        show_log = self.settings.value("window/show_log", True, type=bool)
+        self.logger_dock.setVisible(show_log)
 
         # Restore window geometry and position
         geometry = self.settings.value("window/geometry")
@@ -93,6 +129,12 @@ class FFADOWindow(QMainWindow):
         filemenu.addAction(self.quitaction)
 
         self.editmenu = self.menuBar().addMenu("&View")
+
+        self.setPreferencesAction = QtWidgets.QAction(parent)
+        self.setPreferencesAction.setText("Preferences")
+        self.setPreferencesAction.setObjectName("setPreferencesAction")
+        self.setPreferencesAction.triggered.connect(self.showPreferencesDialog)
+        self.editmenu.addAction(self.setPreferencesAction)
 
         self.thememenu = self.editmenu.addMenu("Theme")
         themes = QStyleFactory.keys()
@@ -147,6 +189,10 @@ class FFADOWindow(QMainWindow):
         log.info( "Starting up" )
 
         QTimer.singleShot( 1, self.tryStartDBUSServer )
+        
+    def showPreferencesDialog(self):
+        dialog = PreferencesDialog(self)
+        dialog.exec_()
 
     def __del__(self):
         log.info("__del__")
