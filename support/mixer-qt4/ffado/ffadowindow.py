@@ -65,6 +65,31 @@ class PreferencesDialog(QDialog):
         layout.addWidget(self.log_checkbox)
         self.log_checkbox.toggled.connect(self.on_log_checkbox_toggled)
 
+        # Load device settings on startup
+        self.load_settings_checkbox = QCheckBox("Load device settings on startup", self)
+        load_settings = self.settings.value("window/load_settings_on_startup", False, type=bool)
+        self.load_settings_checkbox.setChecked(load_settings)
+        layout.addWidget(self.load_settings_checkbox)
+        self.load_settings_checkbox.toggled.connect(self.on_load_settings_toggled)
+
+        # File path field and button
+        self.file_path_layout = QHBoxLayout()
+        self.file_path_edit = QLineEdit(self)
+        self.load_settings_label = QLabel("Choose path to saved file.", self)
+        self.file_path_layout.addWidget(self.load_settings_label)
+        saved_path = self.settings.value("window/device_settings_path", "", type=str)
+        self.file_path_edit.setText(saved_path)
+        self.file_dialog_btn = QPushButton("...", self)
+        self.file_dialog_btn.clicked.connect(self.select_file_dialog)
+        self.file_path_layout.addWidget(self.file_path_edit)
+        self.file_path_layout.addWidget(self.file_dialog_btn)
+        layout.addLayout(self.file_path_layout)
+
+        # Show/hide file path widgets based on checkbox
+        self.load_settings_label.setVisible(load_settings)
+        self.file_path_edit.setVisible(load_settings)
+        self.file_dialog_btn.setVisible(load_settings) 
+
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, self)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
@@ -77,7 +102,23 @@ class PreferencesDialog(QDialog):
         # Update dock visibility immediately
         if self.parent_window is not None:
             self.parent_window.logger_dock.setVisible(checked)
-    
+            
+    def on_load_settings_toggled(self, checked):
+        self.load_settings_label.setVisible(checked)
+        self.file_path_edit.setVisible(checked)
+        self.file_dialog_btn.setVisible(checked)
+
+    def select_file_dialog(self):
+        path, _ = QFileDialog.getOpenFileName(self, "Select Device Settings File")
+        if path:
+            self.file_path_edit.setText(path)
+
+    def get_load_settings_state(self):
+        return self.load_settings_checkbox.isChecked()
+
+    def get_device_settings_path(self):
+        return self.file_path_edit.text() 
+
     def accept(self):
         self.settings.setValue("window/show_log", self.log_checkbox.isChecked())
         super(PreferencesDialog, self).accept()
@@ -111,6 +152,12 @@ class FFADOWindow(QMainWindow):
 
         self.manager = PanelManager(self)
         self.manager.connectionLost.connect(self.connectToDBUS)
+
+        # Load device settings on startup if enabled and path is set
+        load_settings = self.settings.value("window/load_settings_on_startup", False, type=bool)
+        device_settings_path = self.settings.value("window/device_settings_path", "", type=str)
+        if load_settings and device_settings_path:
+            self.manager.readSettings(device_settings_path)
 
         filemenu = self.menuBar().addMenu("&File")
         self.openaction = QAction(QIcon.fromTheme("document-open"),"&Open", self)
@@ -189,7 +236,15 @@ class FFADOWindow(QMainWindow):
         log.info( "Starting up" )
 
         QTimer.singleShot( 1, self.tryStartDBUSServer )
-        
+        QTimer.singleShot( 2 * POLL_SLEEP_TIME_MSEC, self.loadSettings )
+
+    def loadSettings(self):
+        # Load device settings on startup if enabled and path is set
+        load_settings = self.settings.value("window/load_settings_on_startup", False, type=bool)
+        device_settings_path = self.settings.value("window/device_settings_path", "", type=str)
+        if load_settings and device_settings_path:
+            self.manager.readSettings(device_settings_path) 
+
     def showPreferencesDialog(self):
         dialog = PreferencesDialog(self)
         dialog.exec_()

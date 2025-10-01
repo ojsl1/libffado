@@ -528,8 +528,13 @@ class PanelManager(QWidget):
           f.write(s)
         f.close()
 
-    def readSettings(self):
-        readfilename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))
+    def readSettings(self, path):
+        if path == None or os.path.exists(path) == False:
+            # use the file dialog to get a file name
+            readfilename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))
+        else:
+            readfilename = path
+            
         if isinstance(readfilename, tuple): # newer PyQt5
             readfilename = readfilename[0]
         try:
